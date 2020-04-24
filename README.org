@@ -1,12 +1,15 @@
 
 ** About
-# Network simulation that was developed during my PhD. 
+Neural network simulator developed by Felix Hoffmann for his PhD.
+Original at https://github.com/synsrv/src_net.
+
 Network simulation using Brian 2 and Pypet written to analyse the survivability of transient synapses of cortical neurons.
 
 ** Requirements
 To run the network simulation a Python 3 environment with Brian 2, and Pypet is required. Git also has to be installed.
 
-Any recent version of [[https://github.com/brian-team/brian2][Brian 2]] should work. However, to run very long simulations a fix discussed in [[https://github.com/brian-team/brian2/pull/1057][#1057]] is required.
+Any recent version of [[https://github.com/brian-team/brian2][Brian 2]] should work.
+However, to run very long simulations a fix discussed in [[https://github.com/brian-team/brian2/pull/1057][#1057]] is required.
 
 Below is an example installation routine for setting up a virtualenv (tested on Ubuntu 16.04 only).
 
@@ -16,16 +19,7 @@ Below is an example installation routine for setting up a virtualenv (tested on 
 virtualenv -p python3 /home/$USER/env/synsrv
 source /home/$USER/env/synsrv/bin/activate
 
-# Brian 2 branch that fixes bug for long simulations
-pip install -e git+https://github.com/brian-team/brian2@355cbf98061f2ae4c4afdc1600f363c5d8c0979d#egg=Brian2
-
-pip install mrestimator==0.1.5
-pip install elephant==0.6.0
-
-pip install tables==3.5.1
-pip install pypet==0.4.3
-
-pip install GitPython
+pip install -r requirements.txt
 #+END_SRC
 
 
@@ -33,9 +27,7 @@ pip install GitPython
 
 Get the code from this repository including submodules with
 
-: git clone  --recurse-submodules https://github.com/synsrv/src_net
-
-
+: git clone  --recurse-submodules https://github.com/excinhbal/network
 
 ** Run a simulation
 To verify your installation, within ~src_net~ run
