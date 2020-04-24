@@ -2,9 +2,9 @@ astroid==2.3.3
 attrs==19.3.0
 backcall==0.1.0
 bleach==3.1.0
-# Brian 2 branch that fixes bug for long simulations https://github.com/brian-team/brian2/pull/1057
--e git+https://github.com/brian-team/brian2@355cbf98061f2ae4c4afdc1600f363c5d8c0979d#egg=Brian2
+Brian2==2.3.0.2
 certifi==2020.4.5.1
+cffi==1.14.0
 cycler==0.10.0
 Cython==0.29.15
 decorator==4.4.2
@@ -57,10 +57,12 @@ pexpect==4.8.0
 pickleshare==0.7.5
 Pillow==7.0.0
 Pint==0.11
+ply==3.11
 pretty-midi==0.2.8
 prometheus-client==0.7.1
 prompt-toolkit==3.0.4
 ptyprocess==0.6.0
+pycparser==2.20
 Pygments==2.6.1
 pylint==2.4.4
 pyparsing==2.4.6
@@ -72,6 +74,7 @@ pyrsistent==0.16.0
 PySpice==1.3.2
 python-dateutil==2.8.1
 pytz==2019.3
+PyYAML==5.3.1
 pyzmq==18.1.1
 qtconsole==4.7.2
 QtPy==1.9.0

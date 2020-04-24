@@ -13,6 +13,16 @@ However, to run very long simulations a fix discussed in [[https://github.com/br
 
 Below is an example installation routine for setting up a virtualenv (tested on Ubuntu 16.04 only).
 
+If you see issues with long running simulations, a patch to brian2 needs to be applied.
+You can try to install an old version of brian2 with the patch:
+#+BEGIN_SRC sh
+# Brian 2 branch that fixes bug for long simulations https://github.com/brian-team/brian2/pull/1057
+pip uninstall brian2
+pip install -e git+https://github.com/brian-team/brian2@355cbf98061f2ae4c4afdc1600f363c5d8c0979d#egg=Brian2
+#+END_SRC
+
+If that doesn't work, the patch likely needs to be rebased on an up-to-date brian2, see #4.
+
 #+BEGIN_SRC sh
 #!/bin/sh
 
