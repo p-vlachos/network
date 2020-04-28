@@ -1,5 +1,6 @@
 *~
 __pycache__/
+.pytest_cache/
 *.py[cod]
 *$py.class
 *.hdf5
@@ -10,3 +11,4 @@ __pycache__/
 *#
 .#*
 net/explored_params.py
+.idea/
