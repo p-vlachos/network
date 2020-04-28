@@ -22,7 +22,7 @@ fi
 if $6
 then
    echo "doing local"
-   python -m src.net.xstrct_run -c $3 $TESTFLAG
+   PYTHONPATH="$PWD/src" python -m net.xstrct_run -c $3 $TESTFLAG
 else
    echo "doing nonlocal"
    srun -p $7 -c $4 --mem $5 --time 29-00 python \
@@ -49,7 +49,8 @@ then
     # 6 run python script to analyze expected
     # outputs if in automated testmode!
 
-    python "./src/"$9"tests.py" 2> test.log
+    export EIB_STANDALONE_TEST=1
+    PYTHONPATH="$PWD/src" python "./src/"$9"tests.py" 2> test.log
 
     ret=$?
     if [ $ret -ne 0 ]; then

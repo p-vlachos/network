@@ -4,15 +4,15 @@ import numpy as np
 
 from brian2.units import ms,mV,second,Hz
 
-from src.analysis.methods.process_survival import extract_survival
-from src.analysis.methods.process_turnover_pd import extract_lifetimes
-from src.analysis.methods.process_turnover_statistics import get_insert_and_prune_counts
+from analysis.methods.process_survival import extract_survival
+from analysis.methods.process_turnover_pd import extract_lifetimes
+from analysis.methods.process_turnover_statistics import get_insert_and_prune_counts
 
-from src.analysis.srvprb_all import srvprb_all_figure
-from src.analysis.srvprb_EE import srvprb_EE_figure
-from src.analysis.srvprb_EI import srvprb_EI_figure
+from analysis.srvprb_all import srvprb_all_figure
+from analysis.srvprb_EE import srvprb_EE_figure
+from analysis.srvprb_EI import srvprb_EI_figure
 
-from src.analysis.methods.resample_dA import resample_spk_register, \
+from analysis.methods.resample_dA import resample_spk_register, \
                                          resample_scl_deltas
 
 
