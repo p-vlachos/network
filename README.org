@@ -6,22 +6,9 @@ Original at https://github.com/synsrv/src_net.
 Network simulation using Brian 2 and Pypet written to analyse the survivability of transient synapses of cortical neurons.
 
 ** Requirements
-To run the network simulation a Python 3 environment with Brian 2, and Pypet is required. Git also has to be installed.
-
-Any recent version of [[https://github.com/brian-team/brian2][Brian 2]] should work.
-However, to run very long simulations a fix discussed in [[https://github.com/brian-team/brian2/pull/1057][#1057]] is required.
-
+To run the network simulation a Python 3 environment with Brian 2 (with patches), and Pypet is required. Git also has to be installed.
+Detailed dependencies are listed in ~requirements.txt~.
 Below is an example installation routine for setting up a virtualenv (tested on Ubuntu 16.04 only).
-
-If you see issues with long running simulations, a patch to brian2 needs to be applied.
-You can try to install an old version of brian2 with the patch:
-#+BEGIN_SRC sh
-# Brian 2 branch that fixes bug for long simulations https://github.com/brian-team/brian2/pull/1057
-pip uninstall brian2
-pip install -e git+https://github.com/brian-team/brian2@355cbf98061f2ae4c4afdc1600f363c5d8c0979d#egg=Brian2
-#+END_SRC
-
-If that doesn't work, the patch likely needs to be rebased on an up-to-date brian2, see #4.
 
 #+BEGIN_SRC sh
 #!/bin/sh
@@ -32,6 +19,26 @@ source /home/$USER/env/synsrv/bin/activate
 pip install -r requirements.txt
 #+END_SRC
 
+This will also install Brian2 patches.
+
+*** Brian2 Patches
+Brian2 patches are required for long simulations.
+We maintain our own repository of Brian2 with patches applied:
+[[https://github.com/excinhbal/brian2/branches]]
+
+In order to upgrade Brian2 to an up-to-date version:
+1. clone our Brian2 repository
+2. ~git remote add upstream https://github.com/brian-team/brian2.git~
+3. ~git fetch upstream~
+4. ~git checkout origin/<our most up to date branch> -b <new release tag>__excinhbal_fixes~
+5. ~git rebase <new release tag>~
+6. fix conflicts
+7. ~git log~ should now show a few commits like this https://github.com/excinhbal/brian2/commit/b3c7d3adadabb7d4f0b4b70dca818787a7714900
+   as newest commits of the branch and the next oldest commit should be the Brian2 release commit of the version that you wanted to upgrade to
+7. push the new branch to origin (our Brian2 repository)
+8. edit this repository's ~requirements.txt~ to point to the new branch
+
+For details about the patches check out [[https://github.com/brian-team/brian2/pull/1057][#1057]].
 
 ** Installation
 

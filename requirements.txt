@@ -2,7 +2,8 @@ astroid==2.3.3
 attrs==19.3.0
 backcall==0.1.0
 bleach==3.1.0
-Brian2==2.3.0.2
+# contains fixes for long simulations
+git+https://github.com/excinhbal/brian2@2.3.0.2_excinhbal_fixes#egg=Brian2
 certifi==2020.4.5.1
 cffi==1.14.0
 cycler==0.10.0
