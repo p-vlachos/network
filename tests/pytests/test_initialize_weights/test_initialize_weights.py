@@ -5,7 +5,7 @@ import pytest
 
 from tests.lib.testcaserunsim import TestCaseRunSim
 
-from .explored_params import explore_dict
+import explored_params
 
 
 @pytest.mark.network
@@ -15,7 +15,7 @@ class Test_weight_matrix_equals_initial(TestCaseRunSim):
     weight matrix should equal the initial weights
     """
 
-    explore_dict = explore_dict
+    explore_dict = explored_params.explore_dict
 
     @classmethod
     def setUpClassAfterSim(cls)-> None:
