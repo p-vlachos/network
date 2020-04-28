@@ -187,3 +187,5 @@ weight_path = 'weights/'
 run_id = 0 # doesn't do anything, added for running 
            # multiple copies for testing
 random_seed = 578
+
+profiling = False

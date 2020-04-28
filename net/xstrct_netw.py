@@ -768,7 +768,7 @@ def run_net(tr):
         set_active(PInp_spks, PInp_rate)
        
     net.run(tr.sim.T1, report='text',
-            report_period=300*second, profile=True)
+            report_period=300*second, profile=tr.netw.profiling)
 
 
     # --------- T2 ---------
@@ -981,10 +981,9 @@ def run_net(tr):
     with open(raw_dir+'scaling_deltas_EI.p','wb') as pfile:
         pickle.dump(scaling_deltas_data,pfile)
 
-               
-     
-    with open(raw_dir+'profiling_summary.txt', 'w+') as tfile:
-        tfile.write(str(profiling_summary(net)))
+    if tr.netw.profiling:
+        with open(raw_dir+'profiling_summary.txt', 'w+') as tfile:
+            tfile.write(str(profiling_summary(net)))
 
 
 

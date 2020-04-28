@@ -236,4 +236,6 @@ def add_params(tr):
     # seed
     tr.f_add_parameter('netw.run_id', prm.run_id)
     tr.f_add_parameter('netw.random_seed', prm.random_seed)
-    
+
+    # other
+    tr.f_add_parameter('netw.profiling', prm.profiling)
