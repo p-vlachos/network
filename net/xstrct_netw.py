@@ -6,6 +6,7 @@ from .utils import generate_connections, generate_full_connectivity, \
                    generate_N_connections
 
 import numpy as np
+import pypet
 
 from brian2.units import ms,mV,second,Hz
 from pypet.brian2.parameter import Brian2MonitorResult
@@ -27,14 +28,20 @@ from .cpp_methods import syn_scale, syn_EI_scale, \
                          record_spk, record_spk_EI
 
 
+def init_synapses(syn_type: str, tr: pypet.trajectory.Trajectory):
+    """ Initialize synapses with weights and whether they are active or not
 
-def init_synapses(syn_type, tr):
+    ``tr.weight_mode`` is used to choose whether to ``init`` or ``load``.
+
+    :param syn_type: "EE" or "EI"
+    :param tr:
+    :return: (initial_active, initial_weights) arrays with active (0 or 1)
+             and weights (0 if inactive, ``tr.a_ee`` otherwise)
+    """
 
     if tr.weight_mode=="init":
 
         if syn_type=="EE":
-            weights=tr.a_ee
-
             # make randomly chosen synapses active at beginning
             rs = np.random.uniform(size=tr.N_e*(tr.N_e-1))
             initial_active = (rs < tr.p_ee).astype('int')
@@ -50,6 +57,8 @@ def init_synapses(syn_type, tr):
             else:
                 initial_active = 1
                 initial_weights = tr.a_ei
+        else:
+            raise Exception(f"invalid syn_type {syn_type}")
 
     elif tr.weight_mode=="load":
 
@@ -64,7 +73,10 @@ def init_synapses(syn_type, tr):
             syn_a_init = pickle.load(pfile)
 
         initial_active = syn_a_init['syn_active'][-1,:]
-        initial_weights = syn_a_init['a'][-1,:]            
+        initial_weights = syn_a_init['a'][-1,:]
+
+    else:
+        raise Exception(f"invalid weight mode {tr.weight_mode}")
 
     return initial_active, initial_weights
 
@@ -87,14 +99,15 @@ def run_net(tr):
 
     T = tr.T1 + tr.T2 + tr.T3 + tr.T4 + tr.T5
 
+    # variables which will be used by the equations, ``short_names`` converts PyPet's namespaced
+    # variable names to simple variable names without namespace (ValueError if not unique)
     namespace = tr.netw.f_to_dict(short_names=True, fast_access=True)
     namespace['idx'] = tr.v_idx
 
     defaultclock.dt = tr.netw.sim.dt
 
-    # collect all network components dependent on configuration
-    # (e.g. poisson vs. memnoise) and add them to the Brian 2
-    # network object later
+    # collect all network components dependent on configuration (e.g. poisson vs. memnoise)
+    # and add them to the Brian 2 network object later
     netw_objects = []
 
     if tr.external_mode=='memnoise':
@@ -252,8 +265,10 @@ def run_net(tr):
         synEE_pre_mod = mod.synEE_pre_alpha
     elif tr.syn_cond_mode=='biexp':
         synEE_pre_mod = mod.synEE_pre_biexp
+    else:
+        raise Exception("synaptic conductance mode is invalid")
 
-    
+
     synEE_post_mod = mod.syn_post
     
     if tr.stdp_active:
@@ -524,6 +539,8 @@ def run_net(tr):
 
 
     # keep track of the number of active synapses
+    # this is more of a hack, where we have one neuron which
+    # calculate the ratio of active synapses c of the total count NSyn
     sum_target = NeuronGroup(1, 'c : 1 (shared)', dt=tr.csample_dt)
 
     sum_model = '''NSyn : 1 (constant)
@@ -532,16 +549,18 @@ def run_net(tr):
                               model=sum_model, dt=tr.csample_dt,
                               name='get_active_synapse_count')
     sum_connection.connect()
-    sum_connection.NSyn = tr.N_e * (tr.N_e-1)
+    sum_connection.NSyn = tr.N_e * (tr.N_e-1)  # maximum number of EE synapses
     
 
     if tr.adjust_insertP:
         # homeostatically adjust growth rate
+        # a similar hack as above, but here we update SynEE's insert_P
+        # depending on the ratio of active synapses
         growth_updater = Synapses(sum_target, SynEE)
         growth_updater.run_regularly('insert_P_post *= 0.1/c_pre',
                                      when='after_groups', dt=tr.csample_dt,
                                      name='update_insP')
-        growth_updater.connect(j='0')
+        growth_updater.connect(j='0')  # SynEE acts as one single target neuron
 
         netw_objects.extend([sum_target, sum_connection, growth_updater])
 
@@ -839,7 +858,7 @@ def run_net(tr):
 
 
     # -----------------------------------------
-    
+
     # save monitors as raws in build directory
     raw_dir = 'builds/%.4d/raw/'%(tr.v_idx)
     

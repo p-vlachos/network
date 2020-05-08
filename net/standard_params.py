@@ -1,31 +1,53 @@
 
 from brian2.units import *
 
+# Please note: in accordance with Python attribute documentation
+# the """ docstrings """ are AFTER the variable they document
+# nota bene: this can be extracted by Sphinx
+
 N_e = 400
 N_i = int(0.2*N_e)
 
 tau = 20.*ms                 # membrane time constant
+""" seems to be used only for the Poisson implementation (not memnoise) """
 
 syn_cond_mode = 'exp'
+"""Conductance mode of EE synapses, one of exp, alpha, biexp"""
 syn_cond_mode_EI = 'exp'
-tau_e = 5.*ms                # EPSP time constant
-tau_i = 10.*ms               # IPSP time constant
+"""Conductance mode of EI synapses, one of exp, alpha, biexp"""
+tau_e = 5.*ms
+"""EPSP time constant"""
+tau_i = 10.*ms
+"""IPSP time constant"""
 tau_e_rise = 0.5*ms
+"""Used by biexp conductance model """
 tau_i_rise = 0.15*ms
+"""Used by biexp conductance model """
 norm_f_EE = 1.0
+"""Used by alpha, biexp conductance model"""
 norm_f_EI = 1.0
-El = -60.*mV                 # resting value
-Ee = 0.*mV                   # reversal potential Excitation 
-Ei = -80.*mV                 # reversal potential Inhibition
+"""Used by alpha, biexp conductance model"""
+El = -60.*mV
+"""resting value"""
+Ee = 0.*mV
+"""reversal potential excitation"""
+Ei = -80.*mV
+"""reversal potential inhibition"""
 mu_e = 9.0*mV
+"""memnoise μ for excitatory neurons"""
 mu_i = 8.5*mV
-sigma_e = 0.5**0.5*mV        # noise amplitude
+"""memnoise μ for inhibitory neurons"""
+sigma_e = 0.5**0.5*mV
+"""memnoise σ for excitatory neurons"""
 sigma_i = 0.5**0.5*mV
+"""memnoise σ for inhibitory neurons"""
 
 Vr_e = -60.*mV
 Vr_i = -60.*mV
 Vt_e = -50.*mV
+"""initial Vt for excitatory neurons"""
 Vt_i = -51.*mV
+"""initial Vt for inhibitory neurons"""
 
 ascale = 1.0
 a_ee = 0.005
@@ -34,9 +56,13 @@ a_ei = 0.005
 a_ii = 0.005
 
 p_ee = 0.15
+"""initial probability for synapse connection being active"""
 p_ie = 0.15
+"""initial probability for synapse connection being active"""
 p_ei = 0.5
+"""initial probability for synapse connection being active"""
 p_ii = 0.5
+"""initial probability for synapse connection being active"""
 
 taupre = 15*ms
 taupost = 30*ms
@@ -46,43 +72,62 @@ amax = 2.0
 
 
 external_mode = 'memnoise'
+"""Either 'memnoise' or 'poisson' but latter seems to be unimplemented"""
 
 # poisson 
-PInp_mode = 'pool' #indep
+PInp_mode = 'pool'
+""" either 'pool' or 'indep', only applies if ``external_mode`` is 'poisson' """
 NPInp = 1000
+"""Count of poisson external input neurons on excitatory neurons"""
 NPInp_1n = 10
+"""Number of incoming external connections per target"""
 NPInp_inh = 1000
+"""Count of poisson external input neurons on inhibitory neurons"""
 NPInp_inh_1n = 10
+"""Number of incoming external connections per inhibitory target"""
 PInp_rate = 1270*Hz
+"""Firing rate of Poisson input to excitatory neurons"""
 PInp_inh_rate = 1250*Hz
+"""Firing rate of Poisson input to inhibitory neurons"""
 a_EPoi = 0.005
+"""Parameter for ``external_mode``=``poisson``"""
 a_IPoi = 0.
-p_EPoi = 0.2
-p_IPoi = 0.1
+"""Parameter for ``external_mode``=``poisson``"""
+p_EPoi = 0.2  # unused
+p_IPoi = 0.1  # unused
 
 # synapse noise
 syn_noise = 1
+"""enable/disable synapse noise"""
 syn_noise_type = 'additive'
+"""can be either ``additive`` or ``multiplicative``"""
 syn_sigma = 1e-09/second
+"""synapse noise sigma"""
 synEE_mod_dt = 100*ms
+"""dt between update of state variables"""
 
 #STDP
 stdp_active = 1
 synEE_rec = 1
+"""enable recording of EE synapse spikes"""
 ATotalMax = 0.2
 sig_ATotalMax = 0.05
 
 #iSTDP
 istdp_active = 1
-istdp_type = 'sym' #'dbexp'
+istdp_type = 'sym'
+"""either ``sym`` or ``dbexp``"""
 taupre_EI = 20*ms
 taupost_EI = 20*ms
 synEI_rec = 1
+"record EI synapse spikes"
 LTD_a = 0.000005
 
 # scaling
 scl_active = 1
+"""EE synaptic scaling"""
 dt_synEE_scaling = 25*ms
+"""time step for synaptic scaling"""
 eta_scaling = 0.25
 
 # iscaling
@@ -90,21 +135,42 @@ iscl_active = 1
 iATotalMax = 0.7/6
 sig_iATotalMax = 0.025
 syn_iscl_rec = 0
+"""record inhibitory synaptic scaling (via CPP methods)"""
 
 # structural plasticity
 strct_active = 1
+"""enable/disable structural plasticity"""
 strct_mode = 'zero'
+"""
+    one of two:
+    
+    * ``zero`` synapses stay become inactive if either their activity is below a certain threshold (see strct_c)
+      or they are randomly kept active (see p_inactivate) 
+    * ``threshold`` synapses stay active if their activity is above a certain threshold
+      they might become active randomly (see insert_P)
+"""
 prn_thrshld = 0.001 * ATotalMax
+"""synapse prune threshold"""
 insert_P = 0.0002
+"""synapse creation probability"""
 strct_dt = 1000*ms
+"""structural plasticity timestep"""
 a_insert = 0.
+"""initial activity of synapse on activation"""
 p_inactivate = 0.01
+"""
+    if mode is ``zero`` this is the probability for a synapse to become inactive if it doesn't have enough activity
+"""
 strct_c = 0.002
+"""threshold for ``zero`` mode"""
 
 # inhibitory structural plasticity
 istrct_active = 0
+"""enable inhibitory structural plasticity"""
 insert_P_ei = 0.00005
+"""EI synapse creation probability"""
 p_inactivate_ei = 0.25
+"""probability for a EI synapse to become inactive if activity below threshold"""
 
 
 # intrinsic plasticity
@@ -116,16 +182,20 @@ h_ip = 3*Hz
 
 #preT  = 100*second
 T1 = 1*second
+"""initial recording phase with all recorders active"""
 T2 = 10*second
+"""main simulation, active recorders: turnover, C_stat, SynEE_a"""
 T3 = 1*second
+"""all recorders active"""
 T4 = 1*second
+"""record STDP and weight scaling mechanisms"""
 T5 = 5*second
+"""freeze network and record exc spikes for cross correlations"""
 dt = 0.1*ms
 n_threads = 1
 
 # neuron_method = 'euler'
 # synEE_method = 'euler'
-
 
 # recording
 memtraces_rec = 1
@@ -134,50 +204,74 @@ getraces_rec = 1
 gitraces_rec = 1
 gfwdtraces_rec = 1
 rates_rec = 1
+"""additionally to recording averaged rates from EE and EI groups each per time step, record smoothed rates over 25ms"""
 
 nrec_GExc_stat = 3
+"""how many of excitatory neurons to record"""
 nrec_GInh_stat = 3
+"""how many of inhibitory neurons to record"""
 GExc_stat_dt = 2.*ms
+"""time step of recording excitatory neurons"""
 GInh_stat_dt = 2.*ms
+"""time step of recording inhibitory neurons"""
 
 synee_atraces_rec = 1
 synee_activetraces_rec = 0
 synee_Apretraces_rec = 1
 synee_Aposttraces_rec = 1
 n_synee_traces_rec = 1000
+"""number of EE synaptic traces to record"""
 synEE_stat_dt = 2.*ms
+"""time step of EE recording of synaptic traces"""
 
 synei_atraces_rec = 1
 synei_activetraces_rec = 1
 synei_Apretraces_rec = 1
 synei_Aposttraces_rec = 1
 n_synei_traces_rec = 1000
+"""number of EI synaptic traces to record"""
 synEI_stat_dt = 2.*ms
+"""time step of EI recording of synaptic traces"""
 
 
 syn_scl_rec = 1
+"""record synaptic scaling (via CPP methods)"""
 stdp_rec_T = 1.*second
 scl_rec_T = 0.1*second
+"""additional time to record synaptic scaling after T3 (so first x seconds of T4)"""
 
 synEEdynrec = 1
+"""enable/disable recording of EE synaptic dynamics (``a`` variable)"""
 synEIdynrec = 1
+"""enable/disable recording of EI synaptic dynamics (``a`` variable)"""
 syndynrec_dt = 1*second
 syndynrec_npts = 10
+"""desired number of recordings of synaptic dynamics"""
 
 turnover_rec = 1
+"""recording of synaptic turnover"""
 spks_rec = 1
+"""appears unused"""
 T2_spks_rec = 0
+"""recording of excitatory and inhibitory spikes during phase T2"""
 synee_a_nrecpoints = 10
+"""desired magnitude of EE synaptic recordings"""
 synei_a_nrecpoints = 10
+"""desired magnitude of EI synaptic recordings"""
 
 crs_crrs_rec = 1
+"""record and calculate cross-correlations between pre-synaptic and post-synaptic spike trains"""
 
 adjust_insertP = 0
+"""enable/disable homeostasis mechanism for EE synapse insertion probability"""
 adjust_EI_insertP = 0
+"""same for EI"""
 csample_dt = 10*second
+"""dt for insertP homeostasis mechanism"""
 
 # post processing
 pp_tcut = 1*second
+"""synapse turnover is calculated starting at this time point"""
 
 # weight modes
 basepath = '/home/hoffmann/lab/netw_mods/z2/'

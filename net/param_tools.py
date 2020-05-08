@@ -12,15 +12,19 @@ from pypet import cartesian_product
 def n_list(input_dict):
     """Create explore_dict as lists instead of cartesian product
 
-    Given an input of:
-    {"a": [1.0, 2.0],
-     "b": [3.0, 4.0],
-     "c": [5.0]}
-    It creates a explore_dict
-    {"a": [1.0, 2.0],
-     "b": [3.0, 4.0],
-     "c": [5.0, 5.0]}
-    Where columns are one experiment.
+    Given an input of::
+
+        {"a": [1.0, 2.0],
+         "b": [3.0, 4.0],
+         "c": [5.0]}
+
+    it creates a explore_dict::
+
+        {"a": [1.0, 2.0],
+         "b": [3.0, 4.0],
+         "c": [5.0, 5.0]}
+
+    where columns are one experiment.
     """
 
     explore_dict = {}

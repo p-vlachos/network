@@ -28,7 +28,7 @@ def generate_N_connections(N_tar, N_src, N, same=False):
     ''' 
     connect source to target with N connections per target
 
-    return list of sources i and targets j
+    return list of sources i and targets N_tar*N
     '''
     if same:
         return NotImplementedError
