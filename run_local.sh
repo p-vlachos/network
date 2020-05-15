@@ -25,8 +25,7 @@ then
    PYTHONPATH="$PWD/src" python -m net.xstrct_run -c $3 $TESTFLAG
 else
    echo "doing nonlocal"
-   srun -p $7 -c $4 --mem $5 --time 29-00 python \
-	-m src.net.xstrct_run -c $3 $TESTFLAG
+   PYTHONPATH="$PWD/src" srun -p $7 -c $4 --mem $5 --time 29-00 python -m net.xstrct_run -c $3 $TESTFLAG
 fi
 
 # # with multiprocessing. currently defunct because of a problem
