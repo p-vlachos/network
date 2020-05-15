@@ -228,7 +228,7 @@ turnoverEI_rec_mod = '''
                    '''
 
 
-
+# zero mode
 strct_mod = '''
             r = rand()
             should_stay_active = int(a > strct_c) + int(a<= strct_c)*int(r>p_inactivate)

@@ -853,9 +853,10 @@ def run_net(tr):
     if tr.synei_a_nrecpoints>0 and tr.sim.T2 > 0.*second:
         SynEI_a.record_single_timestep()
 
+    # --------- Build & Run -------------------
+
     device.build(directory='builds/%.4d'%(tr.v_idx), clean=True,
                  compile=True, run=True, debug=False)
-
 
     # -----------------------------------------
 
