@@ -144,8 +144,9 @@ strct_mode = 'zero'
 """
     one of two:
     
-    * ``zero`` synapses stay become inactive if either their activity is below a certain threshold (see strct_c)
-      or they are randomly kept active (see p_inactivate) 
+    * ``zero`` synapses stay active if their activity is above threshold (see strct_c) and only become inactive
+      if below that threshold and with a probability (see p_inactivate);
+      they become active randomly (see insert_P)
     * ``threshold`` synapses stay active if their activity is above a certain threshold
       they might become active randomly (see insert_P)
 """

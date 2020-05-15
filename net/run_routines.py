@@ -32,7 +32,7 @@ def run_T2_syndynrec(net, tr, netw_objects):
             net['SynEI_dynrec'].active=True
         
         net.run(tr.syndynrec_npts*tr.syndynrec_dt, report='text',
-                report_period=300*second, profile=True)
+                report_period=300*second, profile=tr.netw.profiling)
 
         if tr.synEEdynrec:
             net['SynEE_dynrec'].active=False
@@ -41,7 +41,7 @@ def run_T2_syndynrec(net, tr, netw_objects):
 
         net.run(tr.sim.T2 - 2*tr.syndynrec_npts*tr.syndynrec_dt,
                 report='text', report_period=300*second,
-                profile=True)
+                profile=tr.netw.profiling)
 
         if tr.synEEdynrec:
             net['SynEE_dynrec'].active=True
@@ -49,7 +49,7 @@ def run_T2_syndynrec(net, tr, netw_objects):
             net['SynEI_dynrec'].active=True
              
         net.run(tr.syndynrec_npts*tr.syndynrec_dt, report='text',
-                report_period=300*second, profile=True)
+                report_period=300*second, profile=tr.netw.profiling)
 
         if tr.synEEdynrec:
             net['SynEE_dynrec'].active=False
@@ -61,7 +61,7 @@ def run_T2_syndynrec(net, tr, netw_objects):
     else:
         # not recording simulate, normally
         net.run(tr.sim.T2, report='text',
-                report_period=300*second, profile=True)
+                report_period=300*second, profile=tr.netw.profiling)
 
 
 
@@ -74,12 +74,12 @@ def run_T3_split(net, tr):
     else:
         
         net.run(tr.sim.T3/2, report='text',
-                report_period=300*second, profile=True)
+                report_period=300*second, profile=tr.netw.profiling)
         
         # net['GInh'].mu=tr.mu_i+0.75*mV
 
         net.run(tr.sim.T3/2, report='text',
-                report_period=300*second, profile=True)
+                report_period=300*second, profile=tr.netw.profiling)
         
 
 def run_T4(net, tr):
@@ -90,7 +90,7 @@ def run_T4(net, tr):
 
     else:
         net.run(tr.sim.T4, report='text',
-                report_period=300*second, profile=True)
+                report_period=300*second, profile=tr.netw.profiling)
 
 
 def run_T5(net, tr):
@@ -101,5 +101,5 @@ def run_T5(net, tr):
 
     else:
         net.run(tr.sim.T5, report='text',
-                report_period=300*second, profile=True)
+                report_period=300*second, profile=tr.netw.profiling)
 
