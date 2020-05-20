@@ -2,15 +2,12 @@
 from brian2.units import ms,mV,second
 from brian2 import implementation, check_units
 
-import os
-current_dir = os.path.abspath(os.path.dirname(__file__))
-header_params = dict(headers=['"output_files.h"'], include_dirs=[current_dir])
 
 
 # Implementation of synaptic scaling
 #
 #
-@implementation('cpp', **header_params, code=r'''
+@implementation('cpp', code=r'''
    
     double syn_scale(double a, double vANormTar, double Asum_post, double veta_scaling, double t, int syn_active, double tRec_start, double tRec_max, int i, int j) {
       
@@ -24,7 +21,9 @@ header_params = dict(headers=['"output_files.h"'], include_dirs=[current_dir])
       }
 
       if (t > tRec_start && t < tRec_max && syn_active==1) {
-          scaling_deltas_output_file << t << "," << a << "," << a_out << "," << i << "," << j << "\n";
+          std::ofstream outfile;     
+          outfile.open("scaling_deltas", std::ios_base::app);
+          outfile << t << "," << a << "," << a_out << "," << i << "," << j << "\n";
       }
 
       return a_out;
@@ -38,7 +37,7 @@ def syn_scale(a, vANormTar, Asum_post, eta_scaling, t, syn_active, tRec_start, t
 # Implementation of E<-I synaptic scaling
 #
 #
-@implementation('cpp', **header_params, code=r'''
+@implementation('cpp', code=r'''
    
     double syn_EI_scale(double a, double vANormTar, double Asum_post, double veta_scaling, double t, int syn_active, double tRec_start, double tRec_max, int i, int j) {
       
@@ -52,7 +51,9 @@ def syn_scale(a, vANormTar, Asum_post, eta_scaling, t, syn_active, tRec_start, t
       }
 
       if (t > tRec_start && t < tRec_max && syn_active==1) {
-          scaling_deltas_EI_output_file << t << "," << a << "," << a_out << "," << i << "," << j << "\n";
+          std::ofstream outfile;     
+          outfile.open("scaling_deltas_EI", std::ios_base::app);
+          outfile << t << "," << a << "," << a_out << "," << i << "," << j << "\n";
       }
 
       return a_out;
@@ -61,17 +62,26 @@ def syn_scale(a, vANormTar, Asum_post, eta_scaling, t, syn_active, tRec_start, t
 def syn_EI_scale(a, vANormTar, Asum_post, eta_scaling, t, syn_active, tRec_start, tRec_max, i, j):
     return -1.
 
+
+
+
 # recording of turnover
 #
 #
-@implementation('cpp',  **header_params, code=r'''
+@implementation('cpp', code=r'''
+    #include <fstream>
+    
     double record_turnover(double t, int was_active_before, int should_become_active, int should_stay_active, int syn_active, int i, int j) {
 
       if (int(was_active_before==0)*should_become_active==1){
-          turnover_output_file << 1 << "," << t << "," << i << "," << j << "\n";
+          std::ofstream outfile;          
+          outfile.open("turnover", std::ios_base::app);
+          outfile << 1 << "," << t << "," << i << "," << j << "\n";
       }
       else if (was_active_before*int(should_stay_active==0)){
-          turnover_output_file << 0 << "," << t << "," << i << "," << j << "\n";
+           std::ofstream outfile;     
+           outfile.open("turnover", std::ios_base::app);
+           outfile << 0 << "," << t << "," << i << "," << j << "\n";
       }
 
       return 0.0; // we need to return a dummy value
@@ -91,16 +101,20 @@ def record_turnover(t, was_active_before, should_become_active,
 # recording of E<-I turnover
 #
 #
-@implementation('cpp', **header_params, code=r'''
+@implementation('cpp', code=r'''
     #include <fstream>
     
     double record_turnover_EI(double t, int was_active_before, int should_become_active, int should_stay_active, int syn_active, int i, int j) {
 
       if (int(was_active_before==0)*should_become_active==1){
-          turnover_EI_output_file << 1 << "," << t << "," << i << "," << j << "\n";
+          std::ofstream outfile;          
+          outfile.open("turnover_EI", std::ios_base::app);
+          outfile << 1 << "," << t << "," << i << "," << j << "\n";
       }
       else if (was_active_before*int(should_stay_active==0)){
-           turnover_EI_output_file << 0 << "," << t << "," << i << "," << j << "\n";
+           std::ofstream outfile;     
+           outfile.open("turnover_EI", std::ios_base::app);
+           outfile << 0 << "," << t << "," << i << "," << j << "\n";
       }
 
       return 0.0; // we need to return a dummy value
@@ -117,7 +131,7 @@ def record_turnover_EI(t, was_active_before, should_become_active,
 # record spk
 #
 #
-@implementation('cpp', **header_params, code=r'''
+@implementation('cpp', code=r'''
     #include <fstream>
     
     double record_spk(double t, int i, int j, double a, double Apre, double Apost, int syn_active, int preorpost, double tRec_start, double tRec_max) {
@@ -125,7 +139,9 @@ def record_turnover_EI(t, was_active_before, should_become_active,
        if (t > tRec_start && t < tRec_max) {
 
          if (syn_active > 0){
-            spk_register_output_file << t << "," << i << "," << j << "," << a << "," << Apre << "," << Apost << "," << preorpost << "\n";
+            std::ofstream outfile;          
+            outfile.open("spk_register", std::ios_base::app);
+            outfile << t << "," << i << "," << j << "," << a << "," << Apre << "," << Apost << "," << preorpost << "\n";
          }
    
       }
@@ -141,7 +157,7 @@ def record_spk(t, i, j, a, Apre, Apost, syn_active, preorpost, tRec_start, tRec_
 # record spk E<-I
 #
 #
-@implementation('cpp', **header_params, code=r'''
+@implementation('cpp', code=r'''
     #include <fstream>
     
     double record_spk_EI(double t, int i, int j, double a, double Apre, double Apost, int syn_active, int preorpost, double tRec_start, double tRec_max) {
@@ -149,7 +165,9 @@ def record_spk(t, i, j, a, Apre, Apost, syn_active, preorpost, tRec_start, tRec_
        if (t > tRec_start && t < tRec_max) {
 
          if (syn_active > 0){
-            spk_register_EI_output_file << t << "," << i << "," << j << "," << a << "," << Apre << "," << Apost << "," << preorpost << "\n";
+            std::ofstream outfile;          
+            outfile.open("spk_register_EI", std::ios_base::app);
+            outfile << t << "," << i << "," << j << "," << a << "," << Apre << "," << Apost << "," << preorpost << "\n";
          }
    
       }
