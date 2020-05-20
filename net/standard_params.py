@@ -51,9 +51,13 @@ Vt_i = -51.*mV
 
 ascale = 1.0
 a_ee = 0.005
+"""initial activity of EE synapses"""
 a_ie = 0.005
+"""initial activity of IE synapses"""
 a_ei = 0.005
+"""initial activity of EI synapses"""
 a_ii = 0.005
+"""initial activity of II synapses"""
 
 p_ee = 0.15
 """initial probability for synapse connection being active"""

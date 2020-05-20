@@ -41,6 +41,7 @@ syn_cond_EE_alpha = '''
                     dxge /dt = -xge/tau_e : 1
                     '''
 
+# refer to https://brian2.readthedocs.io/en/stable/user/converting_from_integrated_form.html
 syn_cond_EE_biexp = '''
                     dge/dt = (invpeakEE*xge-ge)/tau_e_rise : 1
                     dxge/dt = -xge/tau_e                   : 1
