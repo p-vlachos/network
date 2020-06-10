@@ -16,11 +16,19 @@ syn_cond_mode = 'exp'
 syn_cond_mode_EI = 'exp'
 """Conductance mode of EI synapses, one of exp, alpha, biexp"""
 tau_e = 5.*ms
-"""EPSP time constant"""
+"""
+    EPSP time constant
+    when using the biexp conductance model this refers to tau2
+"""
 tau_i = 10.*ms
 """IPSP time constant"""
 tau_e_rise = 0.5*ms
-"""Used by biexp conductance model """
+"""
+    Used by biexp conductance model
+    c.f. https://brian2.readthedocs.io/en/stable/user/converting_from_integrated_form.html
+    
+    corresponds to tau1
+"""
 tau_i_rise = 0.15*ms
 """Used by biexp conductance model """
 norm_f_EE = 1.0
