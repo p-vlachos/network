@@ -25,6 +25,12 @@ ExcInhBal Network Utils
 .. automodule:: net.utils
    :members:
 
+ExcInhBal Analysis Package
+==========================
+
+.. automodule:: analysis.multisim.multisimplotrunner
+   :members:
+
 Indices and tables
 ==================
 
