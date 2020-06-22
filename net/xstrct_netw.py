@@ -257,6 +257,9 @@ def run_net(tr):
         synEI_mod = '''%s
                        %s''' %(synEI_mod, tr.synEI_scl_mod)
 
+        if tr.scl_mode == "proportional":
+            synEE_mod += f"\n{tr.synEE_scl_prop_mod}"
+            synEI_mod += f"\n{tr.synEI_scl_prop_mod}"
         
         
     if tr.syn_cond_mode=='exp':
@@ -426,9 +429,12 @@ def run_net(tr):
         SynEI.p_inactivate = tr.p_inactivate_ei
         SynEI.stdp_active=1
         SynEI.amax = tr.amax
-     
-    SynEE.syn_active, SynEE.a = init_synapses('EE', tr)
-    SynEI.syn_active, SynEI.a = init_synapses('EI', tr)
+
+    # we use these variables later for initializing ANormTar/iANormTar if scaling mode is proportional
+    syn_EE_active_init, syn_EE_weights_init = init_synapses('EE', tr)
+    syn_EI_active_init, syn_EI_weights_init = init_synapses('EI', tr)
+    SynEE.syn_active, SynEE.a = syn_EE_active_init, syn_EE_weights_init
+    SynEI.syn_active, SynEI.a = syn_EI_active_init, syn_EI_weights_init
 
 
     # recording of stdp in T4
@@ -451,15 +457,23 @@ def run_net(tr):
             SynEE.scl_rec_start = T+10*second
             SynEE.scl_rec_max = T
 
-        if tr.sig_ATotalMax==0.:
-            GExc.ANormTar = tr.ATotalMax
+        # TODO this can all be extracted into a common function with the EI scaling mode
+        if tr.scl_mode == "constant":
+            if tr.sig_ATotalMax==0.:
+                GExc.ANormTar = tr.ATotalMax
+            else:
+                GExc.ANormTar = np.random.normal(loc=tr.ATotalMax,
+                                                 scale=tr.sig_ATotalMax,
+                                                 size=tr.N_e)
+        elif tr.scl_mode == "proportional":
+            synEE_active_m = np.zeros((tr.N_e, tr.N_e))
+            synEE_active_m[sEE_src, sEE_tar] = syn_EE_active_init
+            GExc.ANormTar = np.sum(synEE_active_m, axis=0) * tr.ATotalMaxSingle
+            SynEE.summed_updaters['ANormTar_post']._clock = Clock(dt=tr.strct_dt)
         else:
-            GExc.ANormTar = np.random.normal(loc=tr.ATotalMax,
-                                             scale=tr.sig_ATotalMax,
-                                             size=tr.N_e)
-        
-        SynEE.summed_updaters['AsumEE_post']._clock = Clock(
-            dt=tr.dt_synEE_scaling)
+            raise ValueError(f"Invalid scaling mode {tr.scl_mode}")
+
+        SynEE.summed_updaters['AsumEE_post']._clock = Clock(dt=tr.dt_synEE_scaling)
         synee_scaling = SynEE.run_regularly(tr.synEE_scaling,
                                             dt=tr.dt_synEE_scaling,
                                             when='end',
@@ -474,12 +488,20 @@ def run_net(tr):
             SynEI.scl_rec_start = T+10*second
             SynEI.scl_rec_max = T
 
-        if tr.sig_iATotalMax==0.:
-            GExc.iANormTar = tr.iATotalMax
+        if tr.scl_mode == "constant":
+            if tr.sig_iATotalMax==0.:
+                GExc.iANormTar = tr.iATotalMax
+            else:
+                GExc.iANormTar = np.random.normal(loc=tr.iATotalMax,
+                                                   scale=tr.sig_iATotalMax,
+                                                   size=tr.N_e)
+        elif tr.scl_mode == "proportional":
+            synEI_active_m = np.zeros((tr.N_i, tr.N_e))
+            synEI_active_m[sEI_src, sEI_tar] = syn_EI_active_init
+            GExc.iANormTar = np.sum(synEI_active_m, axis=0) * tr.iATotalMaxSingle
+            SynEI.summed_updaters['iANormTar_post']._clock = Clock(dt=tr.strct_dt)
         else:
-            GExc.iANormTar = np.random.normal(loc=tr.iATotalMax,
-                                               scale=tr.sig_iATotalMax,
-                                               size=tr.N_e)
+            raise ValueError(f"Invalid scaling mode {tr.scl_mode}")
             
         SynEI.summed_updaters['AsumEI_post']._clock = Clock(
             dt=tr.dt_synEE_scaling)
@@ -606,6 +628,11 @@ def run_net(tr):
         GExc_recvars.append('gi')
     if tr.gfwdtraces_rec and tr.external_mode=='poisson':
         GExc_recvars.append('gfwd')
+    if tr.anormtar_rec:
+        if tr.scl_active == 1:
+            GExc_recvars.append('ANormTar')
+        if tr.iscl_active == 1:
+            GExc_recvars.append('iANormTar')
 
     GInh_recvars = GExc_recvars
     

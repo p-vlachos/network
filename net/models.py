@@ -103,6 +103,8 @@ synEE_mod = '''
 
 synEE_scl_mod = 'AsumEE_post = a : 1 (summed)'
 synEI_scl_mod = 'AsumEI_post = a : 1 (summed)'
+synEE_scl_prop_mod = 'ANormTar_post = syn_active*ATotalMaxSingle : 1 (summed)'
+synEI_scl_prop_mod = 'iANormTar_post = syn_active*iATotalMaxSingle : 1 (summed)'
 
 
 synEE_p_activate = '''

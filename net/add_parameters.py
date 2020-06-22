@@ -74,6 +74,9 @@ def add_params(tr):
     tr.f_add_parameter('netw.synEE_noise_mult',  mod.synEE_noise_mult)
     tr.f_add_parameter('netw.synEE_scl_mod',  mod.synEE_scl_mod)
     tr.f_add_parameter('netw.synEI_scl_mod',  mod.synEI_scl_mod)
+    tr.f_add_parameter('netw.synEE_scl_prop_mod',  mod.synEE_scl_prop_mod)
+    tr.f_add_parameter('netw.synEI_scl_prop_mod',  mod.synEI_scl_prop_mod)
+    tr.f_add_parameter('netw.scl_mode', prm.scl_mode)
     
 
     # STDP
@@ -96,6 +99,7 @@ def add_params(tr):
     # scaling
     tr.f_add_parameter('netw.config.scl_active', prm.scl_active)
     tr.f_add_parameter('netw.ATotalMax',         prm.ATotalMax)
+    tr.f_add_parameter('netw.ATotalMaxSingle',   prm.ATotalMaxSingle)
     tr.f_add_parameter('netw.sig_ATotalMax',     prm.sig_ATotalMax)
     tr.f_add_parameter('netw.dt_synEE_scaling',  prm.dt_synEE_scaling)
     tr.f_add_parameter('netw.eta_scaling',       prm.eta_scaling)
@@ -105,6 +109,7 @@ def add_params(tr):
     tr.f_add_parameter('netw.config.iscl_active', prm.iscl_active)
     tr.f_add_parameter('netw.mod.synEI_scaling', mod.synEI_scaling)
     tr.f_add_parameter('netw.iATotalMax',        prm.iATotalMax)
+    tr.f_add_parameter('netw.iATotalMaxSingle',  prm.iATotalMaxSingle)
     tr.f_add_parameter('netw.sig_iATotalMax',    prm.sig_iATotalMax)
     tr.f_add_parameter('netw.syn_iscl_rec',        prm.syn_iscl_rec)
     
@@ -173,6 +178,7 @@ def add_params(tr):
     tr.f_add_parameter('netw.rec.gitraces_rec', prm.gitraces_rec)
     tr.f_add_parameter('netw.rec.gfwdtraces_rec', prm.gfwdtraces_rec)
     tr.f_add_parameter('netw.rec.rates_rec', prm.rates_rec)
+    tr.f_add_parameter('netw.rec.anormtar_rec', prm.anormtar_rec)
 
     tr.f_add_parameter('netw.rec.nrec_GExc_stat', prm.nrec_GExc_stat)
     tr.f_add_parameter('netw.rec.nrec_GInh_stat', prm.nrec_GInh_stat)

@@ -123,7 +123,11 @@ stdp_active = 1
 synEE_rec = 1
 """enable recording of EE synapse spikes"""
 ATotalMax = 0.2
+"""the normalization target is drawn from a normal distribution with this expected value"""
+ATotalMaxSingle = 0.0033  # calculated from ATotalMax/((Ne-1)*p_ee)
+"""if using `proportional` mode, this is used to calculate the normalization target"""
 sig_ATotalMax = 0.05
+"""the normalization target is drawn from a normal distribution with this sigma"""
 
 #iSTDP
 istdp_active = 1
@@ -145,9 +149,22 @@ eta_scaling = 0.25
 # iscaling
 iscl_active = 1
 iATotalMax = 0.7/6
+iATotalMaxSingle = 0.0029  # iATotalMax/((Ni-1)*p_ei)
+"""if using `proportional` mode, this is used to calculate the normalization target"""
 sig_iATotalMax = 0.025
 syn_iscl_rec = 0
 """record inhibitory synaptic scaling (via CPP methods)"""
+
+scl_mode = "constant"
+""" How the target for synaptic scaling is determined
+
+Two possible values:
+
+    1. `constant` simply use :member:`ATotalMax` and :member:`iATotalMax` respectively
+    2. `proportional` calculates `ATotalMax` for each post-synaptic neuron by summing
+       :member:`ATotalMaxSingle` and :member:`iATotalMaxSingle` respectively for each active synapse.
+
+"""
 
 # structural plasticity
 strct_active = 1
@@ -218,6 +235,8 @@ gitraces_rec = 1
 gfwdtraces_rec = 1
 rates_rec = 1
 """additionally to recording averaged rates from EE and EI groups each per time step, record smoothed rates over 25ms"""
+anormtar_rec = 0
+"""record ATotalMax, only really makes sense when being used with `scl_mode` = 'proportional'"""
 
 nrec_GExc_stat = 3
 """how many of excitatory neurons to record"""
