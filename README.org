@@ -7,19 +7,19 @@ Network simulation using Brian 2 and Pypet written to analyse the survivability 
 
 ** Requirements
 To run the network simulation a Python 3 environment with Brian 2 (with patches), and Pypet is required. Git also has to be installed.
-Detailed dependencies are listed in ~requirements.txt~.
-Below is an example installation routine for setting up a virtualenv (tested on Ubuntu 16.04 only).
+Detailed dependencies are listed in ~environment.yml~.
+Below is an example installation routine for setting up a conda environment.
+This assumes that you already have anaconda or miniconda installed.
 
 #+BEGIN_SRC sh
 #!/bin/sh
 
-virtualenv -p python3 /home/$USER/env/synsrv
-source /home/$USER/env/synsrv/bin/activate
+conda env create -f environment.yml
+conda activate excinhbal
 
-pip install -r requirements.txt
 #+END_SRC
 
-This will also install Brian2 patches.
+This will also install Brian2 with patches.
 
 *** Brian2 Patches
 Brian2 patches are required for long simulations.
