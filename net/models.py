@@ -105,6 +105,8 @@ synEE_scl_mod = 'AsumEE_post = a : 1 (summed)'
 synEI_scl_mod = 'AsumEI_post = a : 1 (summed)'
 synEE_scl_prop_mod = 'ANormTar_post = syn_active*ATotalMaxSingle : 1 (summed)'
 synEI_scl_prop_mod = 'iANormTar_post = syn_active*iATotalMaxSingle : 1 (summed)'
+synEE_nostd_mod = 'D : 1'
+synEE_std_mod = 'dD/dt = (1 - D)/tau_std : 1 (event-driven)'
 
 
 synEE_p_activate = '''
@@ -114,19 +116,21 @@ synEE_p_activate = '''
                    '''
 
 synEE_pre_exp   = '''
-                  ge_post += syn_active*a
+                  ge_post += D*syn_active*a
                   Apre = syn_active*Aplus
                   '''
 
 synEE_pre_alpha = '''
-                  xge_post += syn_active*a/norm_f_EE
+                  xge_post += D*syn_active*a/norm_f_EE
                   Apre = syn_active*Aplus
                   '''
 
 synEE_pre_biexp = '''
-                  xge_post += syn_active*a/norm_f_EE
+                  xge_post += D*syn_active*a/norm_f_EE
                   Apre = syn_active*Aplus
                   '''
+
+synEE_pre_std = '''D *= std_d'''
 
 
 synEI_pre_exp   = '''

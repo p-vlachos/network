@@ -286,6 +286,11 @@ def run_net(tr):
         synEE_post_mod = '''%s 
                             %s''' %(synEE_post_mod, mod.synEE_post_rec)
 
+    if tr.netw.config.std_active:
+        synEE_mod = f"{synEE_mod}\n{tr.netw.mod.synEE_std_mod}"
+        synEE_pre_mod = f"{synEE_pre_mod}\n{tr.netw.mod.synEE_pre_std}"
+    else:
+        synEE_mod = f"{synEE_mod}\n{tr.netw.mod.synEE_nostd_mod}"
         
     # E<-E advanced synapse model
     SynEE = Synapses(target=GExc, source=GExc, model=synEE_mod,
@@ -512,6 +517,9 @@ def run_net(tr):
                                             name='synEI_scaling')
 
 
+    # short-term-depression
+    SynEE.D = 1  # for simplicity we have this variable constant even if STD switched off (and trust the compiler)
+
     # # intrinsic plasticity
     # if tr.netw.config.it_active:
     #     GExc.h_ip = tr.h_ip
@@ -653,6 +661,8 @@ def run_net(tr):
         SynEE_recvars.append('Apre')
     if tr.synee_Aposttraces_rec:
         SynEE_recvars.append('Apost')
+    if tr.synEE_std_rec:
+        SynEE_recvars.append('D')
 
     SynEE_stat = StateMonitor(SynEE, SynEE_recvars,
                               record=range(tr.n_synee_traces_rec),
@@ -694,7 +704,7 @@ def run_net(tr):
 
 
     
-    GExc_spks = SpikeMonitor(GExc)    
+    GExc_spks = SpikeMonitor(GExc)
     GInh_spks = SpikeMonitor(GInh)
 
     GExc_rate = PopulationRateMonitor(GExc)

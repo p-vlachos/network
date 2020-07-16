@@ -112,7 +112,15 @@ def add_params(tr):
     tr.f_add_parameter('netw.iATotalMaxSingle',  prm.iATotalMaxSingle)
     tr.f_add_parameter('netw.sig_iATotalMax',    prm.sig_iATotalMax)
     tr.f_add_parameter('netw.syn_iscl_rec',        prm.syn_iscl_rec)
-    
+
+    # short-term depression
+    tr.f_add_parameter('netw.config.std_active', prm.std_active)
+    tr.f_add_parameter('netw.tau_std', prm.tau_std)
+    tr.f_add_parameter('netw.std_d', prm.std_d)
+    tr.f_add_parameter('netw.mod.synEE_nostd_mod', mod.synEE_nostd_mod)
+    tr.f_add_parameter('netw.mod.synEE_std_mod', mod.synEE_std_mod)
+    tr.f_add_parameter('netw.mod.synEE_pre_std', mod.synEE_pre_std)
+    tr.f_add_parameter('netw.synEE_std_rec', prm.synEE_std_rec)
 
     # intrinsic plasticity
     # tr.f_add_parameter('netw.config.it_active', prm.it_active)

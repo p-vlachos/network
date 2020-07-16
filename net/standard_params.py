@@ -166,6 +166,19 @@ Two possible values:
 
 """
 
+# short-term depression
+std_active = 0
+"""
+    Short-term depression as described by (Dayan & Abbott 2014; sec. 5.8) and (Rusu et al. 2014).
+    Default parameters are taken from (Rusu et al. 2014).
+"""
+tau_std = 200*ms
+"""c.f. (Rusu et al. 2014) and :member:`std_active`"""
+std_d = 0.5
+"""c.f. (Rusu et al. 2014) and :member:`std_active`"""
+synEE_std_rec = 0
+"""record variable D for all EE synapses, c.f. :member:`std_active`"""
+
 # structural plasticity
 strct_active = 1
 """enable/disable structural plasticity"""
