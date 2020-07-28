@@ -51,7 +51,9 @@ sigma_i = 0.5**0.5*mV
 """memnoise σ for inhibitory neurons"""
 
 Vr_e = -60.*mV
+"""initial V is drawn from Uniform(Vr_e, Vt_e)"""
 Vr_i = -60.*mV
+"""initial V is drawn from Uniform(Vr_i, Vt_i)"""
 Vt_e = -50.*mV
 """initial Vt for excitatory neurons"""
 Vt_i = -51.*mV
