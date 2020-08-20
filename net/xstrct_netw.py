@@ -243,6 +243,10 @@ def run_net(tr):
             synEI_mod = '''%s 
                            %s''' %(tr.synEE_noise_mult, tr.synEE_mod)
 
+        elif tr.syn_noise_type == 'kesten':
+            synEE_mod = f"{tr.synEE_mod}\n{tr.synEE_noise_kesten}"
+            synEI_mod = f"{tr.synEE_mod}\n{tr.synEE_noise_kesten}"
+
 
     else:
         synEE_mod = '''%s 
@@ -414,12 +418,14 @@ def run_net(tr):
 
 
     if tr.syn_noise:
-        SynEE.syn_sigma = tr.syn_sigma
+        if tr.syn_noise_type is not "kesten":
+            SynEE.syn_sigma = tr.syn_sigma
         SynEE.run_regularly('a = clip(a,0,amax)', when='after_groups',
                             name='SynEE_noise_clipper') 
 
     if tr.syn_noise and tr.istdp_active:
-        SynEI.syn_sigma = tr.syn_sigma
+        if tr.syn_noise_type is not "kesten":
+            SynEI.syn_sigma = tr.syn_sigma
         SynEI.run_regularly('a = clip(a,0,amax)', when='after_groups',
                             name='SynEI_noise_clipper') 
 

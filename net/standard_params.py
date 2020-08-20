@@ -114,11 +114,21 @@ p_IPoi = 0.1  # unused
 syn_noise = 1
 """enable/disable synapse noise"""
 syn_noise_type = 'additive'
-"""can be either ``additive`` or ``multiplicative``"""
+"""can be either ``additive``, ``multiplicative`` or ``kesten`` (Hazan & Ziv 2020)"""
 syn_sigma = 1e-09/second
 """synapse noise sigma"""
 synEE_mod_dt = 100*ms
 """dt between update of state variables"""
+
+# kesten noise
+syn_kesten_mu_epsilon_1 = 0.0/second
+"""for <epsilon-1>, see Hazan & Ziv 2020 in The Journal of Neuroscience"""
+syn_kesten_mu_eta = 0.0/second
+"""for <eta>, see Hazan & Ziv 2020 in The Journal of Neuroscience"""
+syn_kesten_var_epsilon_1 = 0.0/second
+"""for sigma_{epsilon-1}, see Hazan & Ziv 2020 in The Journal of Neuroscience"""
+syn_kesten_var_eta = 0.0/second
+"""for sigma_{eta}, see Hazan & Ziv 2020 in The Journal of Neuroscience"""
 
 #STDP
 stdp_active = 1
