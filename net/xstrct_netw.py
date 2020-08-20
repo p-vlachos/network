@@ -897,6 +897,7 @@ def run_net(tr):
     src_dir = os.path.dirname(os.path.realpath(__file__))
     os.makedirs(build_directory, exist_ok=True)
     shutil.copy(f"{src_dir}/output_files.cpp", build_directory)
+    shutil.copy(f"{src_dir}/output_files.h", build_directory)
 
     device.build(directory=build_directory, clean=True,
                  compile=True, run=True, debug=False,
