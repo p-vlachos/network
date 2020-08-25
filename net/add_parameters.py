@@ -21,6 +21,11 @@ def add_params(tr):
     tr.f_add_parameter('netw.tau_i_rise', prm.tau_i_rise)
     tr.f_add_parameter('netw.norm_f_EE', prm.norm_f_EE)
     tr.f_add_parameter('netw.norm_f_EI', prm.norm_f_EI)
+
+    # synaptic delays
+    tr.f_add_parameter("netw.config.syn_delay_active", prm.syn_delay_active)
+    tr.f_add_parameter("netw.synEE_delay", prm.synEE_delay)
+    tr.f_add_parameter("netw.synEI_delay", prm.synEI_delay)
     
     tr.f_add_parameter('netw.El',    prm.El)
     tr.f_add_parameter('netw.Ee',    prm.Ee)

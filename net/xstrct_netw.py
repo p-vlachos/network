@@ -354,7 +354,7 @@ def run_net(tr):
                          on_pre='gi_post += a',
                          namespace=namespace)
 
-    #other simple  
+    #other simple
     SynIE = Synapses(target=GInh, source=GExc, on_pre='ge_post += a_ie',
                      namespace=namespace)
 
@@ -447,6 +447,9 @@ def run_net(tr):
     SynEE.syn_active, SynEE.a = syn_EE_active_init, syn_EE_weights_init
     SynEI.syn_active, SynEI.a = syn_EI_active_init, syn_EI_weights_init
 
+    if tr.syn_delay_active:
+        SynEE.delay = tr.synEE_delay
+        SynEI.delay = tr.synEI_delay
 
     # recording of stdp in T4
     SynEE.stdp_rec_start = tr.T1+tr.T2+tr.T3

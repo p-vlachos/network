@@ -50,6 +50,14 @@ sigma_e = 0.5**0.5*mV
 sigma_i = 0.5**0.5*mV
 """memnoise σ for inhibitory neurons"""
 
+# synaptic delay
+syn_delay_active = 0
+""" enables pre-synaptic delays """
+synEE_delay = 4.7*ms
+""" for EE synapses, according to biexp peak time with standard params """
+synEI_delay = 4.25*ms
+""" for EI synapses, according to biexp peak time with standard params """
+
 Vr_e = -60.*mV
 """initial V is drawn from Uniform(Vr_e, Vt_e)"""
 Vr_i = -60.*mV
