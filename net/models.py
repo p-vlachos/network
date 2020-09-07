@@ -72,12 +72,12 @@ poisson_mod = 'PInp_a : 1'
 # dApost /dt = -Apost/taupost : 1 (event-driven)
 
 synEE_static = 'a : 1'
-synEE_noise_add   = '''da/dt = syn_active*syn_sigma**0.5*xi : 1
+synEE_noise_add   = '''da/dt = syn_noise_active*syn_active*syn_sigma**0.5*xi : 1
                        syn_sigma : 1/second (shared)'''
 
-synEE_noise_mult  = '''da/dt = syn_active*a*syn_sigma**0.5*xi : 1
+synEE_noise_mult  = '''da/dt = syn_noise_active*syn_active*a*syn_sigma**0.5*xi : 1
                        syn_sigma : 1/second (shared)'''
-synEE_noise_kesten = '''da/dt = syn_active * ( (syn_kesten_mu_epsilon_1 * a + syn_kesten_mu_eta) + (syn_kesten_var_epsilon_1 * a**2 + syn_kesten_var_eta)**0.5 * xi_kesten) : 1
+synEE_noise_kesten = '''da/dt = syn_noise_active*syn_active * ( (syn_kesten_mu_epsilon_1 * a + syn_kesten_mu_eta) + (syn_kesten_var_epsilon_1 * a**2 + syn_kesten_var_eta)**0.5 * xi_kesten) : 1
                         '''
 
 
@@ -93,6 +93,7 @@ synEE_mod = '''
             insert_P : 1 (shared) 
             p_inactivate : 1 (shared)
             stdp_active : integer (shared)
+            syn_noise_active : integer (shared)
 
             scl_rec_start : second (shared)
             scl_rec_max   : second (shared)
