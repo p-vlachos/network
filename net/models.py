@@ -77,7 +77,7 @@ synEE_noise_add   = '''da/dt = syn_noise_active*syn_active*syn_sigma**0.5*xi : 1
 
 synEE_noise_mult  = '''da/dt = syn_noise_active*syn_active*a*syn_sigma**0.5*xi : 1
                        syn_sigma : 1/second (shared)'''
-synEE_noise_kesten = '''da/dt = syn_noise_active*syn_active * ( (syn_kesten_mu_epsilon_1 * a + syn_kesten_mu_eta) + (syn_kesten_var_epsilon_1 * a**2 + syn_kesten_var_eta)**0.5 * xi_kesten) : 1
+synEE_noise_kesten = '''da/dt = syn_noise_active*syn_active * ( (syn_kesten_mu_epsilon_1 * (syn_kesten_factor*a) + syn_kesten_mu_eta) + (syn_kesten_var_epsilon_1 * (syn_kesten_factor*a)**2 + syn_kesten_var_eta)**0.5 * xi_kesten) / syn_kesten_factor : 1
                         '''
 
 
