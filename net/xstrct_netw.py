@@ -27,6 +27,7 @@ from .cpp_methods import syn_scale, syn_EI_scale, \
                          record_turnover, record_turnover_EI, \
                          record_spk, record_spk_EI
 
+from . import workarounds
 
 def init_synapses(syn_type: str, tr: pypet.trajectory.Trajectory):
     """ Initialize synapses with weights and whether they are active or not
@@ -369,6 +370,7 @@ def run_net(tr):
     SynEE.connect(i=sEE_src, j=sEE_tar)
     SynEE.syn_active = 0
     SynEE.taupre, SynEE.taupost = tr.taupre, tr.taupost
+    workarounds.synapse_resolve_dt_correctly(SynEE)
 
     if tr.istdp_active and tr.istrct_active:
         print('istrct active')
@@ -401,6 +403,8 @@ def run_net(tr):
 
     if tr.istdp_active:        
         SynEI.taupre, SynEI.taupost = tr.taupre_EI, tr.taupost_EI
+
+    workarounds.synapse_resolve_dt_correctly(SynEI)
 
         
     sIE_src, sIE_tar = generate_connections(tr.N_i, tr.N_e, tr.p_ie)
