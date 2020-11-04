@@ -211,7 +211,7 @@ synEE_scaling = '''
                 '''
 
 synEI_scaling = '''
-                a = syn_active*clip(syn_EI_scale(a, iANormTar, AsumEI_post, eta_scaling, t, syn_active, scl_rec_start, scl_rec_max, i, j), amin, amax)
+                a = syn_active*clip(syn_EI_scale(a, iANormTar, AsumEI_post, eta_iscaling, t, syn_active, scl_rec_start, scl_rec_max, i, j), amin, amax)
                 '''
 
 

@@ -104,6 +104,8 @@ def run_net(tr):
     # variable names to simple variable names without namespace (ValueError if not unique)
     namespace = tr.netw.f_to_dict(short_names=True, fast_access=True)
     namespace['idx'] = tr.v_idx
+    if tr.eta_iscaling < 0:
+        namespace['eta_iscaling'] = tr.eta_scaling
 
     defaultclock.dt = tr.netw.sim.dt
 

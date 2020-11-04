@@ -178,6 +178,8 @@ iATotalMaxSingle = 0.0029  # iATotalMax/((Ni-1)*p_ei)
 sig_iATotalMax = 0.025
 syn_iscl_rec = 0
 """record inhibitory synaptic scaling (via CPP methods)"""
+eta_iscaling = -1.0
+""" Learning rate for normalization of EI connections. If `-1.0` it's set to same as :member:`eta_scaling`. """
 
 scl_mode = "constant"
 """ How the target for synaptic scaling is determined
