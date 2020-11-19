@@ -50,6 +50,17 @@ sigma_e = 0.5**0.5*mV
 sigma_i = 0.5**0.5*mV
 """memnoise σ for inhibitory neurons"""
 
+# very strong membrane noise
+strong_mem_noise_active = 0
+"""
+    Activate Poisson membrane noise, that can enable the post-synaptic neuron with one spike.
+    See also :meth:`net.network_features.strong_noise`
+"""
+strong_mem_noise_rate = 1/(10*second)
+"""
+    Rate of strong Poisson membrane noise.
+"""
+
 # synaptic delay
 syn_delay_active = 0
 """ enables pre-synaptic delays """

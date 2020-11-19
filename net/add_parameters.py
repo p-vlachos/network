@@ -88,7 +88,10 @@ def add_params(tr):
     tr.f_add_parameter('netw.synEE_scl_prop_mod',  mod.synEE_scl_prop_mod)
     tr.f_add_parameter('netw.synEI_scl_prop_mod',  mod.synEI_scl_prop_mod)
     tr.f_add_parameter('netw.scl_mode', prm.scl_mode)
-    
+
+    # very strong membrane noise
+    tr.f_add_parameter('netw.strong_mem_noise_active', prm.strong_mem_noise_active)
+    tr.f_add_parameter('netw.strong_mem_noise_rate', prm.strong_mem_noise_rate)
 
     # STDP
     tr.f_add_parameter('netw.config.stdp_active', prm.stdp_active)

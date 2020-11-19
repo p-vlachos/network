@@ -1,7 +1,7 @@
 
 import sys, os, shutil, pickle, neo, scipy
 
-from . import models as mod
+from . import models as mod, network_features
 from .utils import generate_connections, generate_full_connectivity, \
                    generate_N_connections
 
@@ -640,7 +640,8 @@ def run_net(tr):
 
             netw_objects.extend([sum_target_EI, sum_connection_EI, growth_updater_EI])
 
-
+    if tr.strong_mem_noise_active:
+        netw_objects.extend(network_features.strong_mem_noise(tr, GExc, GInh))
 
             
     # -------------- recording ------------------        
