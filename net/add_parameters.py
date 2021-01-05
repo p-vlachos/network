@@ -25,7 +25,9 @@ def add_params(tr):
     # synaptic delays
     tr.f_add_parameter("netw.config.syn_delay_active", prm.syn_delay_active)
     tr.f_add_parameter("netw.synEE_delay", prm.synEE_delay)
+    tr.f_add_parameter("netw.synEE_delay_windowsize", prm.synEE_delay_windowsize)
     tr.f_add_parameter("netw.synEI_delay", prm.synEI_delay)
+    tr.f_add_parameter("netw.synEI_delay_windowsize", prm.synEI_delay_windowsize)
     
     tr.f_add_parameter('netw.El',    prm.El)
     tr.f_add_parameter('netw.Ee',    prm.Ee)

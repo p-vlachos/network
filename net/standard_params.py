@@ -66,8 +66,12 @@ syn_delay_active = 0
 """ enables pre-synaptic delays """
 synEE_delay = 4.7*ms
 """ for EE synapses, according to biexp peak time with standard params """
+synEE_delay_windowsize = 0*ms
+""" to use uniform delay distribution, set this to the width of the distribution """
 synEI_delay = 4.25*ms
 """ for EI synapses, according to biexp peak time with standard params """
+synEI_delay_windowsize = 0*ms
+""" to use uniform delay distribution, set this to the width of the distribution """
 
 Vr_e = -60.*mV
 """initial V is drawn from Uniform(Vr_e, Vt_e)"""
