@@ -459,7 +459,7 @@ def run_net(tr):
     SynEI.syn_active, SynEI.a = syn_EI_active_init, syn_EI_weights_init
 
     if tr.syn_delay_active:
-        shapeEE, shapeEI = tr.N_e*tr.N_e, tr.N_i*tr.N_e
+        shapeEE, shapeEI = syn_EE_active_init.shape, len(sEI_src)
         ee_delays = network_features.synapse_delays(tr.synEE_delay, tr.synEE_delay_windowsize, SynEE, shapeEE)
         ei_delays = network_features.synapse_delays(tr.synEI_delay, tr.synEI_delay_windowsize, SynEI, shapeEI)
 
