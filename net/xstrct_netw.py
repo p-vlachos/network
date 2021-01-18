@@ -906,7 +906,9 @@ def run_net(tr):
     if tr.istdp_active:
         SynEI.stdp_active=0
     SynEE.syn_noise_active = 0
-    SynEI.syn_noise_active = 0
+    if tr.istdp_active:
+        # otherwise we use a simplified model and don't have this parameter
+        SynEI.syn_noise_active = 0
 
     set_active(GExc_rate, GInh_rate)
     set_active(GExc_spks, GInh_spks)
