@@ -101,6 +101,7 @@ synEE_mod = '''
             stdp_rec_start : second (shared)
             stdp_rec_max   : second (shared)
 
+            amin : 1 (shared)
             amax : 1 (shared)
             '''
 

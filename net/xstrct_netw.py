@@ -444,13 +444,16 @@ def run_net(tr):
     SynEE.syn_noise_active = 1
     print('Setting maximum EE weight threshold to ', tr.amax)
     SynEE.amax = tr.amax
+    SynEE.amin = tr.amin
 
     if tr.istdp_active:
         SynEI.insert_P = tr.insert_P_ei
         SynEI.p_inactivate = tr.p_inactivate_ei
         SynEI.stdp_active=1
         SynEI.amax = tr.amax
-    SynEE.syn_noise_active = 1
+
+    SynEI.amin = tr.amin_i if tr.amin_i >= 0 else tr.amin
+    SynEI.syn_noise_active = 0  # TODO
 
     # we use these variables later for initializing ANormTar/iANormTar if scaling mode is proportional
     syn_EE_active_init, syn_EE_weights_init = init_synapses('EE', tr)
