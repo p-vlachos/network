@@ -248,7 +248,7 @@ def run_net(tr):
 
         elif tr.syn_noise_type == 'kesten':
             synEE_mod = f"{tr.synEE_mod}\n{tr.synEE_noise_kesten}"
-            synEI_mod = f"{tr.synEE_mod}\n{tr.synEE_noise_kesten}"
+            synEI_mod = f"{tr.synEE_mod}\n{tr.synEI_noise_kesten}"
 
 
     else:
@@ -454,7 +454,7 @@ def run_net(tr):
 
     SynEI.amin = tr.amin_i if tr.amin_i >= 0 else tr.amin
     SynEI.amax = tr.amax_i if tr.amax_i >= 0 else tr.amax
-    SynEI.syn_noise_active = 0  # TODO
+    SynEI.syn_noise_active = 1
 
     # we use these variables later for initializing ANormTar/iANormTar if scaling mode is proportional
     syn_EE_active_init, syn_EE_weights_init = init_synapses('EE', tr)

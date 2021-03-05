@@ -79,12 +79,17 @@ def add_params(tr):
     tr.f_add_parameter('netw.syn_kesten_var_epsilon_1',  prm.syn_kesten_var_epsilon_1)
     tr.f_add_parameter('netw.syn_kesten_var_eta',  prm.syn_kesten_var_eta)
     tr.f_add_parameter('netw.syn_kesten_factor', prm.syn_kesten_factor)
+    tr.f_add_parameter('netw.syn_kesten_mu_epsilon_1_i',  prm.syn_kesten_mu_epsilon_1)
+    tr.f_add_parameter('netw.syn_kesten_mu_eta_i',  prm.syn_kesten_mu_eta)
+    tr.f_add_parameter('netw.syn_kesten_var_epsilon_1_i',  prm.syn_kesten_var_epsilon_1)
+    tr.f_add_parameter('netw.syn_kesten_var_eta_i',  prm.syn_kesten_var_eta)
 
 
     tr.f_add_parameter('netw.synEE_static',  mod.synEE_static)
     tr.f_add_parameter('netw.synEE_noise_add',  mod.synEE_noise_add)
     tr.f_add_parameter('netw.synEE_noise_mult',  mod.synEE_noise_mult)
     tr.f_add_parameter('netw.synEE_noise_kesten', mod.synEE_noise_kesten)
+    tr.f_add_parameter('netw.synEI_noise_kesten', mod.synEI_noise_kesten)
     tr.f_add_parameter('netw.synEE_scl_mod',  mod.synEE_scl_mod)
     tr.f_add_parameter('netw.synEI_scl_mod',  mod.synEI_scl_mod)
     tr.f_add_parameter('netw.synEE_scl_prop_mod',  mod.synEE_scl_prop_mod)
