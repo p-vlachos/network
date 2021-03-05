@@ -109,6 +109,8 @@ amax = 2.0
 amin = 0.0
 """ Minimal value for synapses, applied on STDP & scaling events. """
 amin_i = -1.0
+""" Set to something >= 0 if should be different from amin """
+amax_i = -1.0
 """ Set to something >= 0 if should be different from amax """
 
 

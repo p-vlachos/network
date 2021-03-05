@@ -453,6 +453,7 @@ def run_net(tr):
         SynEI.amax = tr.amax
 
     SynEI.amin = tr.amin_i if tr.amin_i >= 0 else tr.amin
+    SynEI.amax = tr.amax_i if tr.amax_i >= 0 else tr.amax
     SynEI.syn_noise_active = 0  # TODO
 
     # we use these variables later for initializing ANormTar/iANormTar if scaling mode is proportional

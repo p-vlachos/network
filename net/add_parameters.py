@@ -103,7 +103,8 @@ def add_params(tr):
     tr.f_add_parameter('netw.Aminus',    prm.Aminus)
     tr.f_add_parameter('netw.amax',      prm.amax)
     tr.f_add_parameter('netw.amin',      prm.amin)
-    tr.f_add_parameter('netw.amin_i',      prm.amin_i)
+    tr.f_add_parameter('netw.amin_i',    prm.amin_i)
+    tr.f_add_parameter('netw.amax_i',    prm.amax_i)
     tr.f_add_parameter('netw.synEE_rec',      prm.synEE_rec)
 
     # iSTDP
