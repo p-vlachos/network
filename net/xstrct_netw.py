@@ -666,6 +666,8 @@ def run_net(tr):
 
     if tr.strong_mem_noise_active:
         netw_objects.extend(network_features.strong_mem_noise(tr, GExc, GInh))
+    if tr.cramer_noise_active:
+        netw_objects.extend(network_features.cramer_noise(tr, GExc, GInh))
 
             
     # -------------- recording ------------------        

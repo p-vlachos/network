@@ -106,6 +106,11 @@ def add_params(tr):
     tr.f_add_parameter('netw.strong_mem_noise_active', prm.strong_mem_noise_active)
     tr.f_add_parameter('netw.strong_mem_noise_rate', prm.strong_mem_noise_rate)
 
+    # cramer noise
+    tr.f_add_parameter('netw.cramer_noise_active', prm.cramer_noise_active)
+    tr.f_add_parameter('netw.cramer_noise_Kext', prm.cramer_noise_Kext)
+    tr.f_add_parameter('netw.cramer_noise_rate', prm.cramer_noise_rate)
+
     # STDP
     tr.f_add_parameter('netw.config.stdp_active', prm.stdp_active)
     tr.f_add_parameter('netw.taupre',    prm.taupre)

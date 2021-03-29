@@ -61,6 +61,23 @@ strong_mem_noise_rate = 1/(10*second)
     Rate of strong Poisson membrane noise.
 """
 
+cramer_noise_active = 0
+"""
+    Noise inspired by Cramer et al. 2020 (preprint) where a certain number Kext of incoming
+    connections to each neuron is replaced by external noise.
+    See also :meth:`net.network_features.cramer_noise`
+"""
+cramer_noise_Kext = 0.25
+"""
+    Uses p_ee/(1-Kext) * Kext (with p_ie for inhibitory neurons) as incoming noise connections for each neuron. 
+    p_ee and p_ie are required to be set to Kext*(desired full p_ee target) as well as ATotalMax.
+"""
+cramer_noise_rate = 2.5 * Hz
+"""
+    The frequency of the external noise for the cramer noise.
+"""
+
+
 # synaptic delay
 syn_delay_active = 0
 """ enables pre-synaptic delays """
