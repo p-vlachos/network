@@ -16,7 +16,6 @@ condlif_poisson = '''
 
 condlif_memnoise = '''
               dV/dt = (El-V + ge*(Ee-V) + gi*(Ei-V))/tau +  mu/tau + (sigma * xi) / (tau **.5) : volt
-              Vt : volt 
 
               AsumEE : 1
               AsumEI : 1
@@ -27,6 +26,14 @@ condlif_memnoise = '''
               ANormTar : 1
               iANormTar : 1
               '''
+
+condlif_noIP = 'Vt : volt'
+condlif_IP = '''
+    dVt/dt = -IP_active*eta_IP*h_IP : volt
+    h_IP : Hz
+    IP_active : 1
+'''
+reset_IP = 'Vt += IP_active*eta_IP'
 
 syn_cond_EE_exp = '''
                   dge /dt = -ge/tau_e : 1

@@ -82,6 +82,16 @@ Vt_e = -50.*mV
 Vt_i = -51.*mV
 """initial Vt for inhibitory neurons"""
 
+# Firing Rate Homeostasis: Intrinsic Plasticity
+ip_active = 0
+""" Enable/disable intrinsic plasticity following Miner & Triesch 2016 """
+h_IP_e = 3 * Hz
+""" Target firing rate for excitatory neurons following Miner & Triesch 2016 """
+h_IP_i = 8 * Hz
+""" Target firing rate for inhibitory neurons following Miner & Triesch 2016 """
+eta_IP = 0.1 * mV
+""" Threshold change rate per spike """
+
 ascale = 1.0
 a_ee = 0.005
 """initial activity of EE synapses"""
@@ -259,13 +269,6 @@ insert_P_ei = 0.00005
 """EI synapse creation probability"""
 p_inactivate_ei = 0.25
 """probability for a EI synapse to become inactive if activity below threshold"""
-
-
-# intrinsic plasticity
-it_active = 0
-eta_ip = 0.2*mV*ms
-it_dt = 10*ms
-h_ip = 3*Hz
 
 
 #preT  = 100*second

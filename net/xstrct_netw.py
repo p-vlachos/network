@@ -118,6 +118,16 @@ def run_net(tr):
     elif tr.external_mode=='poisson':
         raise NotImplementedError
         #neuron_model = tr.condlif_poisson
+    else:
+        raise NotImplementedError
+
+    neuronE_reset, neuronI_reset = tr.nrnEE_reset, 'V=Vr_i'
+    if tr.netw.config.ip_active:
+        neuron_model = f"{neuron_model}\n{tr.netw.mod.condlif_IP}"
+        neuronE_reset += f"\n{tr.reset_IP}"
+        neuronI_reset += f"\n{tr.reset_IP}"
+    else:
+        neuron_model = f"{neuron_model}\n{tr.netw.mod.condlif_noIP}"
 
     if tr.syn_cond_mode=='exp':
         neuron_model += tr.syn_cond_EE_exp
@@ -146,11 +156,11 @@ def run_net(tr):
 
     GExc = NeuronGroup(N=tr.N_e, model=neuron_model,
                        threshold=tr.nrnEE_thrshld,
-                       reset=tr.nrnEE_reset, #method=tr.neuron_method,
+                       reset=neuronE_reset, #method=tr.neuron_method,
                        name='GExc', namespace=namespace)
     GInh = NeuronGroup(N=tr.N_i, model=neuron_model,
                        threshold ='V > Vt',
-                       reset='V=Vr_i', #method=tr.neuron_method,
+                       reset=neuronI_reset, #method=tr.neuron_method,
                        name='GInh', namespace=namespace)
 
     if tr.external_mode=='memnoise':
@@ -165,6 +175,12 @@ def run_net(tr):
                                          size=tr.N_e)*mV, \
                        np.random.uniform(tr.Vr_i/mV, tr.Vt_i/mV,
                                          size=tr.N_i)*mV
+
+    if tr.netw.config.ip_active:
+        GExc.h_IP = tr.h_IP_e
+        GInh.h_IP = tr.h_IP_i
+        GExc.IP_active = 1
+        GExc.IP_active = 1
 
     netw_objects.extend([GExc,GInh])
 
@@ -906,6 +922,9 @@ def run_net(tr):
         strctplst.active=False
     if tr.istdp_active and tr.istrct_active:
         strctplst_EI.active=False
+    if tr.ip_active:
+        GExc.IP_active = 0
+        GInh.IP_active = 0
     SynEE.stdp_active=0
     if tr.istdp_active:
         SynEI.stdp_active=0

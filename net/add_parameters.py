@@ -49,6 +49,12 @@ def add_params(tr):
     tr.f_add_parameter('netw.p_ei',  prm.p_ei)
     tr.f_add_parameter('netw.p_ii',  prm.p_ii)
 
+    # Firing Rate Homeostasis: Intrinsic Plasticity
+    tr.f_add_parameter("netw.config.ip_active", prm.ip_active)
+    tr.f_add_parameter("netw.h_IP_e", prm.h_IP_e)
+    tr.f_add_parameter("netw.h_IP_i", prm.h_IP_i)
+    tr.f_add_parameter("netw.eta_IP", prm.eta_IP)
+
     # Poisson Input
     tr.f_add_parameter('netw.external_mode', prm.external_mode)
     tr.f_add_parameter('netw.mu_e', prm.mu_e)
@@ -147,12 +153,6 @@ def add_params(tr):
     tr.f_add_parameter('netw.mod.synEE_pre_std', mod.synEE_pre_std)
     tr.f_add_parameter('netw.synEE_std_rec', prm.synEE_std_rec)
 
-    # intrinsic plasticity
-    # tr.f_add_parameter('netw.config.it_active', prm.it_active)
-    # tr.f_add_parameter('netw.eta_ip', prm.eta_ip)
-    # tr.f_add_parameter('netw.it_dt',  prm.it_dt)
-    # tr.f_add_parameter('netw.h_ip',   prm.h_ip)
-
     # structural plasticity
     tr.f_add_parameter('netw.prn_thrshld', prm.prn_thrshld)
     tr.f_add_parameter('netw.insert_P',    prm.insert_P)
@@ -168,6 +168,9 @@ def add_params(tr):
     
     tr.f_add_parameter('netw.mod.condlif_poisson',   mod.condlif_poisson)
     tr.f_add_parameter('netw.mod.condlif_memnoise',   mod.condlif_memnoise)
+    tr.f_add_parameter('netw.mod.condlif_noIP', mod.condlif_noIP)
+    tr.f_add_parameter('netw.mod.condlif_IP', mod.condlif_IP)
+    tr.f_add_parameter('netw.mod.reset_IP', mod.reset_IP)
     tr.f_add_parameter('netw.mod.syn_cond_EE_exp',   mod.syn_cond_EE_exp)
     tr.f_add_parameter('netw.mod.syn_cond_EE_alpha',   mod.syn_cond_EE_alpha)
     tr.f_add_parameter('netw.mod.syn_cond_EE_biexp',   mod.syn_cond_EE_biexp)
