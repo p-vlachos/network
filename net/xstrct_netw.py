@@ -377,11 +377,9 @@ def run_net(tr):
                          namespace=namespace)
 
     #other simple
-    SynIE = Synapses(target=GInh, source=GExc, on_pre='ge_post += a_ie',
-                     namespace=namespace)
-
-    SynII = Synapses(target=GInh, source=GInh, on_pre='gi_post += a_ii',
-                     namespace=namespace)
+    conductance_prefix = "" if tr.syn_cond_mode == "exp" else "x"
+    SynIE = Synapses(target=GInh, source=GExc, on_pre=f'{conductance_prefix}ge_post += a_ie', namespace=namespace)
+    SynII = Synapses(target=GInh, source=GInh, on_pre=f'{conductance_prefix}gi_post += a_ii', namespace=namespace)
 
         
     sEE_src, sEE_tar = generate_full_connectivity(tr.N_e, same=True)
