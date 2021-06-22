@@ -140,6 +140,19 @@ amin_i = -1.0
 amax_i = -1.0
 """ Set to something >= 0 if should be different from amax """
 
+a_ee_mode = "constant"
+"""
+    Use :member:`a_ee` to initialize EE weights, or use a lognormal distribution:
+    
+    * `constant` uses `a_ee`
+    * `lognormal` uses `10**np.random.normal(a_ee_lognormal_mu, a_ee_lognormal_sig)` (a lognormal distribution to base 10)
+"""
+
+a_ee_init_lognormal_mu = -1.0
+"""See :member:`a_ee_mode`"""
+a_ee_init_lognormal_sig = 0.0
+"""See :member:`a_ee_mode`"""
+
 
 external_mode = 'memnoise'
 """Either 'memnoise' or 'poisson' but latter seems to be unimplemented"""

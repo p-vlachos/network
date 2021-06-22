@@ -44,6 +44,10 @@ def add_params(tr):
     tr.f_add_parameter('netw.a_ei',  prm.a_ei)
     tr.f_add_parameter('netw.a_ii',  prm.a_ii)
 
+    tr.f_add_parameter('netw.a_ee_mode', prm.a_ee_mode)
+    tr.f_add_parameter('netw.a_ee_init_lognormal_mu', prm.a_ee_init_lognormal_mu)
+    tr.f_add_parameter('netw.a_ee_init_lognormal_sig', prm.a_ee_init_lognormal_sig)
+
     tr.f_add_parameter('netw.p_ee',  prm.p_ee)
     tr.f_add_parameter('netw.p_ie',  prm.p_ie)
     tr.f_add_parameter('netw.p_ei',  prm.p_ei)

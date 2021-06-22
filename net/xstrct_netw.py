@@ -1,7 +1,7 @@
 
 import sys, os, shutil, pickle, neo, scipy
 
-from . import models as mod, network_features
+from . import models as mod, network_features, network_parameter_derivation
 from .utils import generate_connections, generate_full_connectivity, \
                    generate_N_connections, generate_dd_connectivity2
 
@@ -52,7 +52,7 @@ def init_synapses(syn_type: str, tr: pypet.trajectory.Trajectory, numb_syn: int)
             else:
                 rs = np.random.uniform(size=tr.N_e*(tr.N_e-1))
             initial_active = (rs < tr.p_ee).astype('int')
-            initial_weights = initial_active * tr.a_ee
+            initial_weights = network_parameter_derivation.a_ee_init(tr, initial_active)
             
         elif syn_type=="EI":
 
