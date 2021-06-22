@@ -200,6 +200,8 @@ syn_kesten_var_eta = 0.0/second
 """for sigma_{eta}, see Hazan & Ziv 2020 in The Journal of Neuroscience"""
 syn_kesten_factor = 1
 """multiplies weights by factor before applying Kesten noise, then transforms them back"""
+syn_kesten_inh = 0
+"""Enable Kesten noise on EI synapses."""
 
 #STDP
 stdp_active = 1

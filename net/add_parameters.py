@@ -89,6 +89,7 @@ def add_params(tr):
     tr.f_add_parameter('netw.syn_kesten_var_epsilon_1',  prm.syn_kesten_var_epsilon_1)
     tr.f_add_parameter('netw.syn_kesten_var_eta',  prm.syn_kesten_var_eta)
     tr.f_add_parameter('netw.syn_kesten_factor', prm.syn_kesten_factor)
+    tr.f_add_parameter('netw.syn_kesten_inh', prm.syn_kesten_inh)
     tr.f_add_parameter('netw.syn_kesten_mu_epsilon_1_i',  prm.syn_kesten_mu_epsilon_1)
     tr.f_add_parameter('netw.syn_kesten_mu_eta_i',  prm.syn_kesten_mu_eta)
     tr.f_add_parameter('netw.syn_kesten_var_epsilon_1_i',  prm.syn_kesten_var_epsilon_1)

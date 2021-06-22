@@ -514,7 +514,7 @@ def run_net(tr):
         SynEI.stdp_active=1
         SynEI.amin = tr.amin_i if tr.amin_i >= 0 else tr.amin
         SynEI.amax = tr.amax_i if tr.amax_i >= 0 else tr.amax
-        SynEI.syn_noise_active = 1
+        SynEI.syn_noise_active = tr.syn_kesten_inh
 
     if tr.ddcon_active:
         sEE_src_dd, sEE_tar_dd, sEE_p = generate_dd_connectivity2(np.array(GExc.x), np.array(GExc.y),
