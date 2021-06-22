@@ -194,8 +194,8 @@ def run_net(tr):
     if tr.netw.config.ip_active:
         GExc.h_IP = tr.h_IP_e
         GInh.h_IP = tr.h_IP_i
-        GExc.IP_active = 1
-        GExc.IP_active = 1
+        GExc.IP_active = 1 if tr.h_IP_e > 0 else 0
+        GInh.IP_active = 1 if tr.h_IP_i > 0 else 0
 
     # todo ddcon changes done here
     # ddcon init
@@ -831,7 +831,7 @@ def run_net(tr):
         netw_objects.append(SynEI_stat)
         
 
-    if tr.adjust_insertP:
+    if tr.adjust_insertP and tr.csample_dt > 0:
 
         C_stat = StateMonitor(sum_target, 'c', dt=tr.csample_dt,
                               record=[0], when='end')
@@ -1112,7 +1112,7 @@ def run_net(tr):
             pickle.dump(SynEI_a_states,pfile)
         
 
-    if tr.adjust_insertP:
+    if tr.adjust_insertP and tr.csample_dt > 0:
         with open(raw_dir+'c_stat.p','wb') as pfile:
             pickle.dump(C_stat.get_states(),pfile)   
 
