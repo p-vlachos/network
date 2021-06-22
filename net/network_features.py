@@ -36,16 +36,15 @@ def cramer_noise(tr, GExc: NeuronGroup, GInh: NeuronGroup) -> [BrianObject]:
     """
 
     namespace = tr.netw.f_to_dict(short_names=True, fast_access=True)
-    N = tr.N_e
     Kext = tr.cramer_noise_Kext
-    p_ee_target = tr.p_ee/(1-Kext)
-    p_ie_target = tr.p_ie/(1-Kext)
+    p_ee_target = tr.p_ee/(1-Kext) if Kext < 1 else tr.p_ee
+    p_ie_target = tr.p_ie/(1-Kext) if Kext < 1 else tr.p_ie
     conductance_prefix = "" if tr.syn_cond_mode == "exp" else "x"
 
-    GNoise = PoissonGroup(N, rates=tr.cramer_noise_rate, dt=0.1*ms)
-    SynNoiseE = Synapses(source=GNoise, target=GExc, on_pre=f"{conductance_prefix}ge_post += a_ee", namespace=namespace)
+    GNoise = PoissonGroup(tr.cramer_noise_N, rates=tr.cramer_noise_rate, dt=0.1*ms)
+    SynNoiseE = Synapses(source=GNoise, target=GExc, on_pre=f"{conductance_prefix}ge_post += a_ee/norm_f_EE", namespace=namespace)
     SynNoiseE.connect(p=Kext*p_ee_target)
-    SynNoiseI = Synapses(source=GNoise, target=GInh, on_pre=f"{conductance_prefix}ge_post += a_ie", namespace=namespace)
+    SynNoiseI = Synapses(source=GNoise, target=GInh, on_pre=f"{conductance_prefix}ge_post += a_ee/norm_f_EE", namespace=namespace)
     SynNoiseI.connect(p=Kext*p_ie_target)
 
     return [GNoise, SynNoiseE, SynNoiseI]

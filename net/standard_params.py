@@ -76,6 +76,10 @@ cramer_noise_rate = 2.5 * Hz
 """
     The frequency of the external noise for the cramer noise.
 """
+cramer_noise_N = N_e
+"""
+    The amount of Poisson spike trains.
+"""
 
 
 # synaptic delay
