@@ -400,6 +400,13 @@ crs_crrs_rec = 1
 
 adjust_insertP = 0
 """enable/disable homeostasis mechanism for EE synapse insertion probability"""
+adjust_insertP_mode = "adjust_rate"
+"""
+modes for homeostatic adjustment of growth rate:
+
+  - ```adjust_rate```
+  - ```constant_count``` adjust growth rate so that number of synapses stays roughly constant
+"""
 adjust_EI_insertP = 0
 """same for EI"""
 csample_dt = 10*second

@@ -684,10 +684,15 @@ def run_net(tr):
     # keep track of the number of active synapses
     # this is more of a hack, where we have one neuron which
     # calculate the ratio of active synapses c of the total count NSyn
-    sum_target = NeuronGroup(1, 'c : 1 (shared)', dt=tr.csample_dt)
+    sum_target = NeuronGroup(1, '''
+        c : 1 (shared)
+        p : 1 (shared)
+    ''', dt=tr.csample_dt)
 
     sum_model = '''NSyn : 1 (constant)
-                   c_post = (1.0*syn_active_pre)/NSyn : 1 (summed)'''
+                   c_post = (1.0*syn_active_pre)/NSyn : 1 (summed)
+                   p_post = p_distance_pre : 1 (summed)
+                '''
     sum_connection = Synapses(target=sum_target, source=SynEE,
                               model=sum_model, dt=tr.csample_dt,
                               name='get_active_synapse_count')
@@ -702,12 +707,31 @@ def run_net(tr):
         # homeostatically adjust growth rate
         # a similar hack as above, but here we update SynEE's insert_P
         # depending on the ratio of active synapses
-        growth_updater = Synapses(sum_target, SynEE)
-        growth_updater.run_regularly('insert_P_post *= 0.1/c_pre',
-                                     when='after_groups', dt=tr.csample_dt,
-                                     name='update_insP')
+        growth_updater = Synapses(sum_target, SynEE, model="""
+                synapse_target_count : 1 (shared)
+                synapse_max_count : 1 (shared)
+                synapse_current_count : 1 (shared)
+                synapse_needed_count : 1 (shared)
+                synapse_inactive_count : 1 (shared)
+        """)
+        if tr.adjust_insertP_mode == "adjust_rate":
+            growth_updater.run_regularly('insert_P_post *= 0.1/c_pre',
+                                         when='after_groups', dt=tr.csample_dt,
+                                         name='update_insP')
+        elif tr.adjust_insertP_mode == "constant_count":
+            growth_updater.run_regularly('''
+                synapse_current_count = int(c_pre*synapse_max_count)
+                synapse_needed_count = synapse_target_count - synapse_current_count
+                synapse_inactive_count = synapse_max_count - synapse_current_count
+                insert_P_post = (synapse_max_count/p_pre)*(synapse_needed_count/synapse_inactive_count)
+                ''',
+                when='after_groups', dt=tr.csample_dt,
+                name='update_insP')
+        else:
+            raise Exception(f"bad value '{tr.adjust_insertP_mode}' for 'adjust_insertP_mode'")
         growth_updater.connect(j='0')  # SynEE acts as one single target neuron
-
+        growth_updater.synapse_target_count = np.sum(syn_EE_active_init)
+        growth_updater.synapse_max_count = tr.N_e * (tr.N_e - 1)
         netw_objects.extend([sum_target, sum_connection, growth_updater])
 
 
