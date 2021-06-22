@@ -1,5 +1,6 @@
 
 import numpy as np
+from brian2.units import um, meter
 
 
 def generate_connections(N_tar, N_src, p, same=False):
@@ -21,7 +22,7 @@ def generate_connections(N_tar, N_src, p, same=False):
             j+=list(np.random.choice([*range(N_tar)],
                                      size=n, replace=False))
 
-    return i, np.array(j)
+    return i, np.array(j), None
 
 
 def generate_N_connections(N_tar, N_src, N, same=False):
@@ -78,9 +79,7 @@ def generate_full_connectivity(Nsrc, Ntar=0, same=True):
 # generate_dd_connectivity uses a bit different approach(see method desc).
 
 def gaussian(x, u, s):
-    g_ = (2 / np.sqrt(2 * np.pi * s * s)) * np.exp(-(x - u) * (x - u) / (2 * s * s))  # gaussian used in Miner paper
-    g = g_ * 10 ** -4  # rescale to [0,1] range
-    # g = np.exp(-(x - u) * (x - u) / (2 * s * s))  # simpler gaussian
+    g = (2 / np.sqrt(2 * np.pi * s * s)) * np.exp(-(x - u) * (x - u) / (2 * s * s))  # gaussian used in Miner paper
     return g
 
 
@@ -106,32 +105,22 @@ def generate_dd_connectivity2(tar_x, tar_y, src_x, src_y, g_halfwidth, same=True
     for i in range(n_src):
         for j in range(n_tar):
             if not same or (same and not (i == j)):
-                dx = tar_x[j] - src_x[i]
-                dy = tar_y[j] - src_y[i]
-                p_[i, j] = gaussian(np.sqrt(dx ** 2 + dy ** 2), 0, np.array(g_halfwidth))
+                dx = (tar_x[j] - src_x[i]) * meter
+                dy = (tar_y[j] - src_y[i]) * meter
+                p_[i, j] = gaussian(np.sqrt((dx/um) ** 2 + (dy/um) ** 2), 0, np.array(g_halfwidth/um))
 
     # calculate connections matrix and indexes arrays
 
     # determine number of connections to create based on sparseness
     n_new = int(round(n_src * n_tar * sparseness))  # IP: todo this now includes self-connectiones
 
-    conn = np.zeros((n_src, n_tar))  # connectivity matrix
-    in_src = []  # list with source indexes
-    in_trg = []  # list with target indexes
-    for ii in range(n_new):
-        addition_allowed = False
-        new_i = np.random.randint(0, high=n_src)
-        new_j = np.random.randint(0, high=n_tar)
-        while not addition_allowed:
-            new_i = np.random.randint(0, high=n_src)
-            new_j = np.random.randint(0, high=n_tar)
-            if np.random.rand() < p_[new_i, new_j]:
-                if not new_i == new_j and conn[new_i, new_j] == 0:
-                    addition_allowed = True
-        conn[new_i, new_j] = 1
-        in_src.append(new_i)
-        in_trg.append(new_j)
-    return in_src, in_trg
+    p_flat = p_.flatten()
+    indices = (np.ones_like(p_)).nonzero()  # we just need tuples of all indices
+    n_indices = len(indices[0])
+    selected_indices = np.random.choice(np.arange(0, n_indices), replace=False, size=n_new, p=p_flat / np.sum(p_flat))
+    # np.random.choice gives us exactly as many connections as we request, but requires p to sum up to 1
+    in_src, in_trg = indices[0][selected_indices], indices[1][selected_indices]
+    return in_src, in_trg, p_
 
 
 def generate_dd_connectivity(tar_x, tar_y, src_x, src_y, g_halfwidth, same=True, sparseness=1):

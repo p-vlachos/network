@@ -109,6 +109,8 @@ synEE_mod = '''
 
             stdp_rec_start : second (shared)
             stdp_rec_max   : second (shared)
+            
+            p_distance : 1
 
             amin : 1 (shared)
             amax : 1 (shared)
@@ -253,7 +255,7 @@ strct_mod = '''
             r = rand()
             should_stay_active = int(a > strct_c) + int(a<= strct_c)*int(r>p_inactivate)
             s = rand()
-            should_become_active = int(s < insert_P)
+            should_become_active = int(s < insert_P*p_distance)
             was_active_before = syn_active
             syn_active = int(syn_active==1) * int(should_stay_active) \
                      + int(syn_active==0) * int(should_become_active)

@@ -410,14 +410,7 @@ def run_net(tr):
     SynII = Synapses(target=GInh, source=GInh, on_pre=f'{conductance_prefix}gi_post += a_ii', namespace=namespace)
 
     # todo ddcon changes done here
-    if tr.ddcon_active:
-        sEE_src, sEE_tar = generate_dd_connectivity2(np.array(GExc.x), np.array(GExc.y),
-                                                     np.array(GExc.x), np.array(GExc.y),
-                                                     tr.half_width, sparseness=0.15)
-        # todo ddcon brian2 style can be used as well, need to figure out nice way to get source/target array from it
-        # SynEE.connect(condition='i!=j', p='exp(-((x_pre-x_post)**2+(y_pre-y_post)**2)/(2*(200.0*um)**2))')
-    else:
-        sEE_src, sEE_tar = generate_full_connectivity(tr.N_e, same=True)
+    sEE_src, sEE_tar = generate_full_connectivity(tr.N_e, same=True)
 
     SynEE.connect(i=sEE_src, j=sEE_tar)
     SynEE.syn_active = 0
@@ -427,9 +420,10 @@ def run_net(tr):
     # todo ddcon changes done here
     if tr.ddcon_active:
         # this case works for istrct_active on and off
-        sEI_src, sEI_tar = generate_dd_connectivity2(np.array(GExc.x), np.array(GExc.y),
-                                                    np.array(GInh.x), np.array(GInh.y),
-                                                    tr.half_width, same=False, sparseness=0.5)
+        # TODO needs to be adapted for istract_active = "on" just as it was for EE synapses
+        sEI_src, sEI_tar, _ = generate_dd_connectivity2(np.array(GExc.x), np.array(GExc.y),
+                                                        np.array(GInh.x), np.array(GInh.y),
+                                                        tr.half_width, same=False, sparseness=tr.p_ei)
         SynEI.connect(i=sEI_src, j=sEI_tar)
         SynEI.syn_active = 0
     else:
@@ -444,7 +438,7 @@ def run_net(tr):
         else:
             print('istrct not active')
             if tr.weight_mode=='init':
-                sEI_src, sEI_tar = generate_connections(tr.N_e, tr.N_i, tr.p_ei)
+                sEI_src, sEI_tar, _ = generate_connections(tr.N_e, tr.N_i, tr.p_ei)
                 # print('Index Zero will not get inhibition')
                 # sEI_src, sEI_tar = np.array(sEI_src), np.array(sEI_tar)
                 # sEI_src, sEI_tar = sEI_src[sEI_tar > 0],sEI_tar[sEI_tar > 0]
@@ -470,13 +464,13 @@ def run_net(tr):
     # todo ddcon changes done here
     # sIE_src, sIE_tar = generate_connections(tr.N_i, tr.N_e, tr.p_ie)
     # sII_src, sII_tar = generate_connections(tr.N_i, tr.N_i, tr.p_ii, same=True)
-    sIE_src, sIE_tar = generate_dd_connectivity2(np.array(GInh.x), np.array(GInh.y),
-                                                 np.array(GExc.x), np.array(GExc.y),
-                                                 tr.half_width, same=False, sparseness=0.15) if tr.ddcon_active \
+    sIE_src, sIE_tar, _ = generate_dd_connectivity2(np.array(GInh.x), np.array(GInh.y),
+                                                    np.array(GExc.x), np.array(GExc.y),
+                                                    tr.half_width, same=False, sparseness=tr.p_ie) if tr.ddcon_active \
         else generate_connections(tr.N_i, tr.N_e, tr.p_ie)
-    sII_src, sII_tar = generate_dd_connectivity2(np.array(GInh.x), np.array(GInh.y),
-                                                 np.array(GInh.x), np.array(GInh.y),
-                                                 tr.half_width, sparseness=0.5) if tr.ddcon_active \
+    sII_src, sII_tar, _ = generate_dd_connectivity2(np.array(GInh.x), np.array(GInh.y),
+                                                    np.array(GInh.x), np.array(GInh.y),
+                                                    tr.half_width, sparseness=tr.p_ii) if tr.ddcon_active \
         else generate_connections(tr.N_i, tr.N_i, tr.p_ii, same=True)
 
     SynIE.connect(i=sIE_src, j=sIE_tar)
@@ -522,10 +516,29 @@ def run_net(tr):
         SynEI.amax = tr.amax_i if tr.amax_i >= 0 else tr.amax
         SynEI.syn_noise_active = 1
 
+    if tr.ddcon_active:
+        sEE_src_dd, sEE_tar_dd, sEE_p = generate_dd_connectivity2(np.array(GExc.x), np.array(GExc.y),
+                                                                  np.array(GExc.x), np.array(GExc.y),
+                                                                  tr.half_width, sparseness=tr.p_ee)
+        SynEE.p_distance = sEE_p.flatten()  # TODO record this in trajectory
+
+        EEactive = np.zeros(shape=(tr.N_e, tr.N_e))
+        EEactive[sEE_src_dd, sEE_tar_dd] = 1
+        np.fill_diagonal(EEactive, np.nan)
+        syn_EE_active_init = EEactive[~np.isnan(EEactive)].flatten()
+        SynEE.syn_active = syn_EE_active_init
+
+        EEa = np.zeros(shape=EEactive.shape)
+        EEa[sEE_src_dd, sEE_tar_dd] = network_parameter_derivation.a_ee_init(tr, syn_EE_active_init, size=len(sEE_src_dd))
+        syn_EE_weights_init = EEa[~np.isnan(EEactive)].flatten()
+        SynEE.a = syn_EE_weights_init
+    else:
+        syn_EE_active_init, syn_EE_weights_init = init_synapses('EE', tr, len(sEE_src))
+        SynEE.syn_active, SynEE.a = syn_EE_active_init, syn_EE_weights_init
+        SynEE.p_distance = 1
+
     # we use these variables later for initializing ANormTar/iANormTar if scaling mode is proportional
-    syn_EE_active_init, syn_EE_weights_init = init_synapses('EE', tr, len(sEE_src))
-    syn_EI_active_init, syn_EI_weights_init = init_synapses('EI', tr, len(sEE_src))
-    SynEE.syn_active, SynEE.a = syn_EE_active_init, syn_EE_weights_init
+    syn_EI_active_init, syn_EI_weights_init = init_synapses('EI', tr, len(sEI_src))
     SynEI.syn_active, SynEI.a = syn_EI_active_init, syn_EI_weights_init
 
     # todo IP added for debug: store active EE src/tar arrays

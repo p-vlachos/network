@@ -8,6 +8,6 @@ def a_ee_init(tr: pypet.Trajectory, initial_active):
     elif tr.a_ee_mode == "lognormal":
         return initial_active * 10 ** np.random.normal(tr.a_ee_init_lognormal_mu,
                                                        tr.a_ee_init_lognormal_sig,
-                                                       size=tr.N_e * (tr.N_e - 1))
+                                                       size=len(initial_active))
     else:
         raise Exception(f"'a_ee_mode' cannot be {tr.a_ee_mode}")
