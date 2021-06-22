@@ -15,7 +15,7 @@ condlif_poisson = '''
 
 
 condlif_memnoise = '''
-              dV/dt = (El-V + ge*(Ee-V) + gi*(Ei-V))/tau +  mu/tau + (sigma * xi) / (tau **.5) : volt
+              dV/dt = (El-V + ge*(Ee-V) + gi*(Ei-V))/tau +  mu/tau + (sigma * xi) / (tau **.5) : volt (unless refractory)
 
               AsumEE : 1
               AsumEI : 1

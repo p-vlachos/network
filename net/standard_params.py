@@ -179,6 +179,19 @@ a_IPoi = 0.
 p_EPoi = 0.2  # unused
 p_IPoi = 0.1  # unused
 
+refractory_exc = "False"
+"""
+    Determine the duration or condition of the (absolute) refractory period of excitatory neurons.
+    Directly passed to :class:`brian2.NeuronGroup`'s refractory parameter.
+    Set to `"False"` to disable.
+"""
+refractory_inh = "False"
+"""
+    Determine the duration or condition of the (absolute) refractory period of inhibitory neurons.
+    Directly passed to :class:`brian2.NeuronGroup`'s refractory parameter.
+    Set to `"False"` to disable.
+"""
+
 # synapse noise
 syn_noise = 1
 """enable/disable synapse noise"""

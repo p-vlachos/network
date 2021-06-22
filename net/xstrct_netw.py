@@ -172,11 +172,13 @@ def run_net(tr):
     GExc = NeuronGroup(N=tr.N_e, model=neuron_model,
                        threshold=tr.nrnEE_thrshld,
                        reset=neuronE_reset, #method=tr.neuron_method,
-                       name='GExc', namespace=namespace)
+                       name='GExc', namespace=namespace,
+                       refractory=tr.refractory_exc)
     GInh = NeuronGroup(N=tr.N_i, model=neuron_model,
                        threshold ='V > Vt',
                        reset=neuronI_reset, #method=tr.neuron_method,
-                       name='GInh', namespace=namespace)
+                       name='GInh', namespace=namespace,
+                       refractory=tr.refractory_exc)
 
     if tr.external_mode=='memnoise':
         # GExc.mu, GInh.mu = [0.*mV] + (tr.N_e-1)*[tr.mu_e], tr.mu_i

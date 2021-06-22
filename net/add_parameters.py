@@ -79,6 +79,9 @@ def add_params(tr):
     tr.f_add_parameter('netw.p_IPoi',  prm.p_IPoi)
     tr.f_add_parameter('netw.poisson_mod',  mod.poisson_mod)
 
+    tr.f_add_parameter('netw.refractory_exc', prm.refractory_exc)
+    tr.f_add_parameter('netw.refractory_inh', prm.refractory_inh)
+
     # synapse noise
     tr.f_add_parameter('netw.syn_noise',  prm.syn_noise)
     tr.f_add_parameter('netw.syn_noise_type',  prm.syn_noise_type)
