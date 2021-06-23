@@ -13,3 +13,14 @@ def synapse_resolve_dt_correctly(synapse: brian2.Synapses):
 
     if '_clock_dt' in synapse.variables:
         synapse.variables._variables['dt'] = synapse.variables['_clock_dt']
+
+
+def fix_pypet_macos():
+    import platform
+    import multiprocessing
+
+    if platform.system() == 'Darwin':
+        print("Forcing multiprocessing module to use 'fork' for pypet on Mac. This may crash.")
+        # see https://docs.python.org/3/library/multiprocessing.html#contexts-and-start-methods
+        # see https://bugs.python.org/issue33725
+        multiprocessing.set_start_method("fork")
