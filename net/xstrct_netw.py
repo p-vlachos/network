@@ -531,7 +531,7 @@ def run_net(tr):
         SynEE.syn_active = syn_EE_active_init
 
         EEa = np.zeros(shape=EEactive.shape)
-        EEa[sEE_src_dd, sEE_tar_dd] = network_parameter_derivation.a_ee_init(tr, syn_EE_active_init, size=len(sEE_src_dd))
+        EEa[sEE_src_dd, sEE_tar_dd] = network_parameter_derivation.a_ee_init(tr, syn_EE_active_init[syn_EE_active_init==1])
         syn_EE_weights_init = EEa[~np.isnan(EEactive)].flatten()
         SynEE.a = syn_EE_weights_init
     else:
@@ -833,7 +833,7 @@ def run_net(tr):
         netw_objects.append(SynEI_stat)
         
 
-    if tr.adjust_insertP and tr.csample_dt > 0:
+    if tr.adjust_insertP:
 
         C_stat = StateMonitor(sum_target, 'c', dt=tr.csample_dt,
                               record=[0], when='end')
@@ -1114,7 +1114,7 @@ def run_net(tr):
             pickle.dump(SynEI_a_states,pfile)
         
 
-    if tr.adjust_insertP and tr.csample_dt > 0:
+    if tr.adjust_insertP:
         with open(raw_dir+'c_stat.p','wb') as pfile:
             pickle.dump(C_stat.get_states(),pfile)   
 
