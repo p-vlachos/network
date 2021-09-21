@@ -244,6 +244,9 @@ taupost_EI = 20*ms
 synEI_rec = 1
 "record EI synapse spikes"
 LTD_a = 0.000005
+"""constant depression in symmetric iSTDP"""
+iAplus = -1.0
+"""potentiation maximum for iSTDP, -1 means same as Aplus"""
 
 # scaling
 scl_active = 1

@@ -98,6 +98,8 @@ synEE_mod = '''
 
             dApre  /dt = -Apre/taupre  : 1 (event-driven)
             dApost /dt = -Apost/taupost : 1 (event-driven)
+            
+            Aplus : 1 (shared)
 
             insert_P : 1 (shared) 
             p_inactivate : 1 (shared)
