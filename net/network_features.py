@@ -16,7 +16,7 @@ def strong_mem_noise(tr, GExc: NeuronGroup, GInh: NeuronGroup) -> [BrianObject]:
 
     def strong_mem_noise_on_group(G: NeuronGroup):
         GNoise = PoissonGroup(G.N, rates=tr.strong_mem_noise_rate)
-        SynNoise = Synapses(source=GNoise, target=G, on_pre="V_post += 20*mV")
+        SynNoise = Synapses(source=GNoise, target=G, on_pre="V_post = -40*mV")
         SynNoise.connect(condition="i==j")
         return [GNoise, SynNoise]
 
