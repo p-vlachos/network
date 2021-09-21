@@ -564,6 +564,8 @@ def run_net(tr):
 
         tr.f_add_result("sEE_delays", ee_delays)
         tr.f_add_result("sEI_delays", ei_delays)
+        tr.f_add_result("sII_delays", ii_delays)
+        tr.f_add_result("sIE_delays", ie_delays)
 
     # recording of stdp in T4
     SynEE.stdp_rec_start = tr.T1+tr.T2+tr.T3
