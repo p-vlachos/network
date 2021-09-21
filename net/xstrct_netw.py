@@ -295,6 +295,9 @@ def run_net(tr):
         elif tr.syn_noise_type == 'kesten':
             synEE_mod = f"{tr.synEE_mod}\n{tr.synEE_noise_kesten}"
             synEI_mod = f"{tr.synEE_mod}\n{tr.synEI_noise_kesten}"
+        elif tr.syn_noise_type == 'decay':
+            synEE_mod = f"{tr.synEE_mod}\n{tr.synEE_noise_decay}"
+            synEI_mod = f"{tr.synEE_mod}\n{tr.synEI_noise_decay}"
 
 
     else:
@@ -492,13 +495,13 @@ def run_net(tr):
 
 
     if tr.syn_noise:
-        if tr.syn_noise_type != "kesten":
+        if tr.syn_noise_type != "kesten" and tr.syn_noise_type != "decay":
             SynEE.syn_sigma = tr.syn_sigma
         SynEE.run_regularly('a = clip(a,0,amax)', when='after_groups',
                             name='SynEE_noise_clipper') 
 
     if tr.syn_noise and tr.istdp_active:
-        if tr.syn_noise_type != "kesten":
+        if tr.syn_noise_type != "kesten" and tr.syn_noise_type != "decay":
             SynEI.syn_sigma = tr.syn_sigma
         SynEI.run_regularly('a = clip(a,0,amax)', when='after_groups',
                             name='SynEI_noise_clipper') 
@@ -519,7 +522,7 @@ def run_net(tr):
         SynEI.stdp_active=1
         SynEI.amin = tr.amin_i if tr.amin_i >= 0 else tr.amin
         SynEI.amax = tr.amax_i if tr.amax_i >= 0 else tr.amax
-        SynEI.syn_noise_active = tr.syn_kesten_inh
+        SynEI.syn_noise_active = int(tr.syn_kesten_inh or tr.syn_noise_type == "decay")
 
     if tr.ddcon_active:
         sEE_src_dd, sEE_tar_dd, sEE_p = generate_dd_connectivity2(np.array(GExc.x), np.array(GExc.y),

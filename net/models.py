@@ -89,6 +89,9 @@ synEE_noise_kesten = '''da/dt = syn_noise_active*syn_active * ( (syn_kesten_mu_e
 synEI_noise_kesten = '''da/dt = syn_noise_active*syn_active * ( (syn_kesten_mu_epsilon_1_i * (syn_kesten_factor*a) + syn_kesten_mu_eta_i) + (syn_kesten_var_epsilon_1_i * (syn_kesten_factor*a)**2 + syn_kesten_var_eta_i)**0.5 * xi_kesten) / syn_kesten_factor : 1
                         '''
 
+synEE_noise_decay = '''da/dt = syn_noise_active*(amin - a)/tau_adecay : 1'''
+synEI_noise_decay = '''da/dt = syn_noise_active*(amin - a)/tau_adecay : 1'''
+
 
 synEE_mod = '''            
             syn_active : integer

@@ -204,7 +204,7 @@ refractory_inh = "False"
 syn_noise = 1
 """enable/disable synapse noise"""
 syn_noise_type = 'additive'
-"""can be either ``additive``, ``multiplicative`` or ``kesten`` (Hazan & Ziv 2020)"""
+"""can be either ``additive``, ``multiplicative``, ``kesten`` (Hazan & Ziv 2020) or ``decay``."""
 syn_sigma = 1e-09/second
 """synapse noise sigma"""
 synEE_mod_dt = 100*ms
@@ -317,6 +317,9 @@ p_inactivate = 0.01
 """
 strct_c = 0.002
 """threshold for ``zero`` mode"""
+
+tau_adecay = 100*second
+""" Weight decay, inspired by Zenke et al 2013. Biologically in the order of hours. """
 
 # inhibitory structural plasticity
 istrct_active = 0
