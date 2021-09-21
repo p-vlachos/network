@@ -28,6 +28,10 @@ def add_params(tr):
     tr.f_add_parameter("netw.synEE_delay_windowsize", prm.synEE_delay_windowsize)
     tr.f_add_parameter("netw.synEI_delay", prm.synEI_delay)
     tr.f_add_parameter("netw.synEI_delay_windowsize", prm.synEI_delay_windowsize)
+    tr.f_add_parameter("netw.synII_delay", prm.synII_delay)
+    tr.f_add_parameter("netw.synII_delay_windowsize", prm.synII_delay_windowsize)
+    tr.f_add_parameter("netw.synIE_delay", prm.synIE_delay)
+    tr.f_add_parameter("netw.synIE_delay_windowsize", prm.synIE_delay_windowsize)
     
     tr.f_add_parameter('netw.El',    prm.El)
     tr.f_add_parameter('netw.Ee',    prm.Ee)

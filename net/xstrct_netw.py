@@ -550,9 +550,11 @@ def run_net(tr):
     # tr.f_add_result('sEE_tar', sEE_tar_active)
 
     if tr.syn_delay_active:
-        shapeEE, shapeEI = syn_EE_active_init.shape, len(sEI_src)
+        shapeEE, shapeEI, shapeII, shapeIE = syn_EE_active_init.shape, len(sEI_src), len(sII_src), len(sIE_src)
         ee_delays = network_features.synapse_delays(tr.synEE_delay, tr.synEE_delay_windowsize, SynEE, shapeEE)
         ei_delays = network_features.synapse_delays(tr.synEI_delay, tr.synEI_delay_windowsize, SynEI, shapeEI)
+        ii_delays = network_features.synapse_delays(tr.synII_delay, tr.synII_delay_windowsize, SynII, shapeII)
+        ie_delays = network_features.synapse_delays(tr.synIE_delay, tr.synIE_delay_windowsize, SynIE, shapeIE)
 
         tr.f_add_result("sEE_delays", ee_delays)
         tr.f_add_result("sEI_delays", ei_delays)

@@ -93,6 +93,10 @@ synEI_delay = 4.25*ms
 """ for EI synapses, according to biexp peak time with standard params """
 synEI_delay_windowsize = 0*ms
 """ to use uniform delay distribution, set this to the width of the distribution """
+synII_delay = 0*ms
+synII_delay_windowsize = 0*ms
+synIE_delay = 0*ms
+synIE_delay_windowsize = 0*ms
 
 Vr_e = -60.*mV
 """initial V is drawn from Uniform(Vr_e, Vt_e)"""

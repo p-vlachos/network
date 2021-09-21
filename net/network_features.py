@@ -65,7 +65,7 @@ def synapse_delays(syn_delay: ms, syn_delay_windowsize: ms, Syn: Synapses, shape
     """
     # need to create these for all synapses, not only the initially active ones
     delays = np.random.uniform(low=syn_delay - syn_delay_windowsize / 2,
-                                  high=syn_delay + syn_delay_windowsize / 2,
-                                  size=shape)
+                               high=syn_delay + syn_delay_windowsize / 2,
+                               size=shape)
     Syn.delay = delays
     return delays
