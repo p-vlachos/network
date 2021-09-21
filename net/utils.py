@@ -1,6 +1,7 @@
 
 import numpy as np
 from brian2.units import um, meter
+import scipy.spatial.distance as scipydist
 
 
 def generate_connections(N_tar, N_src, p, same=False):
@@ -101,18 +102,21 @@ def generate_dd_connectivity2(tar_x, tar_y, src_x, src_y, g_halfwidth, same=True
     # calculate gaussian
     n_tar = np.size(tar_x)
     n_src = np.size(src_x)
-    p_ = np.zeros((n_src, n_tar))
-    for i in range(n_src):
-        for j in range(n_tar):
-            if not same or (same and not (i == j)):
-                dx = (tar_x[j] - src_x[i]) * meter
-                dy = (tar_y[j] - src_y[i]) * meter
-                p_[i, j] = gaussian(np.sqrt((dx/um) ** 2 + (dy/um) ** 2), 0, np.array(g_halfwidth/um))
+    targets = np.vstack([tar_x, tar_y]).T
+    sources = np.vstack([src_x, src_y]).T
+    dist = scipydist.cdist(sources, targets)
+    p_ = gaussian(dist * meter / um, 0, np.array(g_halfwidth / um))
+
+    if same:
+        np.fill_diagonal(p_, 0.0)
 
     # calculate connections matrix and indexes arrays
 
     # determine number of connections to create based on sparseness
-    n_new = int(round(n_src * n_tar * sparseness))  # IP: todo this now includes self-connectiones
+    if same:
+        n_new = int(round((n_src-1) * n_tar * sparseness))
+    else:
+        n_new = int(round(n_src * n_tar * sparseness))
 
     p_flat = p_.flatten()
     indices = (np.ones_like(p_)).nonzero()  # we just need tuples of all indices
