@@ -156,6 +156,15 @@ a_ee_mode = "constant"
     * `lognormal` uses `10**np.random.normal(a_ee_lognormal_mu, a_ee_lognormal_sig)` (a lognormal distribution to base 10)
 """
 
+stdp_ee_mode = "song"
+""" Either `song` or `triplet`. """
+tau_slow = 100*ms
+""" Slow tau for triplet rule """
+triplet_kappa = 4*Hz
+""" Exc. target frequency for triplet rule """
+tau_r = 15*second
+""" Time constant of postsynaptic firing rate average decay. """
+
 a_ee_init_lognormal_mu = -1.0
 """See :member:`a_ee_mode`"""
 a_ee_init_lognormal_sig = 0.0

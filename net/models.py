@@ -35,6 +35,9 @@ condlif_IP = '''
 '''
 reset_IP = 'Vt += IP_active*eta_IP'
 
+condlif_triplet = "dr/dt = -r/tau_r : Hz"
+reset_triplet = "r += 1/tau_r"
+
 syn_cond_EE_exp = '''
                   dge /dt = -ge/tau_e : 1
                   '''
@@ -127,6 +130,7 @@ synEE_scl_prop_mod = 'ANormTar_post = syn_active*ATotalMaxSingle : 1 (summed)'
 synEI_scl_prop_mod = 'iANormTar_post = syn_active*iATotalMaxSingle : 1 (summed)'
 synEE_nostd_mod = 'D : 1'
 synEE_std_mod = 'dD/dt = (1 - D)/tau_std : 1 (event-driven)'
+synEE_triplet_mod = 'dAslow/dt = -Aslow/tau_slow : 1 (event-driven)'
 
 
 synEE_p_activate = '''
@@ -149,6 +153,8 @@ synEE_pre_biexp = '''
                   xge_post += D*syn_active*a/norm_f_EE
                   Apre = syn_active*Aplus
                   '''
+synEE_pre_STDP = "Apre = syn_active*Aplus"
+synEE_pre_triplet = "Apre += syn_active*Aplus"
 
 synEE_pre_std = '''D *= std_d'''
 
@@ -192,6 +198,12 @@ syn_pre_STDP = '''
                  a = syn_active*clip(a+Apost*stdp_active, amin, amax)
                  '''
 
+syn_pre_STDP_triplet = '''
+                        Aminus_t = (Aplus*taupre*tau_slow)/(taupost*triplet_kappa) * r_post**2
+                        a = syn_active*clip(a - stdp_active*(Aminus_t * Apost), amin, amax)
+                       '''
+
+
 synEE_pre_rec = '''
                 dummy = record_spk(t, i, j, a, Apre, Apost, syn_active, 0, stdp_rec_start, stdp_rec_max)
                 '''
@@ -205,6 +217,9 @@ syn_post = '''
            Apost = syn_active*Aminus
            '''
 
+syn_post_triplet_before = ''' Apost += 1 '''
+syn_post_triplet_after = ''' Aslow += 1 '''
+
 synEI_post_sym = '''
                  Apost = syn_active*Aplus
                  '''
@@ -213,6 +228,10 @@ synEI_post_sym = '''
 syn_post_STDP = '''
                 a = syn_active*clip(a+Apre*stdp_active, amin, amax)
                 '''
+
+syn_post_triplet_STDP = '''
+                        a = syn_active*clip(a+Apre*Aslow*stdp_active, amin, amax)
+                        '''
 
 synEE_post_rec = '''
                  dummy = record_spk(t, i, j, a, Apre, Apost, syn_active, 1, stdp_rec_start, stdp_rec_max)

@@ -138,6 +138,10 @@ def run_net(tr):
     else:
         neuron_model = f"{neuron_model}\n{tr.netw.mod.condlif_noIP}"
 
+    if tr.stdp_ee_mode == "triplet":
+        neuron_model += f"\n{tr.condlif_triplet}"
+        neuronE_reset += f"\n{tr.reset_triplet}"
+
     if tr.syn_cond_mode=='exp':
         neuron_model += tr.syn_cond_EE_exp
         print("Using EE exp mode")
@@ -307,6 +311,9 @@ def run_net(tr):
         synEI_mod = '''%s 
                        %s''' %(tr.synEE_static, tr.synEE_mod)
 
+    if tr.stdp_ee_mode == "triplet":
+        synEE_mod += f"\n{tr.synEE_triplet_mod}"
+
     if tr.scl_active:
         synEE_mod = '''%s
                        %s''' %(synEE_mod, tr.synEE_scl_mod)
@@ -334,10 +341,15 @@ def run_net(tr):
     synEE_post_mod = mod.syn_post
     
     if tr.stdp_active:
-        synEE_pre_mod  = '''%s 
-                            %s''' %(synEE_pre_mod, mod.syn_pre_STDP)
-        synEE_post_mod = '''%s 
-                            %s''' %(synEE_post_mod, mod.syn_post_STDP)
+        if tr.stdp_ee_mode == "triplet":
+            synEE_pre_mod += f"\n{tr.synEE_pre_triplet}\n{tr.syn_pre_STDP_triplet}"
+            synEE_post_mod += f"\n{tr.syn_post_triplet_before}\n{tr.syn_post_triplet_STDP}\n{tr.syn_post_triplet_after}"
+        else:
+            synEE_pre_mod = '''%s 
+                                %s
+                                %s''' % (synEE_pre_mod, tr.synEE_pre_STDP, mod.syn_pre_STDP)
+            synEE_post_mod = '''%s 
+                                %s''' % (synEE_post_mod, mod.syn_post_STDP)
 
     if tr.synEE_rec:
         synEE_pre_mod  = '''%s 
@@ -432,7 +444,8 @@ def run_net(tr):
                                                         tr.half_width, same=False, sparseness=tr.p_ei)
         SynEI.connect(i=sEI_src, j=sEI_tar)
         SynEI.syn_active = 0
-        SynEI.Aplus = tr.Aplus if tr.iAplus < 0 else tr.iAplus
+        if tr.istdp_active:
+            SynEI.Aplus = tr.Aplus if tr.iAplus < 0 else tr.iAplus
     else:
         if tr.istdp_active and tr.istrct_active:
             print('istrct active')
