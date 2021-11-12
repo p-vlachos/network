@@ -299,6 +299,12 @@ std_d = 0.5
 synEE_std_rec = 0
 """record variable D for all EE synapses, c.f. :member:`std_active`"""
 
+# Spike-Rate Adaptation
+sra_active = 0
+Dgsra = 0.06
+tau_sra = 100*ms
+Esra = -70 * mV
+
 # structural plasticity
 strct_active = 1
 """enable/disable structural plasticity"""

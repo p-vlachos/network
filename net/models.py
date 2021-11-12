@@ -15,7 +15,7 @@ condlif_poisson = '''
 
 
 condlif_memnoise = '''
-              dV/dt = (El-V + ge*(Ee-V) + gi*(Ei-V))/tau +  mu/tau + (sigma * xi) / (tau **.5) : volt (unless refractory)
+              dV/dt = (El-V + gsra*(Esra-V) + ge*(Ee-V) + gi*(Ei-V))/tau +  mu/tau + (sigma * xi) / (tau **.5) : volt (unless refractory)
 
               AsumEE : 1
               AsumEI : 1
@@ -27,6 +27,9 @@ condlif_memnoise = '''
               iANormTar : 1
               '''
 
+condlif_sra = 'dgsra/dt = -gsra/tau_sra : 1'
+condlif_nosra = 'gsra : 1'
+
 condlif_noIP = 'Vt : volt'
 condlif_IP = '''
     dVt/dt = -IP_active*eta_IP*h_IP : volt
@@ -34,6 +37,7 @@ condlif_IP = '''
     IP_active : 1
 '''
 reset_IP = 'Vt += IP_active*eta_IP'
+reset_sra = 'gsra += Dgsra'
 
 condlif_triplet = "dr/dt = -r/tau_r : Hz"
 reset_triplet = "r += 1/tau_r"

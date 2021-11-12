@@ -143,6 +143,13 @@ def run_net(tr):
         neuron_model += f"\n{tr.condlif_triplet}"
         neuronE_reset += f"\n{tr.reset_triplet}"
 
+    if tr.sra_active:
+        neuronE_reset += f"\n{mod.reset_sra}"
+        neuronI_reset += f"\n{mod.reset_sra}"
+        neuron_model += f"\n{mod.condlif_sra}"
+    else:
+        neuron_model += f"\n{mod.condlif_nosra}"
+
     if tr.syn_cond_mode=='exp':
         neuron_model += tr.syn_cond_EE_exp
         print("Using EE exp mode")
@@ -190,6 +197,9 @@ def run_net(tr):
         # GExc.sigma, GInh.sigma = [0.*mV] + (tr.N_e-1)*[tr.sigma_e], tr.sigma_i
         GExc.mu, GInh.mu = tr.mu_e, tr.mu_i
         GExc.sigma, GInh.sigma = tr.sigma_e, tr.sigma_i
+
+    GExc.gsra = 0
+    GInh.gsra = 0
 
   
     GExc.Vt, GInh.Vt = tr.Vt_e, tr.Vt_i

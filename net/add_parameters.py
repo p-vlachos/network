@@ -131,6 +131,12 @@ def add_params(tr):
     tr.f_add_parameter('netw.syn_post_triplet_after', mod.syn_post_triplet_after)
     tr.f_add_parameter('netw.syn_post_triplet_STDP', mod.syn_post_triplet_STDP)
 
+    # Spike-Rate Adaptation
+    tr.f_add_parameter('netw.sra_active', prm.sra_active)
+    tr.f_add_parameter('netw.Dgsra', prm.Dgsra)
+    tr.f_add_parameter('netw.tau_sra', prm.tau_sra)
+    tr.f_add_parameter('netw.Esra', prm.Esra)
+
     # very strong membrane noise
     tr.f_add_parameter('netw.strong_mem_noise_active', prm.strong_mem_noise_active)
     tr.f_add_parameter('netw.strong_mem_noise_rate', prm.strong_mem_noise_rate)
