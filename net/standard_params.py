@@ -157,13 +157,22 @@ a_ee_mode = "constant"
 """
 
 stdp_ee_mode = "song"
-""" Either `song` or `triplet`. """
+""" Either `song`, `triplet` or `jedlicka`. """
 tau_slow = 100*ms
 """ Slow tau for triplet rule """
 triplet_kappa = 4*Hz
 """ Exc. target frequency for triplet rule """
 tau_r = 15*second
 """ Time constant of postsynaptic firing rate average decay. """
+jedlicka_kappa = 2 * Hz
+""" 
+    Basically 1/(alpha*dt).
+    
+    In the paper Jedlicka et al. 2015, they choose an alpha as factor when calculating the scaling factor c of
+    depression/potentiation. The way they describe it, this alpha is chosen based on dt. Since we implement the rate
+    detector as a differential equation subject to scaling by dt, the input should also be scaled by dt. We also set
+    this as a rate rather than an interval. 
+"""
 
 a_ee_init_lognormal_mu = -1.0
 """See :member:`a_ee_mode`"""

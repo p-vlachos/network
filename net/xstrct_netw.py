@@ -142,6 +142,9 @@ def run_net(tr):
     if tr.stdp_ee_mode == "triplet":
         neuron_model += f"\n{tr.condlif_triplet}"
         neuronE_reset += f"\n{tr.reset_triplet}"
+    elif tr.stdp_ee_mode == "jedlicka":
+        neuron_model += f"\n{tr.condlif_jedlicka}"
+        neuronE_reset += f"\n{tr.reset_jedlicka}"
 
     if tr.sra_active:
         neuronE_reset += f"\n{mod.reset_sra}"
@@ -207,6 +210,10 @@ def run_net(tr):
                                          size=tr.N_e)*mV, \
                        np.random.uniform(tr.Vr_i/mV, tr.Vt_i/mV,
                                          size=tr.N_i)*mV
+
+    if tr.stdp_ee_mode == 'jedlicka':
+        GExc.r = tr.jedlicka_kappa
+        GInh.r = tr.jedlicka_kappa
 
     if tr.netw.config.ip_active:
         GExc.h_IP = tr.h_IP_e
@@ -355,7 +362,12 @@ def run_net(tr):
         if tr.stdp_ee_mode == "triplet":
             synEE_pre_mod += f"\n{tr.synEE_pre_triplet}\n{tr.syn_pre_STDP_triplet}"
             synEE_post_mod += f"\n{tr.syn_post_triplet_before}\n{tr.syn_post_triplet_STDP}\n{tr.syn_post_triplet_after}"
+        elif tr.stdp_ee_mode == "jedlicka":
+            synEE_pre_mod += f"\n{tr.synEE_pre_jedlicka}\n{mod.syn_pre_STDP}"
+            synEE_post_mod += f"\n{tr.synEE_post_jedlicka}\n{mod.syn_post_STDP}"
         else:
+            synEE_post_mod = mod.syn_post
+
             synEE_pre_mod = '''%s 
                                 %s
                                 %s''' % (synEE_pre_mod, tr.synEE_pre_STDP, mod.syn_pre_STDP)

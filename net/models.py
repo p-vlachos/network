@@ -42,6 +42,9 @@ reset_sra = 'gsra += Dgsra'
 condlif_triplet = "dr/dt = -r/tau_r : Hz"
 reset_triplet = "r += 1/tau_r"
 
+condlif_jedlicka = condlif_triplet
+reset_jedlicka = reset_triplet
+
 syn_cond_EE_exp = '''
                   dge /dt = -ge/tau_e : 1
                   '''
@@ -138,27 +141,25 @@ synEE_triplet_mod = 'dAslow/dt = -Aslow/tau_slow : 1 (event-driven)'
 
 
 synEE_p_activate = '''
-                   r = rand()
-                   syn_active = int(r < p_ee)
+                   r_ee = rand()
+                   syn_active = int(r_ee < p_ee)
                    a = syn_active*a
                    '''
 
 synEE_pre_exp   = '''
                   ge_post += D*syn_active*a
-                  Apre = syn_active*Aplus
                   '''
 
 synEE_pre_alpha = '''
                   xge_post += D*syn_active*a/norm_f_EE
-                  Apre = syn_active*Aplus
                   '''
 
 synEE_pre_biexp = '''
                   xge_post += D*syn_active*a/norm_f_EE
-                  Apre = syn_active*Aplus
                   '''
 synEE_pre_STDP = "Apre = syn_active*Aplus"
 synEE_pre_triplet = "Apre += syn_active*Aplus"
+synEE_pre_jedlicka = "Apre = syn_active*Aplus/(r_post/jedlicka_kappa)"
 
 synEE_pre_std = '''D *= std_d'''
 
@@ -220,6 +221,7 @@ synEI_pre_rec = '''
 syn_post = '''
            Apost = syn_active*Aminus
            '''
+synEE_post_jedlicka = '''Apost = syn_active*Aminus*(r_post/jedlicka_kappa)'''
 
 syn_post_triplet_before = ''' Apost += 1 '''
 syn_post_triplet_after = ''' Aslow += 1 '''
