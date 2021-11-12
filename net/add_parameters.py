@@ -312,6 +312,8 @@ def add_params(tr):
     # post processing
     tr.f_add_parameter('netw.pp_tcut', prm.pp_tcut)
 
+    tr.f_add_parameter('netw.population_binned_rec', prm.population_binned_rec)
+
     # weight mode
     tr.f_add_parameter('netw.basepath', prm.basepath)
     tr.f_add_parameter('netw.weight_mode', prm.weight_mode)

@@ -454,6 +454,9 @@ csample_dt = 10*second
 pp_tcut = 1*second
 """synapse turnover is calculated starting at this time point"""
 
+population_binned_rec = 0
+"""efficiently records binned activity with GExc/GInh.dt resolution per population"""
+
 # weight modes
 basepath = '/home/hoffmann/lab/netw_mods/z2/'
 weight_mode = 'init'

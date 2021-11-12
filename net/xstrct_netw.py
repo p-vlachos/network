@@ -2,6 +2,7 @@
 import sys, os, shutil, pickle, neo, scipy
 
 from . import models as mod, network_features, network_parameter_derivation
+from .brian2objects.binnedactivitymonitor import BinnedActivityMonitor
 from .utils import generate_connections, generate_full_connectivity, \
                    generate_N_connections, generate_dd_connectivity2
 
@@ -880,6 +881,11 @@ def run_net(tr):
     GExc_rate = PopulationRateMonitor(GExc)
     GInh_rate = PopulationRateMonitor(GInh)
 
+    if tr.population_binned_rec:
+        GExc_binned = BinnedActivityMonitor(GExc, dtype=np.uint16)
+        GInh_binned = BinnedActivityMonitor(GInh, dtype=np.uint16)
+        netw_objects.extend([GExc_binned, GInh_binned])
+
     if tr.external_mode=='poisson':
         PInp_spks = SpikeMonitor(PInp)
         PInp_rate = PopulationRateMonitor(PInp)
@@ -1169,6 +1175,12 @@ def run_net(tr):
         pickle.dump(GInh_rate.get_states(),pfile)
         if tr.rates_rec:
             pickle.dump(GInh_rate.smooth_rate(width=25*ms),pfile)
+
+    if tr.population_binned_rec:
+        with open(raw_dir+'gexc_binned.p', 'wb') as pfile:
+            pickle.dump(GExc_binned.get_states(),pfile)
+        with open(raw_dir+'ginh_binned.p', 'wb') as pfile:
+            pickle.dump(GInh_binned.get_states(),pfile)
 
     if tr.external_mode=='poisson':
         with open(raw_dir+'pinp_rate.p','wb') as pfile:
