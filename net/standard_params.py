@@ -292,8 +292,13 @@ Two possible values:
     1. `constant` simply use :member:`ATotalMax` and :member:`iATotalMax` respectively
     2. `proportional` calculates `ATotalMax` for each post-synaptic neuron by summing
        :member:`ATotalMaxSingle` and :member:`iATotalMaxSingle` respectively for each active synapse.
+    3. `scaling` scales the target to achieve firing rate homeostasis.
 
 """
+
+scaling_kappa = 2.5 * Hz
+scaling_eta = 0.1
+scaling_dt = 10*second
 
 # short-term depression
 std_active = 0

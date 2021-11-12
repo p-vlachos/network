@@ -256,14 +256,15 @@ synEI_scaling = '''
                 a = syn_active*clip(syn_EI_scale(a, iANormTar, AsumEI_post, eta_iscaling, t, syn_active, scl_rec_start, scl_rec_max, i, j), amin, amax)
                 '''
 
+synEE_target_scaling = 'ANormTar += (scl_scaling_eta) * ((scl_scaling_kappa-r)/scl_scaling_kappa)'
 
 # rand() == uniform(0,1)
 #strct_mod = ''
 
 strct_mod_thrs = '''
-                 r = rand()
+                 r_ins = rand()
                  should_stay_active = int(a > prn_thrshld)
-                 should_become_active = int(r < insert_P)
+                 should_become_active = int(r_ins < insert_P)
                  was_active_before = syn_active
                  syn_active = int(syn_active==1) * int(should_stay_active) \
                     + int(syn_active==0) * int(should_become_active)
@@ -282,8 +283,8 @@ turnoverEI_rec_mod = '''
 
 # zero mode
 strct_mod = '''
-            r = rand()
-            should_stay_active = int(a > strct_c) + int(a<= strct_c)*int(r>p_inactivate)
+            r_inact = rand()
+            should_stay_active = int(a > strct_c) + int(a<= strct_c)*int(r_inact>p_inactivate)
             s = rand()
             should_become_active = int(s < insert_P*p_distance)
             was_active_before = syn_active

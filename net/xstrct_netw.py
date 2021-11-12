@@ -139,6 +139,10 @@ def run_net(tr):
     else:
         neuron_model = f"{neuron_model}\n{tr.netw.mod.condlif_noIP}"
 
+    if tr.scl_mode == "scaling":
+        neuron_model += f"\n{tr.condlif_triplet}"
+        neuronE_reset += f"\n{tr.reset_triplet}"
+
     if tr.stdp_ee_mode == "triplet":
         neuron_model += f"\n{tr.condlif_triplet}"
         neuronE_reset += f"\n{tr.reset_triplet}"
@@ -356,8 +360,8 @@ def run_net(tr):
         raise Exception("synaptic conductance mode is invalid")
 
 
-    synEE_post_mod = mod.syn_post
-    
+    synEE_post_mod = ""
+
     if tr.stdp_active:
         if tr.stdp_ee_mode == "triplet":
             synEE_pre_mod += f"\n{tr.synEE_pre_triplet}\n{tr.syn_pre_STDP_triplet}"
@@ -624,13 +628,20 @@ def run_net(tr):
             SynEE.scl_rec_max = T
 
         # TODO this can all be extracted into a common function with the EI scaling mode
-        if tr.scl_mode == "constant":
+        if tr.scl_mode == "constant" or tr.scl_mode == "scaling":
             if tr.sig_ATotalMax==0.:
                 GExc.ANormTar = tr.ATotalMax
             else:
                 GExc.ANormTar = np.random.normal(loc=tr.ATotalMax,
                                                  scale=tr.sig_ATotalMax,
                                                  size=tr.N_e)
+            if tr.scl_mode == "scaling":
+                GExc.run_regularly(
+                    mod.synEE_target_scaling,
+                    dt=tr.scl_scaling_dt,
+                    when='end',
+                    name='synEE_target_scaling'
+                )
         elif tr.scl_mode == "proportional":
             synEE_active_m = np.zeros((tr.N_e, tr.N_e))
             synEE_active_m[sEE_src, sEE_tar] = syn_EE_active_init
@@ -654,7 +665,7 @@ def run_net(tr):
             SynEI.scl_rec_start = T+10*second
             SynEI.scl_rec_max = T
 
-        if tr.scl_mode == "constant":
+        if tr.scl_mode == "constant" or tr.scl_mode == "scaling":
             if tr.sig_iATotalMax==0.:
                 GExc.iANormTar = tr.iATotalMax
             else:
