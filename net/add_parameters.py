@@ -262,6 +262,7 @@ def add_params(tr):
     tr.f_add_parameter('netw.grid_size', prm.grid_size)
     tr.f_add_parameter('netw.half_width', prm.half_width)
     tr.f_add_parameter('netw.mod.ddcon', mod.ddcon)
+    tr.f_add_parameter('netw.grid_wrap', prm.grid_wrap)
 
     # recording
     tr.f_add_parameter('netw.rec.memtraces_rec', prm.memtraces_rec)

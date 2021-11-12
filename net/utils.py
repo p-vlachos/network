@@ -84,7 +84,7 @@ def gaussian(x, u, s):
     return g
 
 
-def generate_dd_connectivity2(tar_x, tar_y, src_x, src_y, g_halfwidth, same=True, sparseness=1):
+def generate_dd_connectivity2(tar_x, tar_y, src_x, src_y, g_halfwidth, grid_size, grid_wrap, same=True, sparseness=1):
     """
         Generates distance-dependent connectivity.
         Self-connections and multiple connections between one target-source pair are omitted.
@@ -104,7 +104,20 @@ def generate_dd_connectivity2(tar_x, tar_y, src_x, src_y, g_halfwidth, same=True
     n_src = np.size(src_x)
     targets = np.vstack([tar_x, tar_y]).T
     sources = np.vstack([src_x, src_y]).T
-    dist = scipydist.cdist(sources, targets)
+
+    if grid_wrap:
+        def toroidal_distance_metric(grid_size):
+            def toroidal_distance(src, tgt):
+                d = np.abs(src - tgt)
+                indices = d > (grid_size / 2)
+                d[indices] = grid_size - d[indices]
+                return np.sqrt(np.sum(d ** 2))
+            return toroidal_distance
+
+        dist = scipydist.cdist(sources, targets, toroidal_distance_metric(grid_size/meter))
+    else:
+        dist = scipydist.cdist(sources, targets)
+
     p_ = gaussian(dist * meter / um, 0, np.array(g_halfwidth / um))
 
     if same:

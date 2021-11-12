@@ -468,7 +468,8 @@ def run_net(tr):
         # TODO needs to be adapted for istract_active = "on" just as it was for EE synapses
         sEI_src, sEI_tar, _ = generate_dd_connectivity2(np.array(GExc.x), np.array(GExc.y),
                                                         np.array(GInh.x), np.array(GInh.y),
-                                                        tr.half_width, same=False, sparseness=tr.p_ei)
+                                                        tr.half_width, tr.grid_size, tr.grid_wrap,
+                                                        same=False, sparseness=tr.p_ei)
         SynEI.connect(i=sEI_src, j=sEI_tar)
         SynEI.syn_active = 0
         if tr.istdp_active:
@@ -514,11 +515,13 @@ def run_net(tr):
     # sII_src, sII_tar = generate_connections(tr.N_i, tr.N_i, tr.p_ii, same=True)
     sIE_src, sIE_tar, _ = generate_dd_connectivity2(np.array(GInh.x), np.array(GInh.y),
                                                     np.array(GExc.x), np.array(GExc.y),
-                                                    tr.half_width, same=False, sparseness=tr.p_ie) if tr.ddcon_active \
+                                                    tr.half_width, tr.grid_size, tr.grid_wrap,
+                                                    same=False, sparseness=tr.p_ie) if tr.ddcon_active \
         else generate_connections(tr.N_i, tr.N_e, tr.p_ie)
     sII_src, sII_tar, _ = generate_dd_connectivity2(np.array(GInh.x), np.array(GInh.y),
                                                     np.array(GInh.x), np.array(GInh.y),
-                                                    tr.half_width, sparseness=tr.p_ii) if tr.ddcon_active \
+                                                    tr.half_width,  tr.grid_size, tr.grid_wrap,
+                                                    sparseness=tr.p_ii) if tr.ddcon_active \
         else generate_connections(tr.N_i, tr.N_i, tr.p_ii, same=True)
 
     SynIE.connect(i=sIE_src, j=sIE_tar)
@@ -567,7 +570,8 @@ def run_net(tr):
     if tr.ddcon_active:
         sEE_src_dd, sEE_tar_dd, sEE_p = generate_dd_connectivity2(np.array(GExc.x), np.array(GExc.y),
                                                                   np.array(GExc.x), np.array(GExc.y),
-                                                                  tr.half_width, sparseness=tr.p_ee)
+                                                                  tr.half_width, tr.grid_size, tr.grid_wrap,
+                                                                  sparseness=tr.p_ee)
         SynEE.p_distance = sEE_p.flatten()  # TODO record this in trajectory
 
         EEactive = np.zeros(shape=(tr.N_e, tr.N_e))

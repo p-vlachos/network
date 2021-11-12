@@ -388,6 +388,8 @@ grid_size = 1000*um
 half_width = 200*um
 """half-width in gaussian probability density function, see Miner et al (2016) for 
 an explanation why 200um is a good value"""
+grid_wrap = 0
+""" If 1, wrap the grid around the edges to the opposite edge. """
 
 # recording
 memtraces_rec = 1
