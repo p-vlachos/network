@@ -1396,13 +1396,14 @@ def run_net(tr):
 
     #os.chdir('./analysis/file_based/')
 
-    if tr.istdp_active:
-        from analysis.overview_winh import overview_figure
-        overview_figure('builds/%.4d'%(tr.v_idx), namespace)
-    else:
-        from analysis.overview import overview_figure
-        overview_figure('builds/%.4d'%(tr.v_idx), namespace)
+    from analysis.overview_winh import overview_figure
+    overview_figure('builds/%.4d'%(tr.v_idx), namespace)
 
+    from analysis.frequencies import frequencies_figure
+    frequencies_figure('builds/%.4d'%(tr.v_idx))
+
+    from analysis.isi import isi_figure
+    isi_figure('builds/%.4d'%(tr.v_idx))
 
     from analysis.synw_fb import synw_figure
     synw_figure('builds/%.4d'%(tr.v_idx), namespace)
