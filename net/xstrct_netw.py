@@ -711,7 +711,7 @@ def run_net(tr):
                 strct_mod = tr.strct_mod
                 
             strctplst = SynEE.run_regularly(strct_mod, dt=tr.strct_dt,
-                                            when='end', name='strct_plst_zero')
+                                            when='start', name='strct_plst_zero')
            
         elif tr.strct_mode == 'thrs':
             if tr.turnover_rec:
@@ -722,7 +722,7 @@ def run_net(tr):
                 
             strctplst = SynEE.run_regularly(strct_mod_thrs,
                                             dt=tr.strct_dt,
-                                            when='end',
+                                            when='start',
                                             name='strct_plst_thrs')
 
 
