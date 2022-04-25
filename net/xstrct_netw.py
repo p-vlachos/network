@@ -1232,7 +1232,7 @@ def run_net(tr):
     from pathlib import Path
 
     Path(fpath+'turnover').touch()
-    turnover_data = np.genfromtxt(fpath+'turnover',delimiter=',')    
+    turnover_data = np.loadtxt(fpath+'turnover',delimiter=',')
     os.remove(fpath+'turnover')
 
     with open(raw_dir+'turnover.p','wb') as pfile:
@@ -1240,7 +1240,7 @@ def run_net(tr):
 
 
     Path(fpath+'turnover_EI').touch()
-    turnover_EI_data = np.genfromtxt(fpath+'turnover_EI',delimiter=',')    
+    turnover_EI_data = np.loadtxt(fpath+'turnover_EI',delimiter=',')
     os.remove(fpath+'turnover_EI')
 
     with open(raw_dir+'turnover_EI.p','wb') as pfile:
@@ -1248,7 +1248,7 @@ def run_net(tr):
 
         
     Path(fpath+'spk_register').touch()
-    spk_register_data = np.genfromtxt(fpath+'spk_register',delimiter=',')
+    spk_register_data = np.loadtxt(fpath+'spk_register',delimiter=',')
     os.remove(fpath+'spk_register')
     
     with open(raw_dir+'spk_register.p','wb') as pfile:
@@ -1256,7 +1256,7 @@ def run_net(tr):
 
         
     Path(fpath+'spk_register_EI').touch()
-    spk_register_EI_data = np.genfromtxt(fpath+'spk_register_EI',delimiter=',')
+    spk_register_EI_data = np.loadtxt(fpath+'spk_register_EI',delimiter=',')
     os.remove(fpath+'spk_register_EI')
     
     with open(raw_dir+'spk_register_EI.p','wb') as pfile:
@@ -1264,7 +1264,7 @@ def run_net(tr):
 
 
     Path(fpath+'scaling_deltas').touch()
-    scaling_deltas_data = np.genfromtxt(fpath+'scaling_deltas',delimiter=',')
+    scaling_deltas_data = np.loadtxt(fpath+'scaling_deltas',delimiter=',')
     os.remove(fpath+'scaling_deltas')
     
     with open(raw_dir+'scaling_deltas.p','wb') as pfile:
@@ -1272,7 +1272,7 @@ def run_net(tr):
 
         
     Path(fpath+'scaling_deltas_EI').touch()
-    scaling_deltas_data = np.genfromtxt(fpath+'scaling_deltas_EI',delimiter=',')
+    scaling_deltas_data = np.loadtxt(fpath+'scaling_deltas_EI',delimiter=',')
     os.remove(fpath+'scaling_deltas_EI')
     
     with open(raw_dir+'scaling_deltas_EI.p','wb') as pfile:
