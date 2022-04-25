@@ -25,6 +25,8 @@ condlif_memnoise = '''
 
               ANormTar : 1
               iANormTar : 1
+              min_ANormTar : 1
+              max_ANormTar : 1
               '''
 
 condlif_sra = 'dgsra/dt = -gsra/tau_sra : 1'
@@ -256,7 +258,7 @@ synEI_scaling = '''
                 a = syn_active*clip(syn_EI_scale(a, iANormTar, AsumEI_post, eta_iscaling, t, syn_active, scl_rec_start, scl_rec_max, i, j), amin, amax)
                 '''
 
-synEE_target_scaling = 'ANormTar += (scl_scaling_eta) * ((scl_scaling_kappa-r)/scl_scaling_kappa)'
+synEE_target_scaling = 'ANormTar = clip(ANormTar + (scl_scaling_eta) * ((scl_scaling_kappa-r)/scl_scaling_kappa), min_ANormTar, max_ANormTar)'
 
 # rand() == uniform(0,1)
 #strct_mod = ''

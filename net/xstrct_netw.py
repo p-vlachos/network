@@ -632,6 +632,9 @@ def run_net(tr):
             SynEE.scl_rec_max = T
 
         # TODO this can all be extracted into a common function with the EI scaling mode
+        # brian will pick these up
+        GExc.min_ANormTar = tr.amin*tr.p_ee*tr.N_e
+        GExc.max_ANormTar = tr.amax*tr.p_ee*tr.N_e
         if tr.scl_mode == "constant" or tr.scl_mode == "scaling":
             if tr.sig_ATotalMax==0.:
                 GExc.ANormTar = tr.ATotalMax
