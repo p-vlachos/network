@@ -287,13 +287,15 @@ eta_iscaling = -1.0
 scl_mode = "constant"
 """ How the target for synaptic scaling is determined
 
-Two possible values:
+Possible values:
 
     1. `constant` simply use :member:`ATotalMax` and :member:`iATotalMax` respectively
     2. `proportional` calculates `ATotalMax` for each post-synaptic neuron by summing
        :member:`ATotalMaxSingle` and :member:`iATotalMaxSingle` respectively for each active synapse.
-    3. `scaling` scales the target to achieve firing rate homeostasis.
-
+    3. `scaling` scales the target to achieve firing rate homeostasis. The step is determined by
+        `(scl_scaling_eta) * ((scl_scaling_kappa-r)/scl_scaling_kappa)`.
+    4. `scaling_nonadaptive` scales the target to achieve firing rate homeostasis. The is solely determined by
+        scl_scaling_eta and the desired direction (down if r > kappa, up if r < kappa).
 """
 
 scaling_kappa = 2.5 * Hz

@@ -258,6 +258,7 @@ synEI_scaling = '''
                 a = syn_active*clip(syn_EI_scale(a, iANormTar, AsumEI_post, eta_iscaling, t, syn_active, scl_rec_start, scl_rec_max, i, j), amin, amax)
                 '''
 
+synEE_target_scaling_nonadaptive = 'ANormTar = clip(ANormTar + (scl_scaling_eta) * sign(scl_scaling_kappa-r), min_ANormTar, max_ANormTar)'
 synEE_target_scaling = 'ANormTar = clip(ANormTar + (scl_scaling_eta) * ((scl_scaling_kappa-r)/scl_scaling_kappa), min_ANormTar, max_ANormTar)'
 
 # rand() == uniform(0,1)
