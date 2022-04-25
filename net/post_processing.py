@@ -17,7 +17,7 @@ from analysis.methods.resample_dA import resample_spk_register, \
                                          resample_scl_deltas
 
 
-def post_process_turnover(tr, connections='EE'):
+def post_process_turnover(tr, connections='EE', binning=True, from_numpy=False, turnover=None):
 
     if connections=='EE':
         cn=''
@@ -31,8 +31,12 @@ def post_process_turnover(tr, connections='EE'):
 
         # E<-E connections
 
-        with open('builds/%.4d/raw/turnover%s.p' %(tr.v_idx,cn), 'rb') as pfile:
-            turnover = pickle.load(pfile)
+        if turnover is None:
+            if from_numpy:
+                turnover = np.load('builds/%.4d/raw/turnover%s.npz'%(tr.v_idx,cn))['turnover']
+            else:
+                with open('builds/%.4d/raw/turnover%s.p' %(tr.v_idx,cn), 'rb') as pfile:
+                    turnover = pickle.load(pfile)
 
         # abort if turnover empty
         if len(turnover)==0:
@@ -41,10 +45,12 @@ def post_process_turnover(tr, connections='EE'):
         # tr.N_e only used for s_id creation,
         # and since tr.N_i > tr.N_e,
         # tr.NE is correct for both 'EE' & 'EI'
+        print("starting survival times")
         full_t, ex_ids = extract_survival(turnover,
                                           tr.N_e,
                                           t_split=t_split,
                                           t_cut=t_cut)
+        print("done with survival, saving now")
 
         fpath = 'builds/%.4d/raw/survival%s_full_t.p' %(tr.v_idx, cn)
         with open(fpath, 'wb') as pfile:
@@ -52,9 +58,10 @@ def post_process_turnover(tr, connections='EE'):
                    'full_t': full_t, 'excluded_ids': ex_ids}
             pickle.dump(out, pfile)
 
+    if not binning:
+        return
 
-
-    Tmax = tr.sim.T1+tr.sim.T2+tr.sim.T3+tr.sim.T4
+    Tmax = tr.T1 + tr.T2 + tr.T3 + tr.T4
 
     lts_wthsrv, lts_dthonly, ex_ids = extract_lifetimes(turnover,
                                                         tr.N_e,
