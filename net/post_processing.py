@@ -223,11 +223,14 @@ def post_process_scl_rec(tr):
 
 def post_process(tr):
 
-    branching_ratio_figure(f'builds/{tr.v_idx:04d}')
+    want_postprocess = tr.T5 > 50*second
+
+    if want_postprocess:
+        branching_ratio_figure(f'builds/{tr.v_idx:04d}')
     post_process_stdp_rec(tr)
     post_process_scl_rec(tr)
 
-    if tr.turnover_rec:
+    if tr.turnover_rec and want_postprocess:
 
         if tr.strct_active:
             post_process_turnover(tr, 'EE')
