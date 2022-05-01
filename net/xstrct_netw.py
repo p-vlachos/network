@@ -762,12 +762,12 @@ def run_net(tr):
     # calculate the ratio of active synapses c of the total count NSyn
     sum_target = NeuronGroup(1, '''
         c : 1 (shared)
-        p : 1 (shared)
+        pinactive : 1 (shared)
     ''', dt=tr.csample_dt)
 
     sum_model = '''NSyn : 1 (constant)
                    c_post = (1.0*syn_active_pre)/NSyn : 1 (summed)
-                   p_post = p_distance_pre : 1 (summed)
+                   pinactive_post = p_distance_pre*int(syn_active_pre == 0) : 1 (summed)
                 '''
     sum_connection = Synapses(target=sum_target, source=SynEE,
                               model=sum_model, dt=tr.csample_dt,
@@ -799,7 +799,7 @@ def run_net(tr):
                 synapse_current_count = int(c_pre*synapse_max_count)
                 synapse_needed_count = synapse_target_count - synapse_current_count
                 synapse_inactive_count = synapse_max_count - synapse_current_count
-                insert_P_post = (synapse_max_count/p_pre)*(synapse_needed_count/synapse_inactive_count)
+                insert_P_post = (1/pinactive_pre)*synapse_needed_count
                 ''',
                 when='after_groups', dt=tr.csample_dt,
                 name='update_insP')
