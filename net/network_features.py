@@ -37,6 +37,8 @@ def cramer_noise(tr, GExc: NeuronGroup, GInh: NeuronGroup) -> [BrianObject]:
 
     namespace = tr.netw.f_to_dict(short_names=True, fast_access=True)
     Kext = tr.cramer_noise_Kext
+    if tr.p_ee_init > 0.0:
+        raise NotImplementedError()
     p_ee_target = tr.p_ee/(1-Kext) if Kext < 1 else tr.p_ee
     p_ie_target = tr.p_ie/(1-Kext) if Kext < 1 else tr.p_ie
     conductance_prefix = "" if tr.syn_cond_mode == "exp" else "x"

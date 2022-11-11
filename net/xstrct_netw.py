@@ -52,7 +52,8 @@ def init_synapses(syn_type: str, tr: pypet.trajectory.Trajectory, numb_syn: int)
                 rs = np.zeros(numb_syn)
             else:
                 rs = np.random.uniform(size=tr.N_e*(tr.N_e-1))
-            initial_active = (rs < tr.p_ee).astype('int')
+            p_ee = tr.p_ee if tr.p_ee_init == 0.0 else tr.p_ee_init
+            initial_active = (rs < p_ee).astype('int')
             initial_weights = network_parameter_derivation.a_ee_init(tr, initial_active)
             
         elif syn_type=="EI":
@@ -571,6 +572,7 @@ def run_net(tr):
         SynEI.syn_noise_active = int(tr.syn_kesten_inh or tr.syn_noise_type == "decay")
 
     if tr.ddcon_active:
+        p_ee = tr.p_ee if tr.p_ee_init == 0.0 else tr.p_ee_init
         sEE_src_dd, sEE_tar_dd, sEE_p = generate_dd_connectivity2(np.array(GExc.x), np.array(GExc.y),
                                                                   np.array(GExc.x), np.array(GExc.y),
                                                                   tr.half_width, tr.grid_size, tr.grid_wrap,
@@ -636,8 +638,9 @@ def run_net(tr):
 
         # TODO this can all be extracted into a common function with the EI scaling mode
         # brian will pick these up
-        GExc.min_ANormTar = tr.amin*tr.p_ee*tr.N_e
-        GExc.max_ANormTar = tr.amax*tr.p_ee*tr.N_e
+        p_ee = tr.p_ee if tr.p_ee_init == 0.0 else tr.p_ee_init
+        GExc.min_ANormTar = tr.amin*p_ee*tr.N_e
+        GExc.max_ANormTar = tr.amax*p_ee*tr.N_e
         if tr.scl_mode == "constant" or tr.scl_mode == "scaling" or tr.scl_mode == "scaling_nonadaptive":
             if tr.sig_ATotalMax==0.:
                 GExc.ANormTar = tr.ATotalMax
@@ -806,7 +809,10 @@ def run_net(tr):
         else:
             raise Exception(f"bad value '{tr.adjust_insertP_mode}' for 'adjust_insertP_mode'")
         growth_updater.connect(j='0')  # SynEE acts as one single target neuron
-        growth_updater.synapse_target_count = np.sum(syn_EE_active_init)
+        if tr.p_ee_init == 0.0:
+            growth_updater.synapse_target_count = np.sum(syn_EE_active_init)
+        else:
+            growth_updater.synapse_target_count = int(np.sum(tr.N_e * (tr.N_e - 1) * tr.p_ee))
         growth_updater.synapse_max_count = tr.N_e * (tr.N_e - 1)
         netw_objects.extend([sum_target, sum_connection, growth_updater])
 

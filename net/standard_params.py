@@ -127,6 +127,8 @@ a_ei = 0.005
 a_ii = 0.005
 """initial activity of II synapses"""
 
+p_ee_init = 0.00
+"""initial EE connectivity - 0.00 if p_ee should be used"""
 p_ee = 0.15
 """initial probability for synapse connection being active"""
 p_ie = 0.15
