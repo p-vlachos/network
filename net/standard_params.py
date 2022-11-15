@@ -298,8 +298,10 @@ Possible values:
         `(scl_scaling_eta) * ((scl_scaling_kappa-r)/scl_scaling_kappa)`.
     4. `scaling_nonadaptive` scales the target to achieve firing rate homeostasis. The is solely determined by
         scl_scaling_eta and the desired direction (down if r > kappa, up if r < kappa).
+    5. `scaling_saturated` like 3) but clipped to min_Ascaling, max_Ascaling
 """
-
+min_Ascaling = -100.0  # small minimum
+max_Ascaling = 100.0   # large maximum
 scaling_kappa = 2.5 * Hz
 scaling_eta = 0.1
 scaling_dt = 10*second

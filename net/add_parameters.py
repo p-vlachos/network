@@ -132,6 +132,8 @@ def add_params(tr):
     tr.f_add_parameter('netw.condlif_triplet', mod.condlif_triplet)
     tr.f_add_parameter('netw.reset_triplet', mod.reset_triplet)
     tr.f_add_parameter('netw.synEE_triplet_mod', mod.synEE_triplet_mod)
+    tr.f_add_parameter('netw.min_Ascaling', prm.min_Ascaling)
+    tr.f_add_parameter('netw.max_Ascaling', prm.max_Ascaling)
     tr.f_add_parameter('netw.scl_scaling_kappa', prm.scaling_kappa)
     tr.f_add_parameter('netw.scl_scaling_eta', prm.scaling_eta)
     tr.f_add_parameter('netw.scl_scaling_dt', prm.scaling_dt)

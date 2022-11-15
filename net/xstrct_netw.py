@@ -140,7 +140,7 @@ def run_net(tr):
     else:
         neuron_model = f"{neuron_model}\n{tr.netw.mod.condlif_noIP}"
 
-    if tr.scl_mode == "scaling" or tr.scl_mode == "scaling_nonadaptive":
+    if tr.scl_mode == "scaling" or tr.scl_mode == "scaling_nonadaptive" or tr.scl_mode == 'scaling_saturated':
         neuron_model += f"\n{tr.condlif_triplet}"
         neuronE_reset += f"\n{tr.reset_triplet}"
 
@@ -219,7 +219,7 @@ def run_net(tr):
     if tr.stdp_ee_mode == 'jedlicka':
         GExc.r = tr.jedlicka_kappa
         GInh.r = tr.jedlicka_kappa
-    elif tr.scl_mode == 'scaling' or tr.scl_mode == 'scaling_nonadaptive':
+    elif tr.scl_mode == 'scaling' or tr.scl_mode == 'scaling_nonadaptive' or tr.scl_mode == 'scaling_saturated':
         GExc.r = tr.scl_scaling_kappa
         GInh.r = tr.scl_scaling_kappa
 
@@ -641,7 +641,7 @@ def run_net(tr):
         p_ee = tr.p_ee if tr.p_ee_init == 0.0 else tr.p_ee_init
         GExc.min_ANormTar = tr.amin*p_ee*tr.N_e
         GExc.max_ANormTar = tr.amax*p_ee*tr.N_e
-        if tr.scl_mode == "constant" or tr.scl_mode == "scaling" or tr.scl_mode == "scaling_nonadaptive":
+        if tr.scl_mode == "constant" or tr.scl_mode == "scaling" or tr.scl_mode == "scaling_nonadaptive" or tr.scl_mode == 'scaling_saturated':
             if tr.sig_ATotalMax==0.:
                 GExc.ANormTar = tr.ATotalMax
             else:
@@ -658,6 +658,13 @@ def run_net(tr):
             elif tr.scl_mode == "scaling_nonadaptive":
                 GExc.run_regularly(
                     mod.synEE_target_scaling_nonadaptive,
+                    dt=tr.scl_scaling_dt,
+                    when='end',
+                    name='synEE_target_scaling'
+                )
+            elif tr.scl_mode == "scaling_saturated":
+                GExc.run_regularly(
+                    mod.synEE_target_scaling_saturated,
                     dt=tr.scl_scaling_dt,
                     when='end',
                     name='synEE_target_scaling'
@@ -685,7 +692,7 @@ def run_net(tr):
             SynEI.scl_rec_start = T+10*second
             SynEI.scl_rec_max = T
 
-        if tr.scl_mode == "constant" or tr.scl_mode == "scaling" or tr.scl_mode == "scaling_nonadaptive":
+        if tr.scl_mode == "constant" or tr.scl_mode == "scaling" or tr.scl_mode == "scaling_nonadaptive" or tr.scl_mode == "scaling_saturated":
             if tr.sig_iATotalMax==0.:
                 GExc.iANormTar = tr.iATotalMax
             else:
