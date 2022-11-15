@@ -576,7 +576,7 @@ def run_net(tr):
         sEE_src_dd, sEE_tar_dd, sEE_p = generate_dd_connectivity2(np.array(GExc.x), np.array(GExc.y),
                                                                   np.array(GExc.x), np.array(GExc.y),
                                                                   tr.half_width, tr.grid_size, tr.grid_wrap,
-                                                                  sparseness=tr.p_ee)
+                                                                  sparseness=p_ee)
         SynEE.p_distance = sEE_p.flatten()  # TODO record this in trajectory
 
         EEactive = np.zeros(shape=(tr.N_e, tr.N_e))
