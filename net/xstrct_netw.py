@@ -464,6 +464,7 @@ def run_net(tr):
     SynEE.syn_active = 0
     SynEE.taupre, SynEE.taupost = tr.taupre, tr.taupost
     SynEE.Aplus = tr.Aplus
+    SynEE.Aminus = tr.Aminus
     workarounds.synapse_resolve_dt_correctly(SynEE)
 
     # todo ddcon changes done here
@@ -478,6 +479,7 @@ def run_net(tr):
         SynEI.syn_active = 0
         if tr.istdp_active:
             SynEI.Aplus = tr.Aplus if tr.iAplus < 0 else tr.iAplus
+            SynEI.Aminus = tr.Aminus if tr.iAminus < 0 else tr.iAminus
     else:
         if tr.istdp_active and tr.istrct_active:
             print('istrct active')
@@ -487,6 +489,7 @@ def run_net(tr):
             SynEI.connect(i=sEI_src, j=sEI_tar)
             SynEI.syn_active = 0
             SynEI.Aplus = tr.Aplus if tr.iAplus < 0 else tr.iAplus
+            SynEI.Aminus = tr.Aminus if tr.iAminus < 0 else tr.iAminus
 
         else:
             print('istrct not active')

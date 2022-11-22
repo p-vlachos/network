@@ -267,6 +267,8 @@ LTD_a = 0.000005
 """constant depression in symmetric iSTDP"""
 iAplus = -1.0
 """potentiation maximum for iSTDP, -1 means same as Aplus"""
+iAminus = -1.0
+"""depression maximum for iSTDP, -1 means same as Aminus, only used for ``dbexp`` mode"""
 
 # scaling
 scl_active = 1

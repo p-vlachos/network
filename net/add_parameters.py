@@ -178,6 +178,7 @@ def add_params(tr):
     tr.f_add_parameter('netw.synEI_rec',      prm.synEI_rec)
     tr.f_add_parameter('netw.LTD_a', prm.LTD_a)
     tr.f_add_parameter('netw.iAplus', prm.iAplus)
+    tr.f_add_parameter('netw.iAminus', prm.iAminus)
 
     # scaling
     tr.f_add_parameter('netw.config.scl_active', prm.scl_active)
