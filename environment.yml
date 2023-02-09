@@ -145,7 +145,7 @@ dependencies:
     - chardet==3.0.4
     - cython==0.29.15
     - docutils==0.16
-    - elephant==0.6.0
+    - *elephant==0.6.0 -> worked around with v.0.6.2
     - gitdb==4.0.4
     - gitpython==3.1.1
     - idna==2.9
@@ -154,7 +154,7 @@ dependencies:
     - mrestimator==0.1.5
     - neo==0.8.0
     - numexpr==2.7.1
-    - numpy==1.18.1
+    - *numpy==1.18.1 -> had to upgrade to 1.19
     - packaging==20.3
     - pluggy==0.13.1
     - ply==3.11

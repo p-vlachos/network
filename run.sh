@@ -14,14 +14,14 @@ DESCRIPTION=''
 while getopts "hln:c:m:P:Eds" opt; do
     case $opt in
     h) echo "usage: $0 [-h] [-a] [-l] ..."; exit ;;
-    l) LOCAL_COMPUTE=true ;;
-    n) NPARSIM=$OPTARG ;;
-    c) NCORES=$OPTARG ;;
-    m) MEMGB=$OPTARG ;;
+    l) LOCAL_COMPUTE=true ;;    # run it locally (if false put on cluster)
+    n) NPARSIM=$OPTARG ;;   # number of sims to run in paralel (set equal to c)
+    c) NCORES=$OPTARG ;;    # cpus to reserve
+    m) MEMGB=$OPTARG ;; # memory to reserve in total (5-7 Gb per sim)
     E) TESTRUN="false" ;;
-    d) DEBUG=true ;;
-    s) CLUSTER='sleuths' ;;
-    P) POSTFIX=$OPTARG ;;
+    d) DEBUG=true ;;    # Do not go in background but run in terminal
+    s) CLUSTER='sleuths' ;; # cluster name
+    P) POSTFIX=$OPTARG ;; # Give a name
     \?) echo "error: option -$OPTARG is not implemented"; exit ;;
     esac
 done
