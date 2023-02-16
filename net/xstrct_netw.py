@@ -30,6 +30,8 @@ from .cpp_methods import syn_scale, syn_EI_scale, \
 
 from . import workarounds
 
+import brian2cuda
+
 # todo ddcon changes done here
 def init_synapses(syn_type: str, tr: pypet.trajectory.Trajectory, numb_syn: int):
     """ Initialize synapses with weights and whether they are active or not
@@ -100,8 +102,9 @@ def run_net(tr):
     if tr.n_threads > 1:
         prefs.devices.cpp_standalone.openmp_threads = tr.n_threads
         
-    set_device('cpp_standalone', directory='./builds/%.4d'%(tr.v_idx),
-               build_on_run=False)
+    # set_device('cpp_standalone', directory='./builds/%.4d'%(tr.v_idx),
+            #    build_on_run=False)
+    set_device('cuda_standalone', build_on_run=False)
 
     # set brian 2 and numpy random seeds
     seed(tr.random_seed)
