@@ -102,9 +102,9 @@ def run_net(tr):
     if tr.n_threads > 1:
         prefs.devices.cpp_standalone.openmp_threads = tr.n_threads
         
-    # set_device('cpp_standalone', directory='./builds/%.4d'%(tr.v_idx),
-            #    build_on_run=False)
-    set_device('cuda_standalone', build_on_run=False)
+    set_device('cpp_standalone', directory='./builds/%.4d'%(tr.v_idx),
+               build_on_run=False)
+    # set_device('cuda_standalone', build_on_run=False)
 
     # set brian 2 and numpy random seeds
     seed(tr.random_seed)
