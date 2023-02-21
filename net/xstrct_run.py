@@ -3,7 +3,7 @@ import argparse
 import git
 import pypet.pypetexceptions as pex
 
-from .workarounds import fix_pypet_macos
+# from .workarounds import fix_pypet_macos
 from .explored_params import explore_dict, name
 from .xstrct_module import main
 
@@ -17,7 +17,7 @@ ncores = int(args.ncores[0])
 
 print("Using {:d} cores".format(ncores))
 
-fix_pypet_macos()
+# fix_pypet_macos()
 
 # check the state of the git repository
 repo = git.Repo('./src/')
