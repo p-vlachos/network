@@ -410,7 +410,7 @@ def run_net(tr):
             EI_pre_mod = mod.synEI_pre_alpha
         elif tr.syn_cond_mode_EI=='biexp':
             EI_pre_mod = mod.synEI_pre_biexp
-            
+
 
         synEI_pre_mod  = '''%s 
                             %s''' %(EI_pre_mod, mod.syn_pre_STDP)
@@ -924,12 +924,12 @@ def run_net(tr):
         
 
     if tr.adjust_insertP:
-
-        C_stat = StateMonitor(sum_target, 'c', dt=tr.csample_dt,
-                              record=[0], when='end')
-        insP_stat = StateMonitor(SynEE, 'insert_P', dt=tr.csample_dt,
-                                 record=[0], when='end')
-        netw_objects.extend([C_stat, insP_stat])
+        pass
+        # C_stat = StateMonitor(sum_target, 'c', dt=tr.csample_dt,
+        #                       record=[0], when='end')
+        # insP_stat = StateMonitor(SynEE, 'insert_P', dt=tr.csample_dt,
+        #                          record=[0], when='end')
+        # netw_objects.extend([C_stat, insP_stat])
 
     if tr.istdp_active and tr.adjust_EI_insertP:
 
@@ -1160,6 +1160,8 @@ def run_net(tr):
 
     # -----------------------------------------
 
+    print("start dumping")
+
     # save monitors as raws in build directory
     raw_dir = 'builds/%.4d/raw/'%(tr.v_idx)
     
@@ -1210,11 +1212,12 @@ def run_net(tr):
         
 
     if tr.adjust_insertP:
-        with open(raw_dir+'c_stat.p','wb') as pfile:
-            pickle.dump(C_stat.get_states(),pfile)   
-
-        with open(raw_dir+'insP_stat.p','wb') as pfile:
-            pickle.dump(insP_stat.get_states(),pfile)
+        pass
+        # with open(raw_dir+'c_stat.p','wb') as pfile:
+        #     pickle.dump(C_stat.get_states(),pfile)
+        #
+        # with open(raw_dir+'insP_stat.p','wb') as pfile:
+        #     pickle.dump(insP_stat.get_states(),pfile)
 
     if tr.istdp_active and tr.adjust_EI_insertP:
         with open(raw_dir+'c_EI_stat.p','wb') as pfile:
@@ -1432,23 +1435,21 @@ def run_net(tr):
     from analysis.overview_winh import overview_figure
     overview_figure('builds/%.4d'%(tr.v_idx), namespace)
 
-    from analysis.frequencies import frequencies_figure
-    frequencies_figure('builds/%.4d'%(tr.v_idx))
+    # from analysis.frequencies import frequencies_figure
+    # frequencies_figure('builds/%.4d'%(tr.v_idx))
 
-    from analysis.isi import isi_figure
-    isi_figure('builds/%.4d'%(tr.v_idx))
+    # from analysis.isi import isi_figure
+    # isi_figure('builds/%.4d'%(tr.v_idx))
 
     from analysis.synw_fb import synw_figure
     synw_figure('builds/%.4d'%(tr.v_idx), namespace)
-    if tr.istdp_active:
-        synw_figure('builds/%.4d'%(tr.v_idx),
-                    namespace, connections='EI')
+    # if tr.istdp_active:
+    #     synw_figure('builds/%.4d'%(tr.v_idx), namespace, connections='EI')
 
     from analysis.synw_log_fb import synw_log_figure
     synw_log_figure('builds/%.4d'%(tr.v_idx), namespace)
-    if tr.istdp_active:
-        synw_log_figure('builds/%.4d'%(tr.v_idx),
-                        namespace, connections='EI')
+    # if tr.istdp_active:
+    #     synw_log_figure('builds/%.4d'%(tr.v_idx), namespace, connections='EI')
     
     # from code.analysis.turnover_fb import turnover_figure
     # turnover_figure('builds/%.4d'%(tr.v_idx), namespace, fit=False)
