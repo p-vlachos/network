@@ -1,16 +1,29 @@
 
+# condlif_poisson = '''
+#               dV/dt = (El-V + (gfwd+ge)*(Ee-V) + gi*(Ei-V))/tau : volt
+#               Vt : volt 
+#               dge /dt = -ge/tau_e : 1
+#               dgfwd /dt = -gfwd/tau_e : 1
+#               dgi /dt = -gi/tau_i : 1
+
+#               AsumEE : 1
+#               AsumEI : 1
+
+#               ANormTar : 1
+#               iANormTar : 1
+#               '''
+
 condlif_poisson = '''
-              dV/dt = (El-V + (gfwd+ge)*(Ee-V) + gi*(Ei-V))/tau : volt
-              Vt : volt 
-              dge /dt = -ge/tau_e : 1
-              dgfwd /dt = -gfwd/tau_e : 1
-              dgi /dt = -gi/tau_i : 1
+              dV/dt = (El-V + gsra*(Esra-V) + (ge + g_ext)*(Ee-V) + gi*(Ei-V))/tau : volt
+              g_ext/dt = -g_ext/tau_e : 1
 
               AsumEE : 1
               AsumEI : 1
 
               ANormTar : 1
               iANormTar : 1
+              min_ANormTar : 1
+              max_ANormTar : 1
               '''
 
 
