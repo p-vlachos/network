@@ -14,8 +14,8 @@
 #               '''
 
 condlif_poisson = '''
-              dV/dt = (El-V + gsra*(Esra-V) + (ge + g_ext)*(Ee-V) + gi*(Ei-V))/tau : volt
-              g_ext/dt = -g_ext/tau_e : 1
+              dV/dt = (El-V + gsra*(Esra-V) + (ge + gext)*(Ee-V) + gi*(Ei-V))/tau : volt
+              gext/dt = -gext/tau_e : 1
 
               AsumEE : 1
               AsumEI : 1

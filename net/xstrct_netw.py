@@ -313,7 +313,7 @@ def run_net(tr):
             PInp = PoissonGroup(tr.NPInp, rates=tr.PInp_rate,
                                 namespace=namespace, name='poissongroup_exc')
             sPN = Synapses(target=GExc, source=PInp, model=tr.poisson_mod,
-                           on_pre='g_ext_post += a_EPoi',
+                           on_pre='gext_post += a_EPoi',
                            namespace=namespace, name='synPInpExc')
             
             sPN_src, sPN_tar = generate_N_connections(N_tar=tr.N_e,
@@ -324,7 +324,7 @@ def run_net(tr):
             PInp = PoissonGroup(tr.N_e, rates=tr.PInp_rate,
                                 namespace=namespace)
             sPN = Synapses(target=GExc, source=PInp, model=tr.poisson_mod,
-                           on_pre='g_ext_post += a_EPoi',
+                           on_pre='gext_post += a_EPoi',
                            namespace=namespace, name='synPInp_inhInh')
             sPN_src, sPN_tar = range(tr.N_e), range(tr.N_e)
 
@@ -340,7 +340,7 @@ def run_net(tr):
             
             sPNInh = Synapses(target=GInh, source=PInp_inh,
                               model=tr.poisson_mod,
-                              on_pre='g_ext_post += a_EPoi',
+                              on_pre='gext_post += a_EPoi',
                               namespace=namespace)
             
             sPNInh_src, sPNInh_tar = generate_N_connections(N_tar=tr.N_i,
@@ -355,7 +355,7 @@ def run_net(tr):
 
             sPNInh = Synapses(target=GInh, source=PInp_inh,
                               model=tr.poisson_mod,
-                              on_pre='g_ext_post += a_EPoi',
+                              on_pre='gext_post += a_EPoi',
                               namespace=namespace)
 
             sPNInh_src, sPNInh_tar = range(tr.N_i), range(tr.N_i)
@@ -923,7 +923,7 @@ def run_net(tr):
     if tr.gitraces_rec:
         GExc_recvars.append('gi')
     if tr.gfwdtraces_rec and tr.external_mode=='poisson':
-        GExc_recvars.append('g_ext')
+        GExc_recvars.append('gext')
     if tr.anormtar_rec:
         if tr.scl_active == 1:
             GExc_recvars.append('ANormTar')
