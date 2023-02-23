@@ -312,6 +312,7 @@ def run_net(tr):
         if tr.PInp_mode == 'pool':
             PInp = PoissonGroup(tr.NPInp, rates=tr.PInp_rate,
                                 namespace=namespace, name='poissongroup_exc')
+            
             sPN = Synapses(target=GExc, source=PInp, model=tr.poisson_mod,
                            on_pre='gext_post += a_EPoi',
                            namespace=namespace, name='synPInpExc')
@@ -328,15 +329,12 @@ def run_net(tr):
                            namespace=namespace, name='synPInp_inhInh')
             sPN_src, sPN_tar = range(tr.N_e), range(tr.N_e)
 
-
         sPN.connect(i=sPN_src, j=sPN_tar)
-
 
         if tr.PInp_mode == 'pool':
 
             PInp_inh = PoissonGroup(tr.NPInp_inh, rates=tr.PInp_inh_rate,
-                                    namespace=namespace,
-                                    name='poissongroup_inh')
+                                    namespace=namespace, name='poissongroup_inh')
             
             sPNInh = Synapses(target=GInh, source=PInp_inh,
                               model=tr.poisson_mod,
@@ -346,7 +344,6 @@ def run_net(tr):
             sPNInh_src, sPNInh_tar = generate_N_connections(N_tar=tr.N_i,
                                                             N_src=tr.NPInp_inh,
                                                             N=tr.NPInp_inh_1n)
-
 
         elif tr.PInp_mode == 'indep':
 
@@ -359,7 +356,6 @@ def run_net(tr):
                               namespace=namespace)
 
             sPNInh_src, sPNInh_tar = range(tr.N_i), range(tr.N_i)
-
 
         sPNInh.connect(i=sPNInh_src, j=sPNInh_tar)
 
