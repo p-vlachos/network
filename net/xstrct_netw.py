@@ -401,7 +401,7 @@ def run_net(tr):
         synEE_mod = '''%s
                        %s''' %(synEE_mod, tr.synEE_scl_mod)
 
-        if tr.scl_mode == "proportional":
+        if tr.scl_mode == "`proport`ional":
             synEE_mod += f"\n{tr.synEE_scl_prop_mod}"
 
     if tr.iscl_active:
