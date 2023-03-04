@@ -664,10 +664,10 @@ def run_net(tr):
     if tr.syn_delay_active:
 
         if tr.syn_dd_delay_active:
-            ee_delays = network_features.synapse_delays(dist_EE, tr.synEE_delay_windowsize, SynEE)
-            ei_delays = network_features.synapse_delays(dist_EI, tr.synEI_delay_windowsize, SynEI)
-            ii_delays = network_features.synapse_delays(dist_II, tr.synII_delay_windowsize, SynII)
-            ie_delays = network_features.synapse_delays(dist_IE, tr.synIE_delay_windowsize, SynIE)
+            ee_delays = network_features.synapse_dd_delays(dist_EE, tr.synEE_delay_windowsize, SynEE)
+            ei_delays = network_features.synapse_dd_delays(dist_EI, tr.synEI_delay_windowsize, SynEI)
+            ii_delays = network_features.synapse_dd_delays(dist_II, tr.synII_delay_windowsize, SynII)
+            ie_delays = network_features.synapse_dd_delays(dist_IE, tr.synIE_delay_windowsize, SynIE)
         else:
             shapeEE, shapeEI, shapeII, shapeIE = syn_EE_active_init.shape, len(sEI_src), len(sII_src), len(sIE_src)
             ee_delays = network_features.synapse_delays(tr.synEE_delay, tr.synEE_delay_windowsize, SynEE, shapeEE)
