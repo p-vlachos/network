@@ -527,7 +527,7 @@ def run_net(tr):
     if tr.ddcon_active:
         # this case works for istrct_active on and off
         # TODO needs to be adapted for istract_active = "on" just as it was for EE synapses
-        sEI_src, sEI_tar, _ = generate_dd_connectivity2(np.array(GExc.x), np.array(GExc.y),
+        sEI_src, sEI_tar, _, dist_EI = generate_dd_connectivity2(np.array(GExc.x), np.array(GExc.y),
                                                         np.array(GInh.x), np.array(GInh.y),
                                                         tr.half_width, tr.grid_size, tr.grid_wrap,
                                                         same=False, sparseness=tr.p_ei)
@@ -574,12 +574,12 @@ def run_net(tr):
     # todo ddcon changes done here
     # sIE_src, sIE_tar = generate_connections(tr.N_i, tr.N_e, tr.p_ie)
     # sII_src, sII_tar = generate_connections(tr.N_i, tr.N_i, tr.p_ii, same=True)
-    sIE_src, sIE_tar, _ = generate_dd_connectivity2(np.array(GInh.x), np.array(GInh.y),
+    sIE_src, sIE_tar, _, dist_IE = generate_dd_connectivity2(np.array(GInh.x), np.array(GInh.y),
                                                     np.array(GExc.x), np.array(GExc.y),
                                                     tr.half_width, tr.grid_size, tr.grid_wrap,
                                                     same=False, sparseness=tr.p_ie) if tr.ddcon_active \
         else generate_connections(tr.N_i, tr.N_e, tr.p_ie)
-    sII_src, sII_tar, _ = generate_dd_connectivity2(np.array(GInh.x), np.array(GInh.y),
+    sII_src, sII_tar, _, dist_II = generate_dd_connectivity2(np.array(GInh.x), np.array(GInh.y),
                                                     np.array(GInh.x), np.array(GInh.y),
                                                     tr.half_width,  tr.grid_size, tr.grid_wrap,
                                                     sparseness=tr.p_ii) if tr.ddcon_active \
@@ -630,7 +630,7 @@ def run_net(tr):
 
     if tr.ddcon_active:
         p_ee = tr.p_ee if tr.p_ee_init == 0.0 else tr.p_ee_init
-        sEE_src_dd, sEE_tar_dd, sEE_p = generate_dd_connectivity2(np.array(GExc.x), np.array(GExc.y),
+        sEE_src_dd, sEE_tar_dd, sEE_p, dist_EE = generate_dd_connectivity2(np.array(GExc.x), np.array(GExc.y),
                                                                   np.array(GExc.x), np.array(GExc.y),
                                                                   tr.half_width, tr.grid_size, tr.grid_wrap,
                                                                   sparseness=tr.p_ee)
@@ -662,11 +662,18 @@ def run_net(tr):
     # tr.f_add_result('sEE_tar', sEE_tar_active)
 
     if tr.syn_delay_active:
-        shapeEE, shapeEI, shapeII, shapeIE = syn_EE_active_init.shape, len(sEI_src), len(sII_src), len(sIE_src)
-        ee_delays = network_features.synapse_delays(tr.synEE_delay, tr.synEE_delay_windowsize, SynEE, shapeEE)
-        ei_delays = network_features.synapse_delays(tr.synEI_delay, tr.synEI_delay_windowsize, SynEI, shapeEI)
-        ii_delays = network_features.synapse_delays(tr.synII_delay, tr.synII_delay_windowsize, SynII, shapeII)
-        ie_delays = network_features.synapse_delays(tr.synIE_delay, tr.synIE_delay_windowsize, SynIE, shapeIE)
+
+        if tr.syn_dd_delay_active:
+            ee_delays = network_features.synapse_delays(dist_EE, tr.synEE_delay_windowsize, SynEE)
+            ei_delays = network_features.synapse_delays(dist_EI, tr.synEI_delay_windowsize, SynEI)
+            ii_delays = network_features.synapse_delays(dist_II, tr.synII_delay_windowsize, SynII)
+            ie_delays = network_features.synapse_delays(dist_IE, tr.synIE_delay_windowsize, SynIE)
+        else:
+            shapeEE, shapeEI, shapeII, shapeIE = syn_EE_active_init.shape, len(sEI_src), len(sII_src), len(sIE_src)
+            ee_delays = network_features.synapse_delays(tr.synEE_delay, tr.synEE_delay_windowsize, SynEE, shapeEE)
+            ei_delays = network_features.synapse_delays(tr.synEI_delay, tr.synEI_delay_windowsize, SynEI, shapeEI)
+            ii_delays = network_features.synapse_delays(tr.synII_delay, tr.synII_delay_windowsize, SynII, shapeII)
+            ie_delays = network_features.synapse_delays(tr.synIE_delay, tr.synIE_delay_windowsize, SynIE, shapeIE)
 
         tr.f_add_result("sEE_delays", ee_delays)
         tr.f_add_result("sEI_delays", ei_delays)

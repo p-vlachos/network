@@ -71,3 +71,24 @@ def synapse_delays(syn_delay: ms, syn_delay_windowsize: ms, Syn: Synapses, shape
                                size=shape)
     Syn.delay = delays
     return delays
+
+
+def synapse_dd_delays(dist: um, syn_delay_windowsize: ms, Syn: Synapses):
+    """
+        Configure pre-synaptic delays. Similar to Brunel 2000 these are uniformly distributed.
+        The delay is the center of the uniform distribution, while the window size defines the
+        total width of the distribution.
+
+        Related parameters:
+
+        - :data:`net.standard_params.synEE_delay`
+        - :data:`net.standard_params.synEE_delay_windowsize`
+        - :data:`net.standard_params.synEI_delay`
+        - :data:`net.standard_params.synEI_delay_windowsize`
+    """
+    # need to create these for all synapses, not only the initially active ones
+    ap_velocity = 500 * um/ms # Action potential velocity (should be adjusted later based on data)
+    delays = np.random.normal(dist/ap_velocity, np.ones_like(dist)*syn_delay_windowsize)
+    
+    Syn.delay = delays
+    return delays

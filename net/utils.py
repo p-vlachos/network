@@ -137,7 +137,7 @@ def generate_dd_connectivity2(tar_x, tar_y, src_x, src_y, g_halfwidth, grid_size
     selected_indices = np.random.choice(np.arange(0, n_indices), replace=False, size=n_new, p=p_flat / np.sum(p_flat))
     # np.random.choice gives us exactly as many connections as we request, but requires p to sum up to 1
     in_src, in_trg = indices[0][selected_indices], indices[1][selected_indices]
-    return in_src, in_trg, p_
+    return in_src, in_trg, p_, dist
 
 
 # def generate_dd_connectivity(tar_x, tar_y, src_x, src_y, g_halfwidth, same=True, sparseness=1):

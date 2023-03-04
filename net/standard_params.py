@@ -85,6 +85,8 @@ cramer_noise_N = N_e
 # synaptic delay
 syn_delay_active = 0
 """ enables pre-synaptic delays """
+syn_dd_delays_active = 0
+""" enables distance-dependent pre-synaptic delays """
 synEE_delay = 4.7*ms
 """ for EE synapses, according to biexp peak time with standard params """
 synEE_delay_windowsize = 0*ms
