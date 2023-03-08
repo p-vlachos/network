@@ -5,7 +5,7 @@ import numpy as np
 sigv = 1. / second
 
 input_dict = {'T1': [10 * second],
-              'T2': [2000 * second],
+              'T2': [20 * second],
               'pp_tcut': [500 * second],
               'T3': [5 * second],
               'T4': [5 * second],
@@ -15,7 +15,7 @@ input_dict = {'T1': [10 * second],
               'synEE_rec': [1],
               'synEI_rec': [0],
               'stdp_rec_T': [1 * second],
-              'T5': [200 * second],
+              'T5': [20 * second],
               'crs_crrs_rec': [0],
               'dt': [0.1 * ms],
               'N_e': [1600],
@@ -29,8 +29,8 @@ input_dict = {'T1': [10 * second],
               'external_mode': ['memnoise'],
               'mu_e': [0.0*mV],
               'mu_i': [0.0*mV],
-              'sigma_e': [6.10*mV], #6.1, 4.1
-              'sigma_i': [6.10*mV],
+              'sigma_e': [4.10*mV], #6.1, 4.1
+              'sigma_i': [4.10*mV],
               'PInp_mode' : ['indep'],
               'PInp_rate' : [8000*Hz],
               'PInp_inh_rate' : [6000*Hz],

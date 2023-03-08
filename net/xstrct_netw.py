@@ -104,7 +104,7 @@ def run_net(tr):
         
     set_device('cpp_standalone', directory='./builds/%.4d'%(tr.v_idx),
                build_on_run=False)
-    # set_device('cuda_standalone', build_on_run=False)
+    set_device('cuda_standalone', build_on_run=False)
 
     # set brian 2 and numpy random seeds
     seed(tr.random_seed)
