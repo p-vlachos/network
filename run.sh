@@ -11,7 +11,7 @@ DEBUG=false
 CLUSTER='x-men'
 DESCRIPTION=''
 
-while getopts "hln:c:m:P:Eds" opt; do
+while getopts "hln:c:m:P:Edsg" opt; do
     case $opt in
     h) echo "usage: $0 [-h] [-a] [-l] ..."; exit ;;
     l) LOCAL_COMPUTE=true ;;    # run it locally (if false put on cluster)
@@ -22,6 +22,7 @@ while getopts "hln:c:m:P:Eds" opt; do
     d) DEBUG=true ;;    # Do not go in background but run in terminal
     s) CLUSTER='sleuths' ;; # cluster name
     P) POSTFIX=$OPTARG ;; # Give a name
+    g) GPU="false" ;; # Run on gpu
     \?) echo "error: option -$OPTARG is not implemented"; exit ;;
     esac
 done
@@ -87,12 +88,12 @@ then
    echo "debug mode" 
    ./src/run_local.sh $TIMESTAMP $CODEDIR $NPARSIM \
                           $NCORES $MEMGB $LOCAL_COMPUTE \
-                          $CLUSTER $TESTRUN $TESTDIR_FULL
+                          $CLUSTER $TESTRUN $GPU
 else
     echo "normal mode"
     nohup ./src/run_local.sh $TIMESTAMP $CODEDIR $NPARSIM \
                           $NCORES $MEMGB $LOCAL_COMPUTE \
-                          $CLUSTER $TESTRUN $TESTDIR_FULL &
+                          $CLUSTER $TESTRUN $GPU &
 fi
 
 # # touch $CODEDIR/../$TIMESTAMP
