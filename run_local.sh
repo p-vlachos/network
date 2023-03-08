@@ -25,7 +25,7 @@ then
    PYTHONPATH="$PWD/src" python -m net.xstrct_run -c $3 $TESTFLAG
 else
    echo "doing nonlocal"
-   if ["$9" == "false"]; then
+   if [ "$9" == "false" ]; then
     PYTHONPATH="$PWD/src" srun --hint=memory_bound -p $7 -c $4 --mem $5 --time 29-00 python -m net.xstrct_run -c $3 $TESTFLAG
    else
     PYTHONPATH="$PWD/src" srun --hint=memory_bound -p $7 --gpus-per-task=$4 --mem $5 --time 29-00 python -m net.xstrct_run -c $3 $TESTFLAG
