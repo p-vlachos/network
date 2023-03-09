@@ -10,6 +10,7 @@ TESTDIR_FULL=''
 DEBUG=false
 CLUSTER='x-men'
 DESCRIPTION=''
+GPU="false"
 
 while getopts "hln:c:m:P:Edsg" opt; do
     case $opt in
@@ -22,7 +23,7 @@ while getopts "hln:c:m:P:Edsg" opt; do
     d) DEBUG=true ;;    # Do not go in background but run in terminal
     s) CLUSTER='sleuths' ;; # cluster name
     P) POSTFIX=$OPTARG ;; # Give a name
-    g) GPU="false" ;; # Run on gpu
+    g) GPU="true" ;; # Run on gpu
     \?) echo "error: option -$OPTARG is not implemented"; exit ;;
     esac
 done
