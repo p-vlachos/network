@@ -28,7 +28,7 @@ else
    if [ "$9" == "false" ]; then
     PYTHONPATH="$PWD/src" srun --hint=memory_bound -p $7 -c $4 --mem $5 --time 29-00 python -m net.xstrct_run -c $3 $TESTFLAG
    else
-    PYTHONPATH="$PWD/src" srun --hint=memory_bound -p $7 --gres=a100pcie40gb:$4 --mem $5 --time 29-00 python -m net.xstrct_run -c $3 $TESTFLAG
+    PYTHONPATH="$PWD/src" srun --hint=memory_bound -p $7 --gres=gpu:a100pcie40gb:$4 --mem $5 --time 29-00 python -m net.xstrct_run -c $3 $TESTFLAG
    fi    
 fi
 
