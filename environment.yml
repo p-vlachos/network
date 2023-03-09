@@ -145,7 +145,7 @@ dependencies:
     - chardet==3.0.4
     - cython==0.29.15
     - docutils==0.16
-    - elephant==0.6.0
+    - elephant==0.6.0 #-> worked around with v.0.6.2
     - gitdb==4.0.4
     - gitpython==3.1.1
     - idna==2.9

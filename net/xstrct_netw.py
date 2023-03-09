@@ -30,6 +30,8 @@ from .cpp_methods import syn_scale, syn_EI_scale, \
 
 from . import workarounds
 
+import brian2cuda
+
 # todo ddcon changes done here
 def init_synapses(syn_type: str, tr: pypet.trajectory.Trajectory, numb_syn: int):
     """ Initialize synapses with weights and whether they are active or not
@@ -102,6 +104,7 @@ def run_net(tr):
         
     set_device('cpp_standalone', directory='./builds/%.4d'%(tr.v_idx),
                build_on_run=False)
+    set_device('cuda_standalone', build_on_run=False)
 
     # set brian 2 and numpy random seeds
     seed(tr.random_seed)
@@ -127,8 +130,8 @@ def run_net(tr):
     if tr.external_mode=='memnoise':
         neuron_model = tr.condlif_memnoise
     elif tr.external_mode=='poisson':
-        raise NotImplementedError
-        #neuron_model = tr.condlif_poisson
+        # raise NotImplementedError
+        neuron_model = tr.condlif_poisson
     else:
         raise NotImplementedError
 
@@ -245,15 +248,75 @@ def run_net(tr):
     netw_objects.extend([GExc,GInh])
 
 
+    # if tr.external_mode=='poisson':
+    
+    #     if tr.PInp_mode == 'pool':
+    #         PInp = PoissonGroup(tr.NPInp, rates=tr.PInp_rate,
+    #                             namespace=namespace, name='poissongroup_exc')
+    #         sPN = Synapses(target=GExc, source=PInp, model=tr.poisson_mod,
+    #                        on_pre='gfwd_post += a_EPoi',
+    #                        namespace=namespace, name='synPInpExc')
+
+    #         sPN_src, sPN_tar = generate_N_connections(N_tar=tr.N_e,
+    #                                                   N_src=tr.NPInp,
+    #                                                   N=tr.NPInp_1n)
+
+    #     elif tr.PInp_mode == 'indep':
+    #         PInp = PoissonGroup(tr.N_e, rates=tr.PInp_rate,
+    #                             namespace=namespace)
+    #         sPN = Synapses(target=GExc, source=PInp, model=tr.poisson_mod,
+    #                        on_pre='gfwd_post += a_EPoi',
+    #                        namespace=namespace, name='synPInp_inhInh')
+    #         sPN_src, sPN_tar = range(tr.N_e), range(tr.N_e)
+
+
+    #     sPN.connect(i=sPN_src, j=sPN_tar)
+
+
+
+    #     if tr.PInp_mode == 'pool':
+
+    #         PInp_inh = PoissonGroup(tr.NPInp_inh, rates=tr.PInp_inh_rate,
+    #                                 namespace=namespace,
+    #                                 name='poissongroup_inh')
+            
+    #         sPNInh = Synapses(target=GInh, source=PInp_inh,
+    #                           model=tr.poisson_mod,
+    #                           on_pre='gfwd_post += a_EPoi',
+    #                           namespace=namespace)
+            
+    #         sPNInh_src, sPNInh_tar = generate_N_connections(N_tar=tr.N_i,
+    #                                                         N_src=tr.NPInp_inh,
+    #                                                         N=tr.NPInp_inh_1n)
+
+
+    #     elif tr.PInp_mode == 'indep':
+
+    #         PInp_inh = PoissonGroup(tr.N_i, rates=tr.PInp_inh_rate,
+    #                                 namespace=namespace)
+
+    #         sPNInh = Synapses(target=GInh, source=PInp_inh,
+    #                           model=tr.poisson_mod,
+    #                           on_pre='gfwd_post += a_EPoi',
+    #                           namespace=namespace)
+
+    #         sPNInh_src, sPNInh_tar = range(tr.N_i), range(tr.N_i)
+
+
+    #     sPNInh.connect(i=sPNInh_src, j=sPNInh_tar)
+
+    #     netw_objects.extend([PInp, sPN, PInp_inh, sPNInh])
+
     if tr.external_mode=='poisson':
     
         if tr.PInp_mode == 'pool':
             PInp = PoissonGroup(tr.NPInp, rates=tr.PInp_rate,
                                 namespace=namespace, name='poissongroup_exc')
+            
             sPN = Synapses(target=GExc, source=PInp, model=tr.poisson_mod,
-                           on_pre='gfwd_post += a_EPoi',
+                           on_pre='gext_post += a_EPoi',
                            namespace=namespace, name='synPInpExc')
-
+            
             sPN_src, sPN_tar = generate_N_connections(N_tar=tr.N_e,
                                                       N_src=tr.NPInp,
                                                       N=tr.NPInp_1n)
@@ -262,30 +325,25 @@ def run_net(tr):
             PInp = PoissonGroup(tr.N_e, rates=tr.PInp_rate,
                                 namespace=namespace)
             sPN = Synapses(target=GExc, source=PInp, model=tr.poisson_mod,
-                           on_pre='gfwd_post += a_EPoi',
+                           on_pre='gext_post += a_EPoi',
                            namespace=namespace, name='synPInp_inhInh')
             sPN_src, sPN_tar = range(tr.N_e), range(tr.N_e)
 
-
         sPN.connect(i=sPN_src, j=sPN_tar)
-
-
 
         if tr.PInp_mode == 'pool':
 
             PInp_inh = PoissonGroup(tr.NPInp_inh, rates=tr.PInp_inh_rate,
-                                    namespace=namespace,
-                                    name='poissongroup_inh')
+                                    namespace=namespace, name='poissongroup_inh')
             
             sPNInh = Synapses(target=GInh, source=PInp_inh,
                               model=tr.poisson_mod,
-                              on_pre='gfwd_post += a_EPoi',
+                              on_pre='gext_post += a_EPoi',
                               namespace=namespace)
             
             sPNInh_src, sPNInh_tar = generate_N_connections(N_tar=tr.N_i,
                                                             N_src=tr.NPInp_inh,
                                                             N=tr.NPInp_inh_1n)
-
 
         elif tr.PInp_mode == 'indep':
 
@@ -294,11 +352,10 @@ def run_net(tr):
 
             sPNInh = Synapses(target=GInh, source=PInp_inh,
                               model=tr.poisson_mod,
-                              on_pre='gfwd_post += a_EPoi',
+                              on_pre='gext_post += a_EPoi',
                               namespace=namespace)
 
             sPNInh_src, sPNInh_tar = range(tr.N_i), range(tr.N_i)
-
 
         sPNInh.connect(i=sPNInh_src, j=sPNInh_tar)
 
@@ -344,7 +401,7 @@ def run_net(tr):
         synEE_mod = '''%s
                        %s''' %(synEE_mod, tr.synEE_scl_mod)
 
-        if tr.scl_mode == "proportional":
+        if tr.scl_mode == "`proport`ional":
             synEE_mod += f"\n{tr.synEE_scl_prop_mod}"
 
     if tr.iscl_active:
@@ -471,7 +528,7 @@ def run_net(tr):
     if tr.ddcon_active:
         # this case works for istrct_active on and off
         # TODO needs to be adapted for istract_active = "on" just as it was for EE synapses
-        sEI_src, sEI_tar, _ = generate_dd_connectivity2(np.array(GExc.x), np.array(GExc.y),
+        sEI_src, sEI_tar, _, dist_EI = generate_dd_connectivity2(np.array(GExc.x), np.array(GExc.y),
                                                         np.array(GInh.x), np.array(GInh.y),
                                                         tr.half_width, tr.grid_size, tr.grid_wrap,
                                                         same=False, sparseness=tr.p_ei)
@@ -520,12 +577,12 @@ def run_net(tr):
     # todo ddcon changes done here
     # sIE_src, sIE_tar = generate_connections(tr.N_i, tr.N_e, tr.p_ie)
     # sII_src, sII_tar = generate_connections(tr.N_i, tr.N_i, tr.p_ii, same=True)
-    sIE_src, sIE_tar, _ = generate_dd_connectivity2(np.array(GInh.x), np.array(GInh.y),
+    sIE_src, sIE_tar, _, dist_IE = generate_dd_connectivity2(np.array(GInh.x), np.array(GInh.y),
                                                     np.array(GExc.x), np.array(GExc.y),
                                                     tr.half_width, tr.grid_size, tr.grid_wrap,
                                                     same=False, sparseness=tr.p_ie) if tr.ddcon_active \
         else generate_connections(tr.N_i, tr.N_e, tr.p_ie)
-    sII_src, sII_tar, _ = generate_dd_connectivity2(np.array(GInh.x), np.array(GInh.y),
+    sII_src, sII_tar, _, dist_II = generate_dd_connectivity2(np.array(GInh.x), np.array(GInh.y),
                                                     np.array(GInh.x), np.array(GInh.y),
                                                     tr.half_width,  tr.grid_size, tr.grid_wrap,
                                                     sparseness=tr.p_ii) if tr.ddcon_active \
@@ -576,7 +633,7 @@ def run_net(tr):
 
     if tr.ddcon_active:
         p_ee = tr.p_ee if tr.p_ee_init == 0.0 else tr.p_ee_init
-        sEE_src_dd, sEE_tar_dd, sEE_p = generate_dd_connectivity2(np.array(GExc.x), np.array(GExc.y),
+        sEE_src_dd, sEE_tar_dd, sEE_p, dist_EE = generate_dd_connectivity2(np.array(GExc.x), np.array(GExc.y),
                                                                   np.array(GExc.x), np.array(GExc.y),
                                                                   tr.half_width, tr.grid_size, tr.grid_wrap,
                                                                   sparseness=p_ee)
@@ -608,11 +665,18 @@ def run_net(tr):
     # tr.f_add_result('sEE_tar', sEE_tar_active)
 
     if tr.syn_delay_active:
-        shapeEE, shapeEI, shapeII, shapeIE = syn_EE_active_init.shape, len(sEI_src), len(sII_src), len(sIE_src)
-        ee_delays = network_features.synapse_delays(tr.synEE_delay, tr.synEE_delay_windowsize, SynEE, shapeEE)
-        ei_delays = network_features.synapse_delays(tr.synEI_delay, tr.synEI_delay_windowsize, SynEI, shapeEI)
-        ii_delays = network_features.synapse_delays(tr.synII_delay, tr.synII_delay_windowsize, SynII, shapeII)
-        ie_delays = network_features.synapse_delays(tr.synIE_delay, tr.synIE_delay_windowsize, SynIE, shapeIE)
+
+        if tr.syn_dd_delay_active:
+            ee_delays = network_features.synapse_dd_delays(dist_EE, SynEE)
+            ei_delays = network_features.synapse_dd_delays(dist_EI, SynEI)
+            ii_delays = network_features.synapse_dd_delays(dist_II, SynII)
+            ie_delays = network_features.synapse_dd_delays(dist_IE, SynIE)
+        else:
+            shapeEE, shapeEI, shapeII, shapeIE = syn_EE_active_init.shape, len(sEI_src), len(sII_src), len(sIE_src)
+            ee_delays = network_features.synapse_delays(tr.synEE_delay, tr.synEE_delay_windowsize, SynEE, shapeEE)
+            ei_delays = network_features.synapse_delays(tr.synEI_delay, tr.synEI_delay_windowsize, SynEI, shapeEI)
+            ii_delays = network_features.synapse_delays(tr.synII_delay, tr.synII_delay_windowsize, SynII, shapeII)
+            ie_delays = network_features.synapse_delays(tr.synIE_delay, tr.synIE_delay_windowsize, SynIE, shapeIE)
 
         tr.f_add_result("sEE_delays", ee_delays)
         tr.f_add_result("sEI_delays", ei_delays)
@@ -872,7 +936,7 @@ def run_net(tr):
     if tr.gitraces_rec:
         GExc_recvars.append('gi')
     if tr.gfwdtraces_rec and tr.external_mode=='poisson':
-        GExc_recvars.append('gfwd')
+        GExc_recvars.append('gext')
     if tr.anormtar_rec:
         if tr.scl_active == 1:
             GExc_recvars.append('ANormTar')

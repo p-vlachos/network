@@ -85,6 +85,8 @@ cramer_noise_N = N_e
 # synaptic delay
 syn_delay_active = 0
 """ enables pre-synaptic delays """
+syn_dd_delay_active = 0
+""" enables distance-dependent pre-synaptic delays """
 synEE_delay = 4.7*ms
 """ for EE synapses, according to biexp peak time with standard params """
 synEE_delay_windowsize = 0*ms
@@ -186,14 +188,16 @@ external_mode = 'memnoise'
 """Either 'memnoise' or 'poisson' but latter seems to be unimplemented"""
 
 # poisson 
+# NOTES: Poissonian input as it is now it is either independent for each neuron (1-to-1) or from a pool of neurons
+#        Additionally, in both cases, input to excitatory and inhibitory neurons are independent
 PInp_mode = 'pool'
 """ either 'pool' or 'indep', only applies if ``external_mode`` is 'poisson' """
 NPInp = 1000
-"""Count of poisson external input neurons on excitatory neurons"""
+"""Number of poisson external input neurons on excitatory neurons"""
 NPInp_1n = 10
 """Number of incoming external connections per target"""
 NPInp_inh = 1000
-"""Count of poisson external input neurons on inhibitory neurons"""
+"""Number of poisson external input neurons on inhibitory neurons"""
 NPInp_inh_1n = 10
 """Number of incoming external connections per inhibitory target"""
 PInp_rate = 1270*Hz
