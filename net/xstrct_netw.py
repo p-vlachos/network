@@ -28,6 +28,10 @@ from .cpp_methods import syn_scale, syn_EI_scale, \
                          record_turnover, record_turnover_EI, \
                          record_spk, record_spk_EI
 
+from .cuda_methods import syn_scale, syn_EI_scale, \
+                         record_turnover, record_turnover_EI, \
+                         record_spk, record_spk_EI
+
 from . import workarounds
 
 import brian2cuda
