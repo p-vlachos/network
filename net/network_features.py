@@ -88,7 +88,7 @@ def synapse_dd_delays(dist: um, Syn: Synapses):
     """
     # need to create these for all synapses, not only the initially active ones
     ap_velocity = 150 * um/ms # Action potential velocity (should be adjusted later based on data)
-    syn_delay_prop_windowsize = 0.25 # Use to set delay std proportionally to distance (longer->more variance)
+    syn_delay_prop_windowsize = 0.1 # Use to set delay std proportionally to distance (longer->more variance)
     delays = np.random.normal(dist/ap_velocity, np.ones_like(dist)*syn_delay_prop_windowsize)
     delays[delays < 0] = 0 # Ensure there are non-negative values
 
