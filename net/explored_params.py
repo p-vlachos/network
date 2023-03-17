@@ -5,8 +5,8 @@ import numpy as np
 sigv = 1. / second
 
 input_dict = {'T1': [10 * second],
-              'T2': [20 * second], #5000
-              'pp_tcut': [5000 * second],
+              'T2': [5000 * second], #5000
+              'pp_tcut': [500 * second],
               'T3': [5 * second],
               'T4': [5 * second],
               'syn_scl_rec': [0],
