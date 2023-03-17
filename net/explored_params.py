@@ -166,7 +166,7 @@ input_dict = {'T1': [10 * second],
               'half_width': [150*um],
               'grid_wrap': [1],
 
-              'population_binned_rec': [0],
+              'population_binned_rec': [0], #1 
               'random_seed': [8301]#, 3, 929]
 }
 

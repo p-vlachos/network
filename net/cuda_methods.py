@@ -6,7 +6,7 @@ from brian2 import implementation, check_units
 # Implementation of synaptic scaling
 #
 #
-@implementation('cuda', headers=['"output_files.h"'], code=r'''
+@implementation('cu', headers=['"output_files.h"'], code=r'''
     __global__
     double syn_scale(double a, double vANormTar, double Asum_post, double veta_scaling, double t, int syn_active, double tRec_start, double tRec_max, int i, int j) {
       
@@ -34,7 +34,7 @@ def syn_scale(a, vANormTar, Asum_post, eta_scaling, t, syn_active, tRec_start, t
 # Implementation of E<-I synaptic scaling
 #
 #
-@implementation('cuda', headers=['"output_files.h"'], code=r'''
+@implementation('cu', headers=['"output_files.h"'], code=r'''
     __global__
     double syn_EI_scale(double a, double vANormTar, double Asum_post, double veta_scaling, double t, int syn_active, double tRec_start, double tRec_max, int i, int j) {
       
@@ -60,7 +60,7 @@ def syn_EI_scale(a, vANormTar, Asum_post, eta_scaling, t, syn_active, tRec_start
 # recording of turnover
 #
 #
-@implementation('cuda',  headers=['"output_files.h"'], code=r'''
+@implementation('cu',  headers=['"output_files.h"'], code=r'''
     __global__
     double record_turnover(double t, int was_active_before, int should_become_active, int should_stay_active, int syn_active, int i, int j) {
 
@@ -88,7 +88,7 @@ def record_turnover(t, was_active_before, should_become_active,
 # recording of E<-I turnover
 #
 #
-@implementation('cuda', headers=['"output_files.h"'], code=r'''
+@implementation('cu', headers=['"output_files.h"'], code=r'''
     __global__
     double record_turnover_EI(double t, int was_active_before, int should_become_active, int should_stay_active, int syn_active, int i, int j) {
 
@@ -113,7 +113,7 @@ def record_turnover_EI(t, was_active_before, should_become_active,
 # record spk
 #
 #
-@implementation('cuda', headers=['"output_files.h"'], code=r'''
+@implementation('cu', headers=['"output_files.h"'], code=r'''
     __global__
     double record_spk(double t, int i, int j, double a, double Apre, double Apost, int syn_active, int preorpost, double tRec_start, double tRec_max) {
 
@@ -136,7 +136,7 @@ def record_spk(t, i, j, a, Apre, Apost, syn_active, preorpost, tRec_start, tRec_
 # record spk E<-I
 #
 #
-@implementation('cuda', headers=['"output_files.h"'], code=r'''
+@implementation('cu', headers=['"output_files.h"'], code=r'''
     __global__
     double record_spk_EI(double t, int i, int j, double a, double Apre, double Apost, int syn_active, int preorpost, double tRec_start, double tRec_max) {
 

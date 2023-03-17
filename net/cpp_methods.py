@@ -7,7 +7,6 @@ from brian2 import implementation, check_units
 #
 #
 @implementation('cpp', headers=['"output_files.h"'], code=r'''
-    __global__
     double syn_scale(double a, double vANormTar, double Asum_post, double veta_scaling, double t, int syn_active, double tRec_start, double tRec_max, int i, int j) {
       
       double a_out;
@@ -35,7 +34,6 @@ def syn_scale(a, vANormTar, Asum_post, eta_scaling, t, syn_active, tRec_start, t
 #
 #
 @implementation('cpp', headers=['"output_files.h"'], code=r'''
-    __global__
     double syn_EI_scale(double a, double vANormTar, double Asum_post, double veta_scaling, double t, int syn_active, double tRec_start, double tRec_max, int i, int j) {
       
       double a_out;
@@ -61,7 +59,6 @@ def syn_EI_scale(a, vANormTar, Asum_post, eta_scaling, t, syn_active, tRec_start
 #
 #
 @implementation('cpp',  headers=['"output_files.h"'], code=r'''
-    __global__
     double record_turnover(double t, int was_active_before, int should_become_active, int should_stay_active, int syn_active, int i, int j) {
 
       if (int(was_active_before==0)*should_become_active==1){
@@ -89,7 +86,6 @@ def record_turnover(t, was_active_before, should_become_active,
 #
 #
 @implementation('cpp', headers=['"output_files.h"'], code=r'''
-    __global__
     double record_turnover_EI(double t, int was_active_before, int should_become_active, int should_stay_active, int syn_active, int i, int j) {
 
       if (int(was_active_before==0)*should_become_active==1){
@@ -114,7 +110,6 @@ def record_turnover_EI(t, was_active_before, should_become_active,
 #
 #
 @implementation('cpp', headers=['"output_files.h"'], code=r'''
-    __global__
     double record_spk(double t, int i, int j, double a, double Apre, double Apost, int syn_active, int preorpost, double tRec_start, double tRec_max) {
 
        if (t > tRec_start && t < tRec_max) {
@@ -137,7 +132,6 @@ def record_spk(t, i, j, a, Apre, Apost, syn_active, preorpost, tRec_start, tRec_
 #
 #
 @implementation('cpp', headers=['"output_files.h"'], code=r'''
-    __global__
     double record_spk_EI(double t, int i, int j, double a, double Apre, double Apost, int syn_active, int preorpost, double tRec_start, double tRec_max) {
 
        if (t > tRec_start && t < tRec_max) {
