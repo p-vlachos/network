@@ -23,7 +23,7 @@ def generate_connections(N_tar, N_src, p, same=False):
             j+=list(np.random.choice([*range(N_tar)],
                                      size=n, replace=False))
 
-    return i, np.array(j), None
+    return i, np.array(j), None, None
 
 
 def generate_N_connections(N_tar, N_src, N, same=False):
