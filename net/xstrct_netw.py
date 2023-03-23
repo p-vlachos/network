@@ -109,6 +109,7 @@ def run_net(tr, gpu=False):
     if gpu:
         set_device('cuda_standalone', directory='./builds/%.4d'%(tr.v_idx), 
                    build_on_run=False)
+        prefs.devices.cuda_standalone.cuda_backend.detect_gpu = False   # disable automatic GPU detection
     else:
         set_device('cpp_standalone', directory='./builds/%.4d'%(tr.v_idx),
                    build_on_run=False)        
